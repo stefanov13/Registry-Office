@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <header class="heeo__header">
+        <nav class="hero__nav">
+            <div class="hero__logo_wrapper">
+                <a href="{% url 'index' %}" class="hero__logo_img"><img src="{% static 'images/natfa_logo_75-2.png' %}" alt="natfa-logo"></a>
+            </div>
+
+
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock  %}
+    </main>
+
+    <footer>
+        <p>Copyright by Lokumchev</p>
+    </footer>
+
+    
+</body>
+</html>
