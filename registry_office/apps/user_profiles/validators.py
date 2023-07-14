@@ -4,9 +4,9 @@ import re
 
 def lowercase_cyrillic_letters_and_hyphens_validator(value):
     value = value.strip()
-    pattern = r'^([а-я]+)(\s*\-\s*[а-я]+)*$'
+    pattern = r'^([А-Яа-яA-Za-z\.?\s?\-?\"?]+)$'
     if not re.match(pattern, value):
-        raise ValidationError(_('The text must contain only lowercase Cyrillic letters and dashes!'))  # 'Текстът трябва да съдържа само малки български букви и тирета!'
+        raise ValidationError(_('The text must contain only lower or uppercase letters, dashes, dots, spaces and quotes!'))  # 'Текстът трябва да съдържа само главни и малки букви, тирета, точки и кавички!'
     
 
 def name_cyrillic_letters_and_hyphens_validator(value):
