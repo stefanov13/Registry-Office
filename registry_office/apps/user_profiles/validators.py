@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import re
 
-def lowercase_cyrillic_letters_and_hyphens_validator(value):
+def position_field_validator(value):
     value = value.strip()
     pattern = r'^([А-Яа-яA-Za-z\.?\s?\-?\"?]+)$'
     if not re.match(pattern, value):
