@@ -17,7 +17,8 @@
 
             <ul class="hero__nav_ul" role="list">
                 {% if request.user.is_authenticated %}
-                <li class="hero__nav_links"><a href="#" class="hero__nav_links hero__nav_anchor">ПОТРЕБИТЕЛСКИ ПРОФИЛ</a></li>
+                <li class="hero__nav_links"><a href="{% url 'user-details' %}" class="hero__nav_links hero__nav_anchor">ПОТРЕБИТЕЛСКИ ПРОФИЛ</a></li>
+                <li class="hero__nav_links"><a href="{% url 'logout' %}" class="hero__nav_links hero__nav_anchor">ИЗХОД</a></li>
                 {% else %}
                 <li class="hero__nav_links"><a href="{% url 'register-user' %}" class="hero__nav_links hero__nav_anchor">РЕГИСТРАЦИЯ</a></li>
                 <li class="hero__nav_links"><a href="{% url 'login' %}" class="hero__nav_links hero__nav_anchor">ВХОД</a></li>

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form action="{% url 'register-user' %}" method="post">
+
+        {{ form }}
+        {% csrf_token %}
+
+        <button type="submit">РЕГИСТРИРАЙ СЕ</button>
+        <p>Ако вече сте регистриран потребител, може да се впишете от <a href="{% url 'login' %}">тук</a></p>
+
+    </form>
+
+{% endblock  %}
