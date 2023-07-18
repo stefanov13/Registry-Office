@@ -20,6 +20,7 @@ class RegisterUserView(views.CreateView):
         current_object = self.object
         
         login(self.request, current_object)
+        
         return result
 
 
