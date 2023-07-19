@@ -33,3 +33,14 @@ class UserLogoutView(auth_views.LogoutView):
 class UserDetailsView(auth_mixins.LoginRequiredMixin, views.ListView):
     model = UserModel
     template_name = 'accounts/user-details.html'
+
+class UserEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
+    template_name = 'accounts/user-edit.html'
+    form_class = RegisterUserForm
+    success_url = reverse_lazy('user-details')
+
+class UserDeleteView(auth_mixins.LoginRequiredMixin, views.TemplateView):
+    template_name = 'accounts/user-delete.html'
+
+class UserChangePasswordView(auth_mixins.LoginRequiredMixin, auth_views.PasswordChangeView):
+    template_name = 'accounts/password_change.html'

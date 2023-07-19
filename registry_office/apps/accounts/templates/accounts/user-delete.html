@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>Изтриване на потребителският профил</h2>
+
+    {% comment %} <p>E-mail: {{ request.user.email }}</p>
+    <p>First Name: {{ request.user.profile.first_name }}</p>
+    <p>Last Name: {{ request.user.profile.last_name }}</p>
+    <p>Position: {{ request.user.profile.position }}</p>
+    <a href="{% url 'user-edit' pk=user.pk %}">Редактиране</a>
+    <a href="{% url 'user-delete' pk=user.pk %}">Изтриване</a> {% endcomment %}
+
+{% endblock %}

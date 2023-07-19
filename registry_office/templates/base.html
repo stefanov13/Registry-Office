@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <title>Document</title>
+    <title>Registry Office</title>
 </head>
 <body>
     <header class="heeo__header">
@@ -19,6 +19,7 @@
                 {% if request.user.is_authenticated %}
                 <li class="hero__nav_links"><a href="{% url 'user-details' %}" class="hero__nav_links hero__nav_anchor">ПОТРЕБИТЕЛСКИ ПРОФИЛ</a></li>
                 <li class="hero__nav_links"><a href="{% url 'logout' %}" class="hero__nav_links hero__nav_anchor">ИЗХОД</a></li>
+                <li class="hero__nav_links">{{request.user.profile.first_name}} {{request.user.profile.last_name}}</li>
                 {% else %}
                 <li class="hero__nav_links"><a href="{% url 'register-user' %}" class="hero__nav_links hero__nav_anchor">РЕГИСТРАЦИЯ</a></li>
                 <li class="hero__nav_links"><a href="{% url 'login' %}" class="hero__nav_links hero__nav_anchor">ВХОД</a></li>

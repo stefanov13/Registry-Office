@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <section>
+        <h2>Редактиране на информацията в потребителският профил</h2>
+
+        <form action="{% url 'user-edit' pk=user.pk %}" method="post">
+
+            {{ form }}
+            {% csrf_token %}
+
+            <button type="sumit">Запазване на промените</button>
+
+
+        </form>
+
+        <a href="{% url 'change-password' pk=user.pk %}">Промяна на парола</a>
+    </section>
+    
+
+{% endblock %}
