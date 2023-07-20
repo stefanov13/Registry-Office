@@ -2,7 +2,7 @@ from django.db import models
 from django.core import validators
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from .validators import name_cyrillic_letters_and_hyphens_validator, position_field_validator
+from core.validators import name_cyrillic_letters_and_hyphens_validator, position_field_validator
 
 # Create your models here.
 
@@ -34,7 +34,7 @@ class Profile(models.Model):
         verbose_name=_('Position'),
     )
 
-    user = models.OneToOneField(
+    owner = models.OneToOneField(
         UserModel,
         on_delete=models.CASCADE,
         primary_key=True,

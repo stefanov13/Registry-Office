@@ -10,8 +10,8 @@
         <p>First Name: {{ request.user.profile.first_name }}</p>
         <p>Last Name: {{ request.user.profile.last_name }}</p>
         <p>Position: {{ request.user.profile.position }}</p>
-        <a href="{% url 'user-edit' pk=user.pk %}">Редактиране</a>
-        <a href="{% url 'user-delete' pk=user.pk %}">Изтриване</a>
+        <a href="{% url 'user-edit' %}">Редактиране</a>
+        <a href="{% url 'user-delete' %}">Изтриване</a>
 
     </section>
 

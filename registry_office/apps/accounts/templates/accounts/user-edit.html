@@ -5,7 +5,7 @@
     <section>
         <h2>Редактиране на информацията в потребителският профил</h2>
 
-        <form action="{% url 'user-edit' pk=user.pk %}" method="post">
+        <form method="post"> {% comment %}  action="{% url 'user-edit' pk=user.pk %}"  {% endcomment %}
 
             {{ form }}
             {% csrf_token %}
@@ -15,7 +15,8 @@
 
         </form>
 
-        <a href="{% url 'change-password' pk=user.pk %}">Промяна на парола</a>
+        <a href="{% url 'change-password' %}">Промяна на парола</a>
+        <a href="{% url 'user-details' %}">Отказ на промените</a>
     </section>
     
 
