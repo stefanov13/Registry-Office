@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <form action="{% url 'register-user' %}" method="post">
+    <form method="post">
 
         {{ form }}
         {% csrf_token %}

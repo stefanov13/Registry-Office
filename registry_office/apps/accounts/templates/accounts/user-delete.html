@@ -6,9 +6,15 @@
 
     <h4>Внимание !</h4>
     <p></p>
-    <p>Last Name: {{ request.user.profile.last_name }}</p>
-    <p>Position: {{ request.user.profile.position }}</p>
-    <a href="{% url 'user-edit' pk=user.pk %}">Редактиране</a>
-    <a href="{% url 'user-delete' pk=user.pk %}">Изтриване</a>
+   
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">Изтриване</button>
+    </form>
+    
+    <a href="{% url 'user-details' %}">Отказ</a>
+    
 
 {% endblock %}
