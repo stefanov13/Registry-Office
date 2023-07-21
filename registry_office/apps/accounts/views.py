@@ -47,9 +47,10 @@ class UserEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
 
 class UserDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     template_name = 'accounts/user-delete.html'
-
-    def get_success_url(self):
-        return reverse_lazy('index')
+    success_url = reverse_lazy('index')
+    
+    def get_object(self, queryset=None):
+        return self.request.user
 
 class UserChangePasswordView(auth_mixins.LoginRequiredMixin, auth_views.PasswordChangeView):
     template_name = 'accounts/password_change.html'

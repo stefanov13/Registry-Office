@@ -39,3 +39,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+        

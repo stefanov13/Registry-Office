@@ -10,8 +10,4 @@ urlpatterns = [
     path('user-edit/', UserEditView.as_view(), name='user-edit'),
     path('user-delete/', UserDeleteView.as_view(), name='user-delete'),
     path('change-password/', UserChangePasswordView.as_view(), name='change-password'),
-    # path('<int:pk>/', include([
-        
-    # ])),
-
 ]

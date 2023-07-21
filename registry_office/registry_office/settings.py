@@ -48,6 +48,7 @@ PROJECT_APPS = (
     'apps.common',
     'apps.accounts',
     'apps.user_profiles',
+    'apps.outgoing_log',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS

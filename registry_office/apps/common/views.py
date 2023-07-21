@@ -6,3 +6,7 @@ from django.views import generic as view
 
 # class BaseTemplateView(view.TemplateView):
 #     template_name = 'common/index.html'
+
+
+class OutgoingDashboardView(view.ListView):
+    pass

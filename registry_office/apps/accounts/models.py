@@ -70,3 +70,6 @@ class AppCustomUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
+
+    def __str__(self):
+        return f'{self.email}'

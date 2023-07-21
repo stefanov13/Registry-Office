@@ -84,7 +84,7 @@ class EditUserForm(forms.ModelForm):
                 'last_name': profile_instance.last_name,
                 'position': profile_instance.position,
             }
-        except:
+        except Profile.DoesNotExist:
             kwargs['initial'] = {
                 'first_name': '',
                 'last_name': '',
@@ -97,11 +97,10 @@ class EditUserForm(forms.ModelForm):
         current_user = super().save(commit=False)
         current_user.save()
 
-        profile = current_user.profile
+        profile, created = Profile.objects.get_or_create(owner=current_user)
         profile.first_name = self.cleaned_data['first_name']
         profile.last_name = self.cleaned_data['last_name']
         profile.position = self.cleaned_data['position']
         profile.save()
 
         return current_user
-   

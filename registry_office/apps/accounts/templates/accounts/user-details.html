@@ -6,10 +6,10 @@
 
         <h2>Информация за потребителският профил</h2>
 
-        <p>E-mail: {{ request.user.email }}</p>
-        <p>First Name: {{ request.user.profile.first_name }}</p>
-        <p>Last Name: {{ request.user.profile.last_name }}</p>
-        <p>Position: {{ request.user.profile.position }}</p>
+        <p>Имейл адрес: <span>{{ request.user.email }}</span></p>
+        <p>Име: <span>{{ request.user.profile.first_name }}</span></p>
+        <p>Фамилия: <span>{{ request.user.profile.last_name }}</span></p>
+        <p>Длъжност: <span>{{ request.user.profile.position }}</span></p>
         <a href="{% url 'user-edit' %}">Редактиране</a>
         <a href="{% url 'user-delete' %}">Изтриване</a>
 
