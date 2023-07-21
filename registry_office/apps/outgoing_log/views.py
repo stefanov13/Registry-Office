@@ -8,6 +8,6 @@ from .forms import CreateOutgoingLogForm
 
 
 class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
-    template_name = 'accounts/signup.html'
+    template_name = 'outgoing_log/outgoing-create.html'
     form_class = CreateOutgoingLogForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('outgoing-dashboard')

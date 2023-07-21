@@ -33,6 +33,13 @@ class OutgoingLogModel(models.Model):
         auto_now=True,
     )
 
+    document_img = models.ImageField(
+        blank=True,
+        null=True,
+        upload_to='outgoing_doc_img',
+        
+    )
+
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save

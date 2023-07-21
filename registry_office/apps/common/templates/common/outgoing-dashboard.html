@@ -6,23 +6,27 @@
     <table>
         <thead>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>Номер в регистъра</td>
+                <td>Описание</td>
+                <td>Получател на документа</td>
+                <td>Дата на регистрация</td>
+                <td>Час на регистрация</td>
+                <td>Прикачен файл</td>
             </tr>
         </thead>
         <tbody>
             {% for document in object_list %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ document.log_num }}</td>
+                    <td>{{ document.title|truncatechars:50 }}</td>
+                    <td>{{ document.recipient }}</td>
+                    <td>{{ document.creation_date|date:"d.m.Y" }}</td>
+                    <td>{{ document.creation_date|date:"H:i"}}</td>
+                    <td>{{ document.document_img }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <a href="{% url 'outgoing-create' %}">Регистриране на нов документ</a>
 {% endblock  %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import generic as view
+from ..outgoing_log.models import OutgoingLogModel
 
 # Create your views here.
 
@@ -9,4 +10,5 @@ from django.views import generic as view
 
 
 class OutgoingDashboardView(view.ListView):
-    pass
+    template_name = 'common/outgoing-dashboard.html'
+    model = OutgoingLogModel
