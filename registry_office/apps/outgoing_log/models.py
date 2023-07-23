@@ -1,8 +1,11 @@
 from django.db import models
 from django.core import validators
 from django.utils.translation import gettext_lazy as _
+from core.profile_name_choices import FullProfileName
 
 # Create your models here.
+
+
 
 class OutgoingLogModel(models.Model):
     log_num = models.IntegerField(
@@ -27,6 +30,20 @@ class OutgoingLogModel(models.Model):
         null=False,
         validators=[validators.MinLengthValidator(2, 'Полето трябва да съдържа поне 2 букви')],
         verbose_name=(_('Recipient')),
+    )
+
+    signatory_name = models.CharField(
+        max_length=70,   #FullProfileName.max_length()
+        blank=False,
+        null=False,
+        choices=FullProfileName.choices,
+        default=(_('Not Present'))
+    )
+
+    signatory_position = models.CharField(
+        max_length=70,
+        blank=False,
+        null=False,
     )
 
     creation_date = models.DateTimeField(

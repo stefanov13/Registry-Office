@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section>
+        <h2>Детайли за {{ some.title }} създаден на {{ some.creation_date|date:"d.m.Y" }} в {{ some.creation_date|date:"H:i" }}</h2>
+
+        <p>{{ some.title }}</p>
+        <p>{{ some.recipient }}</p>
+        <p>{{ some.creation_date }}</p>
+        <img src="{% url 'some.document_img.url' %}" alt="Outgoing Document Image">
+
+        <a href="{% url 'outgoing-edit pk=some.pk' %}">Редактиране</a>
+        <a href="{% url 'outgoing-delete' pk=some.pk %}">Изтриване</a>
+
+    </section>
+{% endblock  %}

@@ -18,7 +18,7 @@
             {% for document in object_list %}
                 <tr>
                     <td>{{ document.log_num }}</td>
-                    <td>{{ document.title|truncatechars:50 }}</td>
+                    <td><a href="{% url 'outgoing-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
                     <td>{{ document.recipient }}</td>
                     <td>{{ document.creation_date|date:"d.m.Y" }}</td>
                     <td>{{ document.creation_date|date:"H:i"}}</td>
