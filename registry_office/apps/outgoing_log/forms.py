@@ -4,7 +4,7 @@ from .models import OutgoingLogModel
 class CreateOutgoingLogForm(forms.ModelForm):
     class Meta:
         model = OutgoingLogModel
-        fields = ('title', 'recipient', 'document_img')
+        fields = ('title', 'recipient', 'signatory_name', 'signatory_position', 'document_img')
 
 class EditOutgoingLogForm(forms.ModelForm):
     class Meta:
