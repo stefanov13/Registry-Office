@@ -18,7 +18,7 @@ class OutgoingLogModel(models.Model):
         null=False, 
         unique=True, 
         editable=False,
-        verbose_name=(_('Log\'s number'))
+        verbose_name=_('Log\'s number')
     )
 
     title = models.CharField(
@@ -26,7 +26,7 @@ class OutgoingLogModel(models.Model):
         blank=False,
         null=False,
         validators=[validators.MinLengthValidator(TITLE_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви')],
-        verbose_name=(_('Title')),
+        verbose_name=_('Title'),
     )
 
     recipient = models.CharField(
@@ -34,30 +34,33 @@ class OutgoingLogModel(models.Model):
         blank=False,
         null=False,
         validators=[validators.MinLengthValidator(RECIPIENT_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви')],
-        verbose_name=(_('Recipient')),
+        verbose_name=_('Recipient'),
     )
 
     signatory_name = models.CharField(
         max_length=SIGNATORY_NAME_MAX_LENGTH,
         blank=False,
         null=False,
+        verbose_name=_('Signatory Name'),
     )
 
     signatory_position = models.CharField(
         max_length=SIGNATORY_POSITION_MAX_LENGTH,
         blank=False,
         null=False,
+        verbose_name=_('Signatory Position'),
     )
 
     creation_date = models.DateTimeField(
         auto_now=True,
+        verbose_name=_('Creation Date'),
     )
 
     document_img = models.ImageField(
         blank=True,
         null=True,
         upload_to='outgoing_doc_img',
-        
+        verbose_name=_('Document Image'),
     )
 
     def save(self, *args, **kwargs):
