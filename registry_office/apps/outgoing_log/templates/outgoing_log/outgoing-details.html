@@ -2,7 +2,7 @@
 
 {% block content %}
     <section>
-        <h2>Детайли за {{ some.title }} създаден на {{ some.creation_date|date:"d.m.Y" }} в {{ some.creation_date|date:"H:i" }}</h2>
+        <h2>Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Y" }}г. в {{ object.creation_date|date:"H:i" }} часа</h2>
 
         <p>{{ object.title }}</p>
         <p>{{ object.recipient }}</p>
