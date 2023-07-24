@@ -1,13 +1,18 @@
 from django.db import models
 from django.core import validators
 from django.utils.translation import gettext_lazy as _
-from core.profile_name_choices import FullProfileName
 
 # Create your models here.
 
 
-
 class OutgoingLogModel(models.Model):
+    TITLE_MIN_LENGTH = 2
+    TITLE_MAX_LENGTH = 200
+    RECIPIENT_MIN_LENGTH = 2
+    RECIPIENT_MAX_LENGTH = 200
+    SIGNATORY_NAME_MAX_LENGTH = 70
+    SIGNATORY_POSITION_MAX_LENGTH = 70
+    
     log_num = models.IntegerField(
         blank=False,
         null=False, 
@@ -17,31 +22,29 @@ class OutgoingLogModel(models.Model):
     )
 
     title = models.CharField(
-        max_length=200,
+        max_length=TITLE_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(2, 'Полето трябва да съдържа поне 2 букви')],
+        validators=[validators.MinLengthValidator(TITLE_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви')],
         verbose_name=(_('Title')),
     )
 
     recipient = models.CharField(
-        max_length=200,
+        max_length=RECIPIENT_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(2, 'Полето трябва да съдържа поне 2 букви')],
+        validators=[validators.MinLengthValidator(RECIPIENT_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви')],
         verbose_name=(_('Recipient')),
     )
 
     signatory_name = models.CharField(
-        max_length=70,   #FullProfileName.max_length()
+        max_length=SIGNATORY_NAME_MAX_LENGTH,
         blank=False,
         null=False,
-        choices=FullProfileName.choices,
-        default=(_('Not Present'))
     )
 
     signatory_position = models.CharField(
-        max_length=70,
+        max_length=SIGNATORY_POSITION_MAX_LENGTH,
         blank=False,
         null=False,
     )
