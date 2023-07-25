@@ -16,11 +16,12 @@ class CreateOutgoingLogForm(forms.ModelForm):
 
 
 class EditOutgoingLogForm(forms.ModelForm):
+    signatory_profile = forms.ChoiceField(choices=full_profile_name(), label=_('Signatory Profile'))
     class Meta:
         model = OutgoingLogModel
-        fields = ('title', 'recipient', 'document_img')
+        fields = ('title', 'recipient', 'signatory_profile', 'document_img')
 
 class DeleteOutgoingLogForm(forms.ModelForm):
     class Meta:
         model = OutgoingLogModel
-        fields = ('title', 'recipient', 'document_img')
+        fields = ('title', 'recipient')

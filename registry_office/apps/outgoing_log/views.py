@@ -19,11 +19,11 @@ class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         cleaned_data = form.cleaned_data
 
         # Get the value of the custom_choice_field
-        custom_choice_value = cleaned_data.get('custom_choice_field', )
+        signatory_profile = cleaned_data.get('signatory_profile', )
 
         # Split the value by space (assuming it is formatted as "first_name last_name position")
         try:
-            first_name, last_name, position = custom_choice_value.split()
+            first_name, last_name, position = signatory_profile.split()
         except ValueError:
             first_name, last_name, position = _('Not'), _('Present'), _('Not Present')
 
@@ -49,9 +49,39 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     template_name = 'outgoing_log/outgoing-edit.html'
     form_class = EditOutgoingLogForm
-    success_url = reverse_lazy('outgoing-details') 
+    model = OutgoingLogModel
+
+    def get_object(self, queryset=None):
+        # Get the object to edit based on the primary key (pk) from the URL
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(self.model, pk=pk)
+
+    def get_success_url(self):
+        # Redirect to the details page of the edited object after successful update
+        return reverse_lazy('outgoing-details', kwargs={'pk': self.object.pk})
+    
+    def form_valid(self, form):
+        cleaned_data = form.cleaned_data
+        signatory_profile = cleaned_data.get('signatory_profile', )
+
+        try:
+            first_name, last_name, position = signatory_profile.split()
+        except ValueError:
+            first_name, last_name, position = _('Not'), _('Present'), _('Not Present')
+
+        form.instance.signatory_name = f'{first_name} {last_name}'
+        form.instance.signatory_position = position
+
+        return super().form_valid(form)
 
 class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     template_name = 'outgoing_log/outgoing-delete.html'
     form_class = DeleteOutgoingLogForm
+    model = OutgoingLogModel
     success_url = reverse_lazy('outgoing-dashboard')
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(self.model, pk=pk)
+    
+

@@ -9,6 +9,7 @@
         {% csrf_token %}
 
         <button type="submit">Изтрий</button>
+        <a href="{% url 'outgoing-details' pk=object.pk %}">Откажи промените</a>
 
     </form>
 {% endblock  %}

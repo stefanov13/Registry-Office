@@ -4,12 +4,15 @@
     <section>
         <h2>Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Y" }}г. в {{ object.creation_date|date:"H:i" }} часа</h2>
 
-        <p>{{ object.title }}</p>
-        <p>{{ object.recipient }}</p>
-        <p>{{ object.signatory_name }}</p>
-        <p>{{ object.signatory_position }}</p>
-        <p>{{ object.creation_date }}</p>
-        <img src="{{ object.document_img.url }}" alt="Outgoing Document Image">
+        <p>Описание: {{ object.title }}</p>
+        <p>Получател: {{ object.recipient }}</p>
+        <p>Подател - Име: {{ object.signatory_name }}</p>
+        <p>Подател - Длъжност: {{ object.signatory_position }}</p>
+        <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Y" }}</p>
+        <p>Час на регистрация: {{ object.creation_date|date:"H:i" }}</p>
+        {% if object.document_img %}
+            <img src="{{ object.document_img.url }}" alt="Outgoing Document Image">
+        {% endif %}
 
         <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
         <a href="{% url 'outgoing-delete' pk=object.pk %}">Изтриване</a>
