@@ -4,6 +4,7 @@
     <section>
         <h2>Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Y" }}г. в {{ object.creation_date|date:"H:i" }} часа</h2>
 
+        <p>Номер в регистъра: {{ object.log_num }}</p>
         <p>Описание: {{ object.title }}</p>
         <p>Получател: {{ object.recipient }}</p>
         <p>Подател - Име: {{ object.signatory_name }}</p>

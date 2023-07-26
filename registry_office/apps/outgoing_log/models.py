@@ -52,7 +52,7 @@ class OutgoingLogModel(models.Model):
     )
 
     creation_date = models.DateTimeField(
-        auto_now=True,
+        auto_now_add=True,
         verbose_name=_('Creation Date'),
     )
 

@@ -10,6 +10,7 @@ from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLog
 
 
 class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
+    NOT_SPECIFIED_CHOICE = _('Is Not Specified')
     template_name = 'outgoing_log/outgoing-create.html'
     form_class = CreateOutgoingLogForm
     success_url = reverse_lazy('outgoing-dashboard')
@@ -22,10 +23,9 @@ class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
         signatory_profile = cleaned_data.get('signatory_profile', )
 
         # Split the value by space (assuming it is formatted as "first_name last_name position")
-        try:
-            first_name, last_name, position = signatory_profile.split()
-        except ValueError:
-            first_name, last_name, position = _('Not'), _('Present'), _('Not Present')
+        first_name, last_name, position = signatory_profile.split()
+        if signatory_profile == self.NOT_SPECIFIED_CHOICE:
+            first_name, last_name, position = self.NOT_SPECIFIED_CHOICE, '', self.NOT_SPECIFIED_CHOICE
 
         # Assign the split values to the corresponding fields
         form.instance.signatory_name = f'{first_name} {last_name}'
@@ -47,6 +47,7 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
 
 class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
+    NOT_SPECIFIED_CHOICE = _('Is Not Specified')
     template_name = 'outgoing_log/outgoing-edit.html'
     form_class = EditOutgoingLogForm
     model = OutgoingLogModel
@@ -55,7 +56,7 @@ class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         # Get the object to edit based on the primary key (pk) from the URL
         pk = self.kwargs.get('pk')
         return get_object_or_404(self.model, pk=pk)
-
+  
     def get_success_url(self):
         # Redirect to the details page of the edited object after successful update
         return reverse_lazy('outgoing-details', kwargs={'pk': self.object.pk})
@@ -64,10 +65,9 @@ class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         cleaned_data = form.cleaned_data
         signatory_profile = cleaned_data.get('signatory_profile', )
 
-        try:
-            first_name, last_name, position = signatory_profile.split()
-        except ValueError:
-            first_name, last_name, position = _('Not'), _('Present'), _('Not Present')
+        first_name, last_name, position = signatory_profile.split()
+        if signatory_profile == self.NOT_SPECIFIED_CHOICE:
+            first_name, last_name, position = self.NOT_SPECIFIED_CHOICE, '', self.NOT_SPECIFIED_CHOICE
 
         form.instance.signatory_name = f'{first_name} {last_name}'
         form.instance.signatory_position = position
@@ -84,4 +84,18 @@ class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         pk = self.kwargs.get('pk')
         return get_object_or_404(self.model, pk=pk)
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        instance = self.object
 
+        # Set the 'disabled' attribute for each field in the form
+        if hasattr(self, 'form_class'):
+            form_class = self.get_form_class()
+            form = form_class(instance=instance)
+
+            # for field_value in form.fields.values():
+            #     field_value.widget.attrs['disabled'] = True
+
+            context['form'] = form
+
+        return context
