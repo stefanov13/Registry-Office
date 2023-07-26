@@ -8,8 +8,8 @@ from apps.user_profiles.models import Profile
 def full_profile_name():
     try:
         profiles = Profile.objects.all()
-        choices = [(f'{p.first_name} {p.last_name} {p.position}', f'{p.first_name} {p.last_name} {p.position}') for p in profiles]
-        choices += [(_('Not Present'), _('Not Present'))]
+        choices = [(f'{p.first_name} {p.last_name} {p.position}', f'{p.first_name} {p.last_name} - {p.position}') for p in profiles]
+        choices += [(_('Is Not Specified'), _('Is Not Specified'))]
     except:
-        choices = [(_('Not Present'), _("Not Present"))]
+        choices = [(_('Is Not Specified'), _("Is Not Specified"))]
     return choices
