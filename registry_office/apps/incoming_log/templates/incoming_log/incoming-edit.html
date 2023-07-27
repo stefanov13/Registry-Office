@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Редактиране на документ във входящ регистър.</h2>
+
+    <form method="post" enctype="multipart/form-data">
+
+        {{ form }}
+        {% csrf_token %}
+
+        <button type="submit">Редактирай</button>
+        <a href="{% url 'outgoing-dashboard' %}">Откажи промените</a>
+
+    </form>
+    
+{% endblock  %}

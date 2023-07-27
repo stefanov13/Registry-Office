@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Изтриване на документ във входящ регистър.</h2>
+
+    <form method="post">
+
+        <p>Номер в регистъра: {{ object.log_num }}</p>
+        {{ form }}
+        <p>Дата на създаване: {{ object.creation_date|date:"d.m.Y" }}</p>
+        <p>Час на създаване: {{ object.creation_date|date:"H:i" }}</p>
+        {% csrf_token %}
+
+        <button type="submit">Изтрий</button>
+        <a href="{% url 'outgoing-details' pk=object.pk %}">Откажи промените</a>
+
+    </form>
+{% endblock  %}

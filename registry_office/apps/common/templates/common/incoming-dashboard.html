@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>РЕГИСТЪР НА ВХОДЯЩА КОРЕСПОНДЕНЦИЯ</h2>
+
+
+{% if not object_list %}
+    <h4>Няма добавени документи в регистъра</h4>
+{% else %}
+    <table>
+        <thead>
+            <tr>
+                <td>Номер в регистъра</td>
+                <td>Описание</td>
+                <td>Подател на документа</td>
+                <td>Име на подателя</td>
+                <td>Длъжност на подателя</td>
+                <td>Дата на регистрация</td>
+                <td>Час на регистрация</td>
+                <td>Прикачен файл</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in object_list %}
+                <tr>
+                    <td>{{ document.log_num }}</td>
+                    <td><a href="{% url 'outgoing-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
+                    <td>{{ document.recipient }}</td>
+                    <td>{{ document.signatory_name }}</td>
+                    <td>{{ document.signatory_position }}</td>
+                    <td>{{ document.creation_date|date:"d.m.Y" }}</td>
+                    <td>{{ document.creation_date|date:"H:i" }}</td>
+                    <td>{{ document.document_img }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<a href="{% url 'incoming-create' %}">Регистриране на нов документ</a>
+
+{% endblock  %}
