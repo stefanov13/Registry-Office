@@ -1,7 +1,7 @@
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic as views
 from django.contrib.auth import login, views as auth_views, mixins as auth_mixins, get_user_model
 from .forms import RegisterUserForm, EditUserForm
@@ -10,10 +10,16 @@ from .forms import RegisterUserForm, EditUserForm
 
 UserModel = get_user_model()
 
-class UserRegisterView(views.CreateView):
+class UserRegisterView(auth_mixins.UserPassesTestMixin, views.CreateView):
     template_name = 'accounts/signup.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('index')
+
+    def test_func(self):
+        return not self.request.user.is_authenticated
+
+    def handle_no_permission(self):
+        return redirect('index')
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -26,6 +32,7 @@ class UserRegisterView(views.CreateView):
 
 class UserLoginView(auth_views.LoginView):
     template_name = 'accounts/login.html'
+    redirect_authenticated_user = True
 
 class UserLogoutView(auth_views.LogoutView):
     pass
