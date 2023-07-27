@@ -16,7 +16,6 @@
                 <td>Име на подателя</td>
                 <td>Длъжност на подателя</td>
                 <td>Дата на регистрация</td>
-                <td>Час на регистрация</td>
                 <td>Прикачен файл</td>
             </tr>
         </thead>
@@ -28,8 +27,7 @@
                     <td>{{ document.recipient }}</td>
                     <td>{{ document.signatory_name }}</td>
                     <td>{{ document.signatory_position }}</td>
-                    <td>{{ document.creation_date|date:"d.m.Y" }}</td>
-                    <td>{{ document.creation_date|date:"H:i" }}</td>
+                    <td>{{ document.creation_date|date:"d.m.Y - H:i" }}</td>
                     <td>{{ document.document_img }}</td>
                 </tr>
             {% endfor %}

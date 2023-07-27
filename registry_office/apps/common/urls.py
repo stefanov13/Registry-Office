@@ -1,10 +1,9 @@
 from django.urls import path
-from django.views import generic as views
-from .views import OutgoingDashboardView, IncomingDashboardView
+from .views import BaseTemplateView, OutgoingDashboardView, IncomingDashboardView
 
 
 urlpatterns = [
-    path('', views.TemplateView.as_view(template_name = 'common/index.html'), name='index'),
+    path('', BaseTemplateView.as_view(), name='index'),
     path('outgoing-dashboard/', OutgoingDashboardView.as_view(), name='outgoing-dashboard'),
     path('incoming-dashboard/', IncomingDashboardView.as_view(), name='incoming-dashboard'),
 ]

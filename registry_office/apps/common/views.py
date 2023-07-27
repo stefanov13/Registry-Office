@@ -7,9 +7,8 @@ from ..incoming_log.models import IncomingLogModel
 # Create your views here.
 
 
-# class BaseTemplateView(view.TemplateView):
-#     template_name = 'common/index.html'
-
+class BaseTemplateView(view.TemplateView):
+    template_name = 'common/index.html'
 
 class OutgoingDashboardView(view.ListView):
     template_name = 'common/outgoing-dashboard.html'
