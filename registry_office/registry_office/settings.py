@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,10 +40,11 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 )
 
 THIRD_PARTY_APPS = (
-
+    
 )
 
 PROJECT_APPS = (
@@ -50,6 +52,7 @@ PROJECT_APPS = (
     'apps.accounts',
     'apps.user_profiles',
     'apps.outgoing_log',
+    'apps.incoming_log',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -61,8 +64,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django.middleware.alias.AliasMiddleware',
 ]
 
 ROOT_URLCONF = 'registry_office.urls'
@@ -127,13 +130,19 @@ if DEBUG:
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'bg'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EET'
 
 USE_I18N = True
 
 USE_TZ = True
+
+# Set the default language for translation fallback.
+LANGUAGES = [
+    ('bg', _('Bulgarian')),
+    ('en', _('English')),
+]
 
 
 # Static files (CSS, JavaScript, Images)
@@ -148,6 +157,15 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Set the project's gettext domain to your project name.
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -162,3 +180,5 @@ LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 LOGIN_URL = reverse_lazy('login')
+
+

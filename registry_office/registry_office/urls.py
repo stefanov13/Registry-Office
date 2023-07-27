@@ -22,5 +22,6 @@ urlpatterns = [
     path('', include('apps.common.urls')),
     path('auth/', include('apps.accounts.urls')),
     path('profile/', include('apps.user_profiles.urls')),
+    path('incoming/', include('apps.incoming_log.urls')),
     path('outgoing/', include('apps.outgoing_log.urls')),
 ]
