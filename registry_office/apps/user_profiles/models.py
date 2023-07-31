@@ -36,10 +36,10 @@ class Profile(models.Model):
 
     owner = models.OneToOneField(
         UserModel,
-        on_delete=models.CASCADE,
-        primary_key=True,
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name} - {self.position}'
         

@@ -7,8 +7,8 @@
         <p>Номер в регистъра: {{ object.log_num }}</p>
         <p>Описание: {{ object.title }}</p>
         <p>Получател: {{ object.recipient }}</p>
-        <p>Подател - Име: {{ object.signatory_name }}</p>
-        <p>Подател - Длъжност: {{ object.signatory_position }}</p>
+        <p>Подател - Име: {{ object.signatory_profile.first_name }} {{ object.signatory_profile.last_name }}</p>
+        <p>Подател - Длъжност: {{ object.signatory_profile.position }}</p>
         <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Y - H:i" }}</p>
         {% if object.document_img %}
             <img src="{{ object.document_img.url }}" alt="Outgoing Document Image">

@@ -5,34 +5,18 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 from .models import OutgoingLogModel
 from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLogForm
+from core.mixins.moderator_group_mixin import GroupRequiredMixin
+
 
 # Create your views here.
 
 
-class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
-    NOT_SPECIFIED_CHOICE = _('Is Not Specified')
+class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.CreateView):
     template_name = 'outgoing_log/outgoing-create.html'
     form_class = CreateOutgoingLogForm
     success_url = reverse_lazy('outgoing-dashboard')
 
-    def form_valid(self, form):
-        # Get the cleaned data from the form
-        cleaned_data = form.cleaned_data
-
-        # Get the value of the custom_choice_field
-        signatory_profile = cleaned_data.get('signatory_profile', )
-
-        # Split the value by space (assuming it is formatted as "first_name last_name position")
-        first_name, last_name, position = signatory_profile.split()
-        if signatory_profile == self.NOT_SPECIFIED_CHOICE:
-            first_name, last_name, position = self.NOT_SPECIFIED_CHOICE, '', self.NOT_SPECIFIED_CHOICE
-
-        # Assign the split values to the corresponding fields
-        form.instance.signatory_name = f'{first_name} {last_name}'
-        form.instance.signatory_position = position
-
-        # Call the parent's form_valid method to save the form and return the response
-        return super().form_valid(form)
+    allowed_groups = ['admin', 'document_controller']
 
 class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
     template_name = 'outgoing_log/outgoing-details.html'
@@ -46,11 +30,12 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         return get_object_or_404(queryset, pk=pk)
 
 
-class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
-    NOT_SPECIFIED_CHOICE = _('Is Not Specified')
+class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.UpdateView):
     template_name = 'outgoing_log/outgoing-edit.html'
     form_class = EditOutgoingLogForm
     model = OutgoingLogModel
+
+    allowed_groups = ['admin', 'document_controller']
 
     def get_object(self, queryset=None):
         # Get the object to edit based on the primary key (pk) from the URL
@@ -62,23 +47,17 @@ class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         return reverse_lazy('outgoing-details', kwargs={'pk': self.object.pk})
     
     def form_valid(self, form):
-        cleaned_data = form.cleaned_data
-        signatory_profile = cleaned_data.get('signatory_profile', )
-
-        first_name, last_name, position = signatory_profile.split()
-        if signatory_profile == self.NOT_SPECIFIED_CHOICE:
-            first_name, last_name, position = self.NOT_SPECIFIED_CHOICE, '', self.NOT_SPECIFIED_CHOICE
-
-        form.instance.signatory_name = f'{first_name} {last_name}'
-        form.instance.signatory_position = position
+        # process_signatory_profile(form, self.NOT_SPECIFIED_CHOICE)
 
         return super().form_valid(form)
 
-class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
+class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.DeleteView):
     template_name = 'outgoing_log/outgoing-delete.html'
     form_class = DeleteOutgoingLogForm
     model = OutgoingLogModel
     success_url = reverse_lazy('outgoing-dashboard')
+
+    allowed_groups = ['admin',]
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
@@ -88,14 +67,9 @@ class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         context = super().get_context_data(**kwargs)
         instance = self.object
 
-        # Set the 'disabled' attribute for each field in the form
         if hasattr(self, 'form_class'):
             form_class = self.get_form_class()
             form = form_class(instance=instance)
-
-            # for field_value in form.fields.values():
-            #     field_value.widget.attrs['disabled'] = True
-
             context['form'] = form
 
         return context
