@@ -1,9 +1,12 @@
 import os
 from django.shortcuts import render
+from django.http import Http404
 from django.views import generic as view
+from django.contrib.auth import mixins as auth_mixins
 from ..outgoing_log.models import OutgoingLogModel
 from ..incoming_log.models import IncomingLogModel
 from ..user_profiles.models import Profile
+from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 # Create your views here.
 
@@ -11,13 +14,20 @@ from ..user_profiles.models import Profile
 class BaseTemplateView(view.TemplateView):
     template_name = 'common/index.html'
 
-class IncomingDashboardView(view.ListView):
+class IncomingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
+    allowed_groups = ['admin', 'document_controller']
 
     def get_queryset(self):
-        # Order items by primary key in descending order
-        return self.model.objects.order_by('-pk')
+        current_user_profile = self.request.user.profile
+        current_user_groups = self.request.user.groups.values_list('name', flat=True)
+        if set(current_user_groups).intersection(set(self.allowed_groups)):
+            queryset = self.model.objects.order_by('-pk')
+        else:
+            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,17 +39,22 @@ class IncomingDashboardView(view.ListView):
 
         return context
 
-class OutgoingDashboardView(view.ListView):
+class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
     template_name = 'common/outgoing-dashboard.html'
     model = OutgoingLogModel
-    extra_content = Profile.objects.all()
+    allowed_groups = ['admin', 'document_controller']
 
     def get_queryset(self):
-        # Order items by primary key in descending order
-        return self.model.objects.order_by('-pk')
+        current_user_profile = self.request.user.profile
+        current_user_groups = self.request.user.groups.values_list('name', flat=True)
+        if set(current_user_groups).intersection(set(self.allowed_groups)):
+            queryset = self.model.objects.order_by('-pk')
+        else:
+            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
+
+        return queryset
 
     def get_context_data(self, **kwargs):
-        
         context = super().get_context_data(**kwargs)
 
         # Modify the 'document_img' field in the context to display only the file name
