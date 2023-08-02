@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load check_group_exists %}
 
 {% block content %}
     <section>
@@ -14,8 +15,12 @@
             <img src="{{ object.document_img.url }}" alt="Outgoing Document Image">
         {% endif %}
 
-        <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
-        <a href="{% url 'outgoing-delete' pk=object.pk %}">Изтриване</a>
+        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+            <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
+            <a href="{% url 'outgoing-delete' pk=object.pk %}">Изтриване</a>
+        {% elif request.user|has_group:'document_controller' %}
+            <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
+        {% endif %}
 
     </section>
 {% endblock  %}

@@ -22,7 +22,7 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        if set(current_user_groups).intersection(set(self.allowed_groups)):
+        if any([set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]):
             queryset = self.model.objects.order_by('-pk')
         else:
             queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
@@ -47,7 +47,7 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        if set(current_user_groups).intersection(set(self.allowed_groups)):
+        if any([set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]):
             queryset = self.model.objects.order_by('-pk')
         else:
             queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')

@@ -9,8 +9,6 @@ from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLog
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 
-# Create your views here.
-
 
 class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.CreateView):
     template_name = 'outgoing_log/outgoing-create.html'
@@ -24,7 +22,6 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
     model = OutgoingLogModel
     allowed_groups = ['admin', 'document_controller']
     pk_url_kwarg = 'pk'
-    #signatory_profile = 'signatory_profile'
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
@@ -33,10 +30,14 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        # Override get_object to fetch the object based on the pk_url_kwarg
         
         signatory_profile = current_object.signatory_profile
-        if not any([set(current_user_groups).intersection(set(self.allowed_groups)), signatory_profile == current_user_profile]):
+        if not any([
+            set(current_user_groups).intersection(set(self.allowed_groups)),
+            signatory_profile == current_user_profile,
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+            ]):
             raise Http404()
         
         return current_object
