@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load check_group_exists %}
 
 {% block content %}
     <h2>РЕГИСТЪР НА ИЗХОДЯЩА КОРЕСПОНДЕНЦИЯ</h2>
@@ -25,8 +26,8 @@
                         <td>{{ document.log_num }}</td>
                         <td><a href="{% url 'outgoing-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
                         <td>{{ document.recipient }}</td>
-                        <td>{{ document.signatory_name }}</td>
-                        <td>{{ document.signatory_position }}</td>
+                        <td>{{ document.signatory_profile.first_name }} {{ document.signatory_profile.last_name }}</td>
+                        <td>{{ document.signatory_profile.position }}</td>
                         <td>{{ document.creation_date|date:"d.m.Y - H:i" }}</td>
                         <td>{{ document.document_img }}</td>
                     </tr>
@@ -34,6 +35,8 @@
             </tbody>
         </table>
     {% endif %}
-
-    <a href="{% url 'outgoing-create' %}">Регистриране на нов документ</a>
+    
+    {% if request.user|has_group:'admin' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+        <a href="{% url 'outgoing-create' %}">Регистриране на нов документ</a>
+    {% endif %}
 {% endblock  %}

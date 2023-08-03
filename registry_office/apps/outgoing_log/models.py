@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.core import validators
 from django.utils.translation import gettext_lazy as _
+from ..user_profiles.models import Profile
 
-# Create your models here.
 
 
 class OutgoingLogModel(models.Model):
@@ -10,8 +11,6 @@ class OutgoingLogModel(models.Model):
     TITLE_MAX_LENGTH = 200
     RECIPIENT_MIN_LENGTH = 2
     RECIPIENT_MAX_LENGTH = 200
-    SIGNATORY_NAME_MAX_LENGTH = 70
-    SIGNATORY_POSITION_MAX_LENGTH = 70
     
     log_num = models.IntegerField(
         blank=False,
@@ -37,20 +36,11 @@ class OutgoingLogModel(models.Model):
         verbose_name=_('Recipient'),
     )
 
-    signatory_name = models.CharField(
-        max_length=SIGNATORY_NAME_MAX_LENGTH,
-        blank=False,
-        null=False,
-        verbose_name=_('Signatory Name'),
+    signatory_profile = models.ForeignKey(
+        Profile,
+        on_delete=models.DO_NOTHING,
     )
-
-    signatory_position = models.CharField(
-        max_length=SIGNATORY_POSITION_MAX_LENGTH,
-        blank=False,
-        null=False,
-        verbose_name=_('Signatory Position'),
-    )
-
+    
     creation_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Creation Date'),
