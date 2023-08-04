@@ -1,20 +1,23 @@
 import os
 from django.shortcuts import render
 from django.http import Http404
-from django.views import generic as view
+from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
-from ..outgoing_log.models import OutgoingLogModel
-from ..incoming_log.models import IncomingLogModel
 from ..user_profiles.models import Profile
+from ..news_feed.models import NewsFeedModel
+from ..incoming_log.models import IncomingLogModel
+from ..outgoing_log.models import OutgoingLogModel
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 # Create your views here.
 
 
-class BaseTemplateView(view.TemplateView):
+class BaseNewsFeedView(views.ListView):
     template_name = 'common/index.html'
+    model = NewsFeedModel
+    
 
-class IncomingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
+class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
     allowed_groups = ['admin', 'document_controller']
@@ -39,7 +42,7 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
 
         return context
 
-class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, view.ListView):
+class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     template_name = 'common/outgoing-dashboard.html'
     model = OutgoingLogModel
     allowed_groups = ['admin', 'document_controller']

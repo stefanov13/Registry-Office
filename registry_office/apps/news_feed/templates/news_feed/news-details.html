@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load check_group_exists %}
+
+{% block content %}
+    <section>
+        <h2>Детайли за {{ object.title }} публикувано на {{ object.date|date:"d.m.Yг. в H:i часа" }}</h2>
+
+        <p>Автор: {{ object.author }}</p>
+        <p>Описание: {{ object.title }}</p>
+        <p>Подробна информация: {{ object.description }}</p>
+        <p>Последна промяна: {{ object.date|date:"d.m.Yг. - H:i часа." }}</p>
+
+        {% if request.user.profile == object.author or request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+            <a href="{% url 'news-edit' pk=object.pk %}">Редактиране</a>
+            <a href="{% url 'news-delete' pk=object.pk %}">Изтриване</a>
+        {% endif %}
+
+    </section>
+{% endblock  %}

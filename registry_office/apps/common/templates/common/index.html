@@ -1,8 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <section>
+        <h1>Добре дошли в деловодната система на НАТФИЗ "Кръстьо Сарафов"</h1>
 
-    <h1> This is a home page</h1>
-    <p>{{ request.user }}</p>
-
+        <h2>Информационен бюлетин</h2>
+        {% if not object_list %}
+            <h4>Няма налични новини все още!</h4>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <td>Автор</td>
+                        <td>Описание</td>
+                        <td>Последна промяна</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for news in object_list %}
+                        <tr>
+                            <td>{{ news.author }}</td>
+                            <td><a href="{% url 'news-details' pk=news.pk %}">{{ news.title|truncatechars:50 }}</a></td>
+                            <td>{{ news.date|date:"d.m.Y - H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <p>{{ request.user }}</p>
+    </section>
 {% endblock  %}

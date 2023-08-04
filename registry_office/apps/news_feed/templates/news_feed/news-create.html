@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section>
+        <h4>Създаване на информационен бюлетин</h4>
+
+        <form method="post">
+
+            {{ form }}
+            {% csrf_token %}
+
+            <button type="submit">Създай</button>
+
+        </form>
+    </section>
+
+{% endblock  %}

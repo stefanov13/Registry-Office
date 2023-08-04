@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <section>
+        <h2>Редактиране на новина.</h2>
+
+        <form method="post">
+
+            {{ form }}
+            {% csrf_token %}
+
+            <button type="submit">Редактирай</button>
+            <a href="{% url 'index' %}">Откажи промените</a>
+
+        </form>
+    </section>
+    
+{% endblock  %}
