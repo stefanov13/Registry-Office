@@ -3,7 +3,7 @@
 
 {% block content %}
     <section>
-        <h2>Детайли за {{ object.title }} публикувано на {{ object.date|date:"d.m.Yг. в H:i часа" }}</h2>
+        <h2>Детайли за {{ object.title }} последна промяна {{ object.date|date:"d.m.Yг. в H:i часа" }}</h2>
 
         <p>Автор: {{ object.author }}</p>
         <p>Описание: {{ object.title }}</p>

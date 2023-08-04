@@ -8,7 +8,7 @@
 
             <p>Автор: {{ object.author }}</p>
             {{ form }}
-            <p>Дата и час на създаване: {{ object.date|date:"d.m.Yг. - H:i часа." }}</p>
+            <p>Последна промяна: {{ object.date|date:"d.m.Yг. - H:i часа." }}</p>
             {% csrf_token %}
 
             <button type="submit">Изтрий</button>
