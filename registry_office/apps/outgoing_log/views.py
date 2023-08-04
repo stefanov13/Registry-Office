@@ -42,7 +42,6 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         
         return current_object
 
-
 class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.UpdateView):
     template_name = 'outgoing_log/outgoing-edit.html'
     form_class = EditOutgoingLogForm

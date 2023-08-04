@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Редактиране на документ в изходящ регистър.</h2>
 
-    <form method="post" enctype="multipart/form-data">
+    <section>
+        <h2>Редактиране на документ в изходящ регистър.</h2>
 
-        {{ form }}
-        {% csrf_token %}
+        <form method="post" enctype="multipart/form-data">
 
-        <button type="submit">Редактирай</button>
-        <a href="{% url 'outgoing-dashboard' %}">Откажи промените</a>
+            {{ form }}
+            {% csrf_token %}
 
-    </form>
+            <button type="submit">Редактирай</button>
+            <a href="{% url 'outgoing-dashboard' %}">Откажи промените</a>
+
+        </form>
+    </section>
     
 {% endblock  %}

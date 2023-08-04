@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Изтриване на документ в изходящ регистър.</h2>
+    <section>
+        <h2>Изтриване на документ в изходящ регистър.</h2>
 
-    <form method="post">
+        <form method="post">
 
-        <p>Номер в регистъра: {{ object.log_num }}</p>
-        {{ form }}
-        <p>Дата и час на създаване: {{ object.creation_date|date:"d.m.Yг. - H:i часа." }}</p>
-        {% csrf_token %}
+            <p>Номер в регистъра: {{ object.log_num }}</p>
+            {{ form }}
+            <p>Дата и час на създаване: {{ object.creation_date|date:"d.m.Yг. - H:i часа." }}</p>
+            {% csrf_token %}
 
-        <button type="submit">Изтрий</button>
-        <a href="{% url 'outgoing-details' pk=object.pk %}">Откажи промените</a>
+            <button type="submit">Изтрий</button>
+            <a href="{% url 'outgoing-details' pk=object.pk %}">Откажи промените</a>
 
-    </form>
+        </form>
+    </section>
 {% endblock  %}

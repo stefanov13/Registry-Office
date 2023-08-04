@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Регистриране на документи в изходящ регистър.</h2>
+    <section>
+        <h2>Регистриране на документи в изходящ регистър.</h2>
 
-    <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
 
-        {{ form }}
-        {% csrf_token %}
+            {{ form }}
+            {% csrf_token %}
 
-        <button type="submit">Регистрирай</button>
+            <button type="submit">Регистрирай</button>
 
-    </form>
+        </form>
+    </section>
 {% endblock  %}
