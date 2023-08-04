@@ -53,6 +53,7 @@ PROJECT_APPS = (
     'apps.user_profiles',
     'apps.outgoing_log',
     'apps.incoming_log',
+    'apps.news_feed',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
