@@ -11,9 +11,10 @@
             {% csrf_token %}
 
             <button type="submit">Редактирай</button>
-            <a href="{% url 'outgoing-dashboard' %}">Откажи промените</a>
 
         </form>
+
+        <a href="{% url 'outgoing-dashboard' %}">Откажи промените</a>
     </section>
     
 {% endblock  %}

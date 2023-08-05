@@ -30,7 +30,7 @@ class NewsFeedDetailsView(views.DetailView):
         return get_object_or_404(queryset, pk=pk)
 
 class NewsFeedEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
-    template_name = 'outgoing_log/outgoing-edit.html'
+    template_name = 'news_feed/news-edit.html'
     model = NewsFeedModel
     fields = ['title', 'description']
 
