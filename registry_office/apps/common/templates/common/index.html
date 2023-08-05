@@ -11,16 +11,16 @@
             <table>
                 <thead>
                     <tr>
-                        <td>Автор</td>
                         <td>Описание</td>
+                        <td>Автор</td>
                         <td>Последна промяна</td>
                     </tr>
                 </thead>
                 <tbody>
                     {% for news in object_list %}
                         <tr>
-                            <td>{{ news.author }}</td>
                             <td><a href="{% url 'news-details' pk=news.pk %}">{{ news.title|truncatechars:50 }}</a></td>
+                            <td>{{ news.author }}</td>
                             <td>{{ news.date|date:"d.m.Y - H:i" }}</td>
                         </tr>
                     {% endfor %}
