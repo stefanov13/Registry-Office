@@ -15,12 +15,15 @@ from core.mixins.moderator_group_mixin import GroupRequiredMixin
 class BaseNewsFeedView(views.ListView):
     template_name = 'common/index.html'
     model = NewsFeedModel
+
+    def get_queryset(self):
+        return self.model.objects.order_by('-date')
     
 
 class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = ['admin', 'document_controller']   
 
     def get_queryset(self):
         current_user_profile = self.request.user.profile

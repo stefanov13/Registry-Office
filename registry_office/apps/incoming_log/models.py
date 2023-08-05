@@ -3,6 +3,7 @@ from django.db.models import Max
 from django.core import validators
 from django.utils.translation import gettext_lazy as _
 from ..user_profiles.models import Profile
+from core.register_category_types_choices import CategoryTypesChoices
 
 # Create your models here.
 
@@ -22,10 +23,10 @@ class IncomingLogModel(models.Model):
     )
 
     category = models.CharField(
-        max_length=CATEGORY_MAX_LENGTH,
+        max_length=CategoryTypesChoices.max_length(),
         blank=False,
         null=False,
-        
+        choices=CategoryTypesChoices.choices(),
     )
 
     title = models.CharField(
