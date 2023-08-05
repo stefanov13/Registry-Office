@@ -18,6 +18,7 @@
 
             <ul class="hero__nav_ul" role="list">
                 {% if request.user.is_authenticated %}
+                    <li class="hero__nav_links"><a href="{% url 'news-create' %}" class="hero__nav_links hero__nav_anchor">СЪЗДАВАНЕ НА НОВИНИ</a></li>
                     <li class="hero__nav_links"><a href="{% url 'incoming-dashboard' %}" class="hero__nav_links hero__nav_anchor">ВХОДЯЩ РЕГИСТЪР</a></li>
                     <li class="hero__nav_links"><a href="{% url 'outgoing-dashboard' %}" class="hero__nav_links hero__nav_anchor">ИЗХОДЯЩ РЕГИСТЪР</a></li>
                     {% if request.user.profile.first_name or request.user.profile.last_name %}
