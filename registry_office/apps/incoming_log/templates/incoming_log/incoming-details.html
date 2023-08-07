@@ -6,16 +6,19 @@
 
         <p>Номер в регистъра: {{ object.log_num }}</p>
         <p>Описание: {{ object.title }}</p>
-        <p>Получател: {{ object.recipient }}</p>
-        <p>Подател - Име: {{ object.signatory_name }}</p>
-        <p>Подател - Длъжност: {{ object.signatory_position }}</p>
         <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Y - H:i" }}</p>
         {% if object.document_img %}
-            <img src="{{ object.document_img.url }}" alt="Outgoing Document Image">
+            <img src="{{ object.document_img.url }}" alt="Incoming Document Image">
         {% endif %}
+        
+        {% for opinion in object.personopinion_set.all %}
+            <div>
+                {{ opinion.opinion }}
+            </div>
+        {% endfor %}
 
-        <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
-        <a href="{% url 'outgoing-delete' pk=object.pk %}">Изтриване</a>
+        <a href="{% url 'incoming-edit' pk=object.pk %}">Редактиране</a>
+        <a href="{% url 'incoming-delete' pk=object.pk %}">Изтриване</a>
 
     </section>
 {% endblock  %}

@@ -31,7 +31,7 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
         if any([set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]):
             queryset = self.model.objects.order_by('-pk')
         else:
-            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
+            queryset = self.model.objects.filter(responsible_persons__in=[current_user_profile]).order_by('-pk')
 
         return queryset
 

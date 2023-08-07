@@ -8,7 +8,7 @@ from core.register_category_types_choices import CategoryTypesChoices
 # Create your models here.
 
 class IncomingLogModel(models.Model):
-    LOGS_NUM_MAX_LENGTH = 15
+    LOGS_NUM_MAX_LENGTH = 80
     CATEGORY_MAX_LENGTH = 1
     TITLE_MIN_LENGTH = 2
     TITLE_MAX_LENGTH = 200
@@ -27,6 +27,7 @@ class IncomingLogModel(models.Model):
         blank=False,
         null=False,
         choices=CategoryTypesChoices.choices(),
+        verbose_name=_('Category'),
     )
 
     title = models.CharField(
@@ -40,23 +41,46 @@ class IncomingLogModel(models.Model):
     rectors_resolution = models.TextField(
         blank=True,
         null=True,
+        verbose_name=_('Rector\'s resolution'),
     )
 
     responsible_persons = models.ManyToManyField(
-        to=Profile,
+        Profile,
         blank=True,
+        verbose_name=_('Responsible persons'),
     )
 
-    opinion = models.TextField(
+    document_img = models.ImageField(
         blank=True,
         null=True,
+        upload_to='outgoing_doc_img',
+        verbose_name=_('Document Image'),
     )
 
     def save(self, *args, **kwargs):
+        selected_category = self.category.replace('_', '-')
+
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_log_num = IncomingLogModel.objects.aggregate(Max('log_num'))['log_num__max']
             next_log_num = 1 if last_log_num is None else int(last_log_num.split('-')[-1]) + 1
-            self.log_num = f'ABC-{next_log_num}'
+            self.log_num = f'{selected_category}-{next_log_num}'
 
         super().save(*args, **kwargs)
+
+class PersonOpinion(models.Model):
+    opinion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Opinion'),
+    )
+
+    profile_owner = models.ForeignKey(
+        Profile,
+        on_delete=models.DO_NOTHING,
+    )
+
+    document = models.ForeignKey(
+        IncomingLogModel,
+        on_delete=models.CASCADE,
+    )

@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load check_group_exists %}
+{% load add_field_attribute %}
 
 {% block content %}
 
@@ -7,13 +9,24 @@
 
         <form method="post" enctype="multipart/form-data">
 
-            {{ form }}
+            {{ object.log_num }}
+
+            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                {{ form }}
+            {% elif request.user|has_group:'document_controller' %}
+                {{ form|disabled_field:'opinion,rectors_resolution' }}
+            {% else %}
+                {{ form.opinion.label }}
+                {{ form.opinion }}
+            {% endif %}
             {% csrf_token %}
 
             <button type="submit">Редактирай</button>
-            <a href="{% url 'outgoing-dashboard' %}">Откажи промените</a>
+            
 
         </form>
+
+        <a href="{% url 'incoming-dashboard' %}">Откажи промените</a>
     </section>
     
 {% endblock  %}
