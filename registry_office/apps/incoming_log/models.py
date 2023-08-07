@@ -8,10 +8,10 @@ from core.register_category_types_choices import CategoryTypesChoices
 # Create your models here.
 
 class IncomingLogModel(models.Model):
-    LOGS_NUM_MAX_LENGTH = 80
+    LOGS_NUM_MAX_LENGTH = 15
     CATEGORY_MAX_LENGTH = 1
     TITLE_MIN_LENGTH = 2
-    TITLE_MAX_LENGTH = 200
+    TITLE_MAX_LENGTH = 150
     
     log_num = models.CharField(
         max_length=LOGS_NUM_MAX_LENGTH,
@@ -50,6 +50,16 @@ class IncomingLogModel(models.Model):
         verbose_name=_('Responsible persons'),
     )
 
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Creation Date'),
+    )
+
+    last_change_date = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Last Change Date'),
+    )
+
     document_img = models.ImageField(
         blank=True,
         null=True,
@@ -75,9 +85,10 @@ class PersonOpinion(models.Model):
         verbose_name=_('Opinion'),
     )
 
-    profile_owner = models.ForeignKey(
+    profile_owner = models.OneToOneField(
         Profile,
         on_delete=models.DO_NOTHING,
+        primary_key=True,
     )
 
     document = models.ForeignKey(

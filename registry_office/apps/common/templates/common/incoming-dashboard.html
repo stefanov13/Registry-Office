@@ -14,10 +14,11 @@
                     <tr>
                         <td>Номер в регистъра</td>
                         <td>Описание</td>
-                        <td>Подател на документа</td>
-                        <td>Име на подателя</td>
-                        <td>Длъжност на подателя</td>
+                        <td>Резолюция на ректора</td>
+                        <td>Разпределение</td>
+                        <td>Становище</td>
                         <td>Дата на регистрация</td>
+                        <td>Дата и час на последна промяна</td>
                         <td>Прикачен файл</td>
                     </tr>
                 </thead>
@@ -26,10 +27,23 @@
                         <tr>
                             <td>{{ document.log_num }}</td>
                             <td><a href="{% url 'incoming-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
-                            <td>{{ document.recipient }}</td>
-                            <td>{{ document.signatory_name }}</td>
-                            <td>{{ document.signatory_position }}</td>
-                            <td>{{ document.creation_date|date:"d.m.Y - H:i" }}</td>
+                            {% if document.rectors_resolution %}
+                                <td>Има</td>
+                            {% else %}
+                                <td>Няма</td>
+                            {% endif %}
+                            {% if document.responsible_persons %}
+                                <td>Има</td>
+                            {% else %}
+                                <td>Няма</td>
+                            {% endif %}
+                            {% if document.personopinion_set %}
+                                <td>Има</td>
+                            {% else %}
+                                <td>Няма</td>
+                            {% endif %}
+                            <td>{{ document.creation_date|date:"d.m.Yг. - H:i часа." }}</td>
+                            <td>{{ document.last_change_date|date:"d.m.Yг. - H:i часа." }}</td>
                             <td>{{ document.document_img }}</td>
                         </tr>
                     {% endfor %}

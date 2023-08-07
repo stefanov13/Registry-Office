@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load check_group_exists %}
 
 {% block content %}
     <section>
@@ -6,7 +7,18 @@
 
         <p>Номер в регистъра: {{ object.log_num }}</p>
         <p>Описание: {{ object.title }}</p>
-        <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Y - H:i" }}</p>
+        {% if object.rectors_resolution %}
+            <p>Резолюция на ректора: {{ object.rectors_resolution }}</p>
+        {% endif %}
+        {% if object.responsible_persons %}
+            <ul>Отговорни лица:
+            {% for r_person in object.responsible_persons.all %}
+                <li>{{ r_person }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Yг. - H:i часа." }}</p>
+        <p>Дата и час на последна промяна: {{ object.last_change_date|date:"d.m.Yг. - H:i часа." }}</p>
         {% if object.document_img %}
             <img src="{{ object.document_img.url }}" alt="Incoming Document Image">
         {% endif %}
@@ -17,8 +29,12 @@
             </div>
         {% endfor %}
 
-        <a href="{% url 'incoming-edit' pk=object.pk %}">Редактиране</a>
-        <a href="{% url 'incoming-delete' pk=object.pk %}">Изтриване</a>
+        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+            <a href="{% url 'incoming-edit' pk=object.pk %}">Редактиране</a>
+            <a href="{% url 'incoming-delete' pk=object.pk %}">Изтриване</a>
+        {% elif request.user|has_group:'document_controller' or request.user.profile in object.responsible_persons.all %}
+            <a href="{% url 'incoming-edit' pk=object.pk %}">Редактиране</a>
+        {% endif %}
 
     </section>
 {% endblock  %}

@@ -8,12 +8,12 @@
 
             <p>Номер в регистъра: {{ object.log_num }}</p>
             {{ form }}
-            <p>Дата на създаване: {{ object.creation_date|date:"d.m.Y" }}</p>
-            <p>Час на създаване: {{ object.creation_date|date:"H:i" }}</p>
+            <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Yг. - H:i часа." }}</p>
+            <p>Дата и час на последна промяна: {{ object.last_change_date|date:"d.m.Yг. - H:i часа." }}</p>
             {% csrf_token %}
 
             <button type="submit">Изтрий</button>
-            <a href="{% url 'outgoing-details' pk=object.pk %}">Откажи промените</a>
+            <a href="{% url 'incoming-details' pk=object.pk %}">Откажи промените</a>
 
         </form>
     </section>
