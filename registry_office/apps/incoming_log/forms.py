@@ -5,7 +5,8 @@ from django.utils.translation import gettext_lazy as _
 class EditIncomingLogForm(forms.ModelForm):
     opinion = forms.CharField(
         required=False,
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={'rows': 4}),
+        label=_('Opinion')
     )
     class Meta:
         model = IncomingLogModel

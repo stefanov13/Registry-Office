@@ -1,6 +1,6 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
@@ -13,7 +13,7 @@ class IncomingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, 
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
-    fields = ['category', 'title', 'responsible_persons', 'document_img']
+    fields = ['category', 'title', 'responsible_people', 'document_img']
 
     allowed_groups = ['admin', 'document_controller']
 
@@ -31,7 +31,7 @@ class IncomingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         if any(rights):
             queryset = self.model.objects.order_by('-pk')
         else:
-            queryset = self.model.objects.filter(responsible_persons__in=[current_user_profile]).order_by('-pk')
+            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-pk')
 
         return queryset
 
@@ -44,29 +44,38 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
 
     def test_func(self):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        rights = [set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]
+        rights = [
+            set(current_user_groups).intersection(set(self.allowed_groups)),
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+        ]
 
-        return any(rights) or self.request.user.profile in self.get_object().responsible_persons.all()
+        return any(rights) or self.request.user.profile in self.get_object().responsible_people.all()
     
     def handle_no_permission(self):
         raise Http404()
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.object
+        return context
+    
     def form_valid(self, form):
-        opinion = form.cleaned_data.get('opinion', None)
+        # opinion = form.cleaned_data.get('opinion', None)
 
-        if self.object.personopinion_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
-            po = PersonOpinion.objects.filter(profile_owner = self.request.user.profile).get()
-            po.opinion = opinion
-            po.save()
-        elif opinion:
-            po = PersonOpinion.objects.create(profile_owner = self.request.user.profile, opinion=opinion, document=self.object)
-            po.save()
-            form.instance.opinions = po
+        # if self.object.personopinion_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
+        #     po = PersonOpinion.objects.filter(profile_owner = self.request.user.profile).get()
+        #     po.opinion = opinion
+        #     po.save()
+        # elif opinion:
+        #     po = PersonOpinion.objects.create(profile_owner = self.request.user.profile, opinion=opinion, document=self.object)
+        #     po.save()
+        #     form.instance.opinions = po
 
-        return super().form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
     
     def get_success_url(self):
-        return reverse_lazy('incoming-details', kwargs={'pk': self.kwargs['pk']})
+        return reverse('incoming-details', kwargs={'pk': self.object.pk})
          
 class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.DeleteView):
     template_name = 'incoming_log/incoming-delete.html'

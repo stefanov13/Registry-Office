@@ -8,8 +8,8 @@
 
             <p>Номер в регистъра: {{ object.log_num }}</p>
             {{ form }}
-            <p>Дата на регистрация: {{ object.creation_date|date:"d.m.Yг. - H:i часа." }}</p>
-            <p>Дата и час на последна промяна: {{ object.last_change_date|date:"d.m.Yг. - H:i часа." }}</p>
+            <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
+            <p>Последна промяна: {{ object.last_change_date|date:"d.m.Yг. в H:i часа." }}</p>
             {% csrf_token %}
 
             <button type="submit">Изтрий</button>

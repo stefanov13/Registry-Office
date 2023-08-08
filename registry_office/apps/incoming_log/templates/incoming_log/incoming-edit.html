@@ -9,16 +9,18 @@
 
         <form method="post" enctype="multipart/form-data">
 
-            {{ object.log_num }}
+            <p>Номер в регистъра: {{ object.log_num }}</p>
 
             {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
                 {{ form }}
             {% elif request.user|has_group:'document_controller' %}
                 {{ form|disabled_field:'opinion,rectors_resolution' }}
             {% else %}
-                {{ form.opinion.label }}
+                {% comment %} {{ form.opinion.label }} {% endcomment %}
                 {{ form.opinion }}
             {% endif %}
+
+            <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа."}}</p>
             {% csrf_token %}
 
             <button type="submit">Редактирай</button>

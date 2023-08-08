@@ -17,8 +17,8 @@
                         <td>Резолюция на ректора</td>
                         <td>Разпределение</td>
                         <td>Становище</td>
-                        <td>Дата на регистрация</td>
-                        <td>Дата и час на последна промяна</td>
+                        <td>Регистриран на</td>
+                        <td>Последна промяна</td>
                         <td>Прикачен файл</td>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
                             {% else %}
                                 <td>Няма</td>
                             {% endif %}
-                            {% if document.responsible_persons %}
+                            {% if document.responsible_people %}
                                 <td>Има</td>
                             {% else %}
                                 <td>Няма</td>
@@ -42,8 +42,8 @@
                             {% else %}
                                 <td>Няма</td>
                             {% endif %}
-                            <td>{{ document.creation_date|date:"d.m.Yг. - H:i часа." }}</td>
-                            <td>{{ document.last_change_date|date:"d.m.Yг. - H:i часа." }}</td>
+                            <td>{{ document.creation_date|date:"d.m.Yг. в H:i часа." }}</td>
+                            <td>{{ document.last_change_date|date:"d.m.Yг. в H:i часа." }}</td>
                             <td>{{ document.document_img }}</td>
                         </tr>
                     {% endfor %}

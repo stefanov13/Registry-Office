@@ -41,13 +41,13 @@ class IncomingLogModel(models.Model):
     rectors_resolution = models.TextField(
         blank=True,
         null=True,
-        verbose_name=_('Rector\'s resolution'),
+        verbose_name=_('Rector\'s Resolution'),
     )
 
-    responsible_persons = models.ManyToManyField(
+    responsible_people = models.ManyToManyField(
         Profile,
         blank=True,
-        verbose_name=_('Responsible persons'),
+        verbose_name=_('Responsible People'),
     )
 
     creation_date = models.DateTimeField(
@@ -72,8 +72,8 @@ class IncomingLogModel(models.Model):
 
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_log_num = IncomingLogModel.objects.aggregate(Max('log_num'))['log_num__max']
-            next_log_num = 1 if last_log_num is None else int(last_log_num.split('-')[-1]) + 1
+            last_log_num = IncomingLogModel.objects.order_by('-pk').first()
+            next_log_num = 1 if last_log_num is None else int(last_log_num.log_num.split('-')[-1]) + 1
             self.log_num = f'{selected_category}-{next_log_num}'
 
         super().save(*args, **kwargs)
