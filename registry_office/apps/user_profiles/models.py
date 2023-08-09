@@ -10,8 +10,12 @@ UserModel = get_user_model()
 
 
 class Profile(models.Model):
+    FIRST_NAME_MAX_LENGTH = 50
+    LAST_NAME_MAX_LENGTH = 50
+    POSITION_MAX_LENGTH = 70
+
     first_name = models.CharField(
-        max_length=100,
+        max_length=FIRST_NAME_MAX_LENGTH,
         validators=[validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator],
         blank=False,
         null=False,
@@ -19,7 +23,7 @@ class Profile(models.Model):
     )
 
     last_name = models.CharField(
-        max_length=100,
+        max_length=LAST_NAME_MAX_LENGTH,
         validators=[validators.MinLengthValidator(2, 'Фамилията трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator],
         blank=False,
         null=False,
@@ -27,7 +31,7 @@ class Profile(models.Model):
     )
 
     position = models.CharField(
-        max_length=100,
+        max_length=POSITION_MAX_LENGTH,
         blank=False,
         null=False,
         validators=[validators.MinLengthValidator(2, 'Длъжността трябва да съдържа поне 2 букви'), position_field_validator],
