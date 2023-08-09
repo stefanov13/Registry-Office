@@ -10,8 +10,8 @@
         <p>Име: <span>{{ request.user.profile.first_name }}</span></p>
         <p>Фамилия: <span>{{ request.user.profile.last_name }}</span></p>
         <p>Длъжност: <span>{{ request.user.profile.position }}</span></p>
-        <a href="{% url 'user-edit' %}">Редактиране</a>
-        <a href="{% url 'user-delete' %}">Изтриване</a>
+        <a class="btn btn-warning" href="{% url 'user-edit' %}">Редактиране</a>
+        <a class="btn btn-danger" href="{% url 'user-delete' %}">Изтриване</a>
 
     </section>
 
