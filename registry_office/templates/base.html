@@ -10,26 +10,28 @@
     <title>Registry Office</title>
 </head>
 <body>
+    <div id="box">
     <header class="heeo__header">
+        <h1><a href="{% url 'index' %}" class="index-navigation"><img src="{% static 'images/natfa_logo_75-2.png' %}" alt="natfa-logo"></a></h1>
         <nav class="hero__nav">
-            <div class="hero__logo_wrapper">
+            {% comment %} <div class="hero__logo_wrapper">
                 <a href="{% url 'index' %}" class="hero__logo_img"><img src="{% static 'images/natfa_logo_75-2.png' %}" alt="natfa-logo"></a>
-            </div>
+            </div> {% endcomment %}
 
-            <ul class="hero__nav_ul" role="list">
+            {% comment %} <ul class="hero__nav_ul" role="list"> {% endcomment %}
                 {% if request.user.is_authenticated %}
-                    <li class="hero__nav_links"><a href="{% url 'news-create' %}" class="hero__nav_links hero__nav_anchor">СЪЗДАЙ НОВИНА</a></li>
-                    <li class="hero__nav_links"><a href="{% url 'incoming-dashboard' %}" class="hero__nav_links hero__nav_anchor">ВХОДЯЩ РЕГИСТЪР</a></li>
-                    <li class="hero__nav_links"><a href="{% url 'outgoing-dashboard' %}" class="hero__nav_links hero__nav_anchor">ИЗХОДЯЩ РЕГИСТЪР</a></li>
+                    <a href="{% url 'news-create' %}" class="hero__nav_links hero__nav_anchor">СЪЗДАЙ НОВИНА</a>
+                    <a href="{% url 'incoming-dashboard' %}" class="hero__nav_links hero__nav_anchor">ВХОДЯЩ РЕГИСТЪР</a>
+                    <a href="{% url 'outgoing-dashboard' %}" class="hero__nav_links hero__nav_anchor">ИЗХОДЯЩ РЕГИСТЪР</a>
                     {% if request.user.profile.first_name or request.user.profile.last_name %}
-                        <li class="hero__nav_links">Потребител: <a href="{% url 'user-details' %}" class="hero__nav_links hero__nav_anchor">{{request.user.profile.first_name}} {{request.user.profile.last_name}}</a></li>
+                        <a href="{% url 'user-details' %}" class="hero__nav_links hero__nav_anchor">Потребител: {{request.user.profile.first_name}} {{request.user.profile.last_name}}</a>
                     {% else %}
-                        <li class="hero__nav_links">Потребител: <a href="{% url 'user-details' %}" class="hero__nav_links hero__nav_anchor">Добави профил</a></li>
+                        <a href="{% url 'user-details' %}" class="hero__nav_links hero__nav_anchor">Добави профил</a>
                     {% endif %}
-                    <li class="hero__nav_links"><a href="{% url 'logout' %}" class="hero__nav_links hero__nav_anchor">ИЗХОД</a></li>
+                    <a href="{% url 'logout' %}" class="hero__nav_links hero__nav_anchor">ИЗХОД</a>
                 {% else %}
-                    <li class="hero__nav_links"><a href="{% url 'register-user' %}" class="hero__nav_links hero__nav_anchor">РЕГИСТРАЦИЯ</a></li>
-                    <li class="hero__nav_links"><a href="{% url 'login' %}" class="hero__nav_links hero__nav_anchor">ВХОД</a></li>
+                    <a href="{% url 'register-user' %}" class="hero__nav_links hero__nav_anchor">РЕГИСТРАЦИЯ</a>
+                    <a href="{% url 'login' %}" class="hero__nav_links hero__nav_anchor">ВХОД</a>
                 {% endif %}
             </ul>
 
@@ -42,9 +44,9 @@
     </main>
 
     <footer>
-        <p>Copyright by Lokumchev</p>
+        <p> &copy; Lokumchev 2023. All rights reserved.</p>
     </footer>
 
-    
+    </div>
 </body>
 </html>
