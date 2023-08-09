@@ -12,6 +12,11 @@ class EditIncomingLogForm(forms.ModelForm):
         model = IncomingLogModel
         fields = '__all__'
 
+class EditIncomingLogOpinionForm(EditIncomingLogForm):
+    class Meta:
+        model = IncomingLogModel
+        fields = ['opinion']
+
 class DeleteIncomingLogForm(forms.ModelForm):
     class Meta:
         model = IncomingLogModel

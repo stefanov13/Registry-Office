@@ -16,7 +16,7 @@
             {% elif request.user|has_group:'document_controller' %}
                 {{ form|disabled_field:'opinion,rectors_resolution' }}
             {% else %}
-                {% comment %} {{ form.opinion.label }} {% endcomment %}
+                {{ form.opinion.label }}
                 {{ form.opinion }}
             {% endif %}
 

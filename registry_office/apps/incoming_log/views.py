@@ -1,3 +1,5 @@
+from typing import Any
+from django.db import models
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy, reverse
@@ -5,7 +7,7 @@ from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 from .models import IncomingLogModel, PersonOpinion
-from .forms import EditIncomingLogForm, DeleteIncomingLogForm
+from .forms import EditIncomingLogForm, DeleteIncomingLogForm, EditIncomingLogOpinionForm
 
 # Create your views here.
 
@@ -36,21 +38,26 @@ class IncomingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         return queryset
 
 class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPassesTestMixin, views.UpdateView):
-    template_name = 'incoming_log/incoming-edit.html'
-    form_class = EditIncomingLogForm
-    model = IncomingLogModel
 
+    template_name = 'incoming_log/incoming-edit.html'
+    model = IncomingLogModel
     allowed_groups = ['admin', 'document_controller']
+
+    def get_form_class(self):
+        if any(self.rights):
+            return EditIncomingLogForm
+        elif self.request.user.profile in self.get_object().responsible_people.all():
+            return EditIncomingLogOpinionForm
 
     def test_func(self):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        rights = [
+        self.rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
             self.request.user.is_staff
         ]
 
-        return any(rights) or self.request.user.profile in self.get_object().responsible_people.all()
+        return any(self.rights) or self.request.user.profile in self.get_object().responsible_people.all()
     
     def handle_no_permission(self):
         raise Http404()
@@ -61,21 +68,25 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         return context
     
     def form_valid(self, form):
-        # opinion = form.cleaned_data.get('opinion', None)
-
-        # if self.object.personopinion_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
-        #     po = PersonOpinion.objects.filter(profile_owner = self.request.user.profile).get()
-        #     po.opinion = opinion
-        #     po.save()
-        # elif opinion:
-        #     po = PersonOpinion.objects.create(profile_owner = self.request.user.profile, opinion=opinion, document=self.object)
-        #     po.save()
-        #     form.instance.opinions = po
+        opinion = form.cleaned_data.get('opinion', None)
+        
+        if self.object.personopinion_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
+            po = PersonOpinion.objects.filter(profile_owner = self.request.user.profile).get()
+            po.opinion = opinion
+            po.save()
+        elif opinion:
+            po = PersonOpinion.objects.create(profile_owner = self.request.user.profile, opinion=opinion, document=self.object)
+            po.save()
+            form.instance.opinions = po
 
         return HttpResponseRedirect(self.get_success_url())
     
     def get_success_url(self):
         return reverse('incoming-details', kwargs={'pk': self.object.pk})
+    
+    
+
+        # return super().get_queryset()
          
 class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.DeleteView):
     template_name = 'incoming_log/incoming-delete.html'

@@ -8,20 +8,24 @@ from core.validators import name_cyrillic_letters_and_hyphens_validator, positio
 UserModel = get_user_model()
 
 class RegisterUserForm(auth_forms.UserCreationForm):
+    FIRST_NAME_MAX_LENGTH = 50
+    LAST_NAME_MAX_LENGTH = 50
+    POSITION_MAX_LENGTH = 70
+
     first_name = forms.CharField(
-        max_length=100,
+        max_length=FIRST_NAME_MAX_LENGTH,
         required=True,
         validators=(validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator),
         )
     
     last_name = forms.CharField(
-        max_length=100,
+        max_length=LAST_NAME_MAX_LENGTH,
         required=True,
         validators=(validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator),
     )
 
     position = forms.CharField(
-        max_length=100,
+        max_length=POSITION_MAX_LENGTH,
         required=True,
         validators=(validators.MinLengthValidator(2, 'Длъжността трябва да съдържа поне 2 букви'), position_field_validator),
     )

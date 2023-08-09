@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Max
 from django.core import validators
 from django.utils.translation import gettext_lazy as _
 from ..user_profiles.models import Profile
@@ -85,10 +84,9 @@ class PersonOpinion(models.Model):
         verbose_name=_('Opinion'),
     )
 
-    profile_owner = models.OneToOneField(
+    profile_owner = models.ForeignKey(
         Profile,
         on_delete=models.DO_NOTHING,
-        primary_key=True,
     )
 
     document = models.ForeignKey(
