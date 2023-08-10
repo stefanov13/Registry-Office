@@ -2,18 +2,22 @@
 {% load check_group_exists %}
 
 {% block content %}
-    <section>
-        <h2>Детайли за {{ object.title }} последна промяна {{ object.date|date:"d.m.Yг. в H:i часа" }}</h2>
+    <section class="card text-bg-success mb-3" style="max-width: 50rem;">
+        <h2 class="card-header">Детайли за {{ object.title }} последна промяна {{ object.date|date:"d.m.Yг. в H:i часа" }}</h2>
 
-        <p>Автор: {{ object.author }}</p>
-        <p>Описание: {{ object.title }}</p>
-        <p>Подробна информация: {{ object.description }}</p>
-        <p>Последна промяна: {{ object.date|date:"d.m.Yг. - H:i часа." }}</p>
+        <div class="card-body">
+            <p class="card-text">Автор: {{ object.author }}</p>
+            <p class="card-text">Описание: {{ object.title }}</p>
+            <p class="card-text">Подробна информация: {{ object.description }}</p>
+            <p class="card-text">Последна промяна: {{ object.date|date:"d.m.Yг. - H:i часа." }}</p>
+        </div>
 
-        {% if request.user.profile == object.author or request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
-            <a href="{% url 'news-edit' pk=object.pk %}">Редактиране</a>
-            <a href="{% url 'news-delete' pk=object.pk %}">Изтриване</a>
-        {% endif %}
+        <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+            {% if request.user.profile == object.author or request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                <a href="{% url 'news-edit' pk=object.pk %}" class="btn btn-outline-warning">Редактиране</a>
+                <a href="{% url 'news-delete' pk=object.pk %}" class="btn btn-danger">Изтриване</a>
+            {% endif %}
+        </div>
 
     </section>
 {% endblock  %}

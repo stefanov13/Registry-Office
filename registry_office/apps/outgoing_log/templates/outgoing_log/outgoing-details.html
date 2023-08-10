@@ -2,25 +2,29 @@
 {% load check_group_exists %}
 
 {% block content %}
-    <section>
-        <h2>Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Yг. в H:i часа" }}</h2>
+    <section class="card text-bg-secondary mb-3" style="max-width: 50rem;">
+        <h2 class="card-header">Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Yг. в H:i часа" }}</h2>
 
-        <p>Номер в регистъра: {{ object.log_num }}</p>
-        <p>Описание: {{ object.title }}</p>
-        <p>Получател: {{ object.recipient }}</p>
-        <p>Подател - Име: {{ object.signatory_profile.first_name }} {{ object.signatory_profile.last_name }}</p>
-        <p>Подател - Длъжност: {{ object.signatory_profile.position }}</p>
-        <p>Регистриран на: {{ object.creation_date|date:"d.m.Y в H:i" }}</p>
+        <div class="card-body">
+            <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
+            <p class="card-text">Описание: {{ object.title }}</p>
+            <p class="card-text">Получател: {{ object.recipient }}</p>
+            <p class="card-text">Име на подателя: {{ object.signatory_profile.first_name }} {{ object.signatory_profile.last_name }}</p>
+            <p class="card-text">Длъжност на подателя: {{ object.signatory_profile.position }}</p>
+            <p class="card-text">Регистриран на: {{ object.creation_date|date:"d.m.Y в H:i" }}</p>
+        </div>
         {% if object.document_img %}
-            <img src="{{ object.document_img.url }}" alt="Outgoing Document Image">
+            <img src="{{ object.document_img.url }}" class="mb-3" alt="Outgoing Document Image">
         {% endif %}
 
-        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
-            <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
-            <a href="{% url 'outgoing-delete' pk=object.pk %}">Изтриване</a>
-        {% elif request.user|has_group:'document_controller' %}
-            <a href="{% url 'outgoing-edit' pk=object.pk %}">Редактиране</a>
-        {% endif %}
+        <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                <a href="{% url 'outgoing-edit' pk=object.pk %}" class="btn btn-warning">Редактиране</a>
+                <a href="{% url 'outgoing-delete' pk=object.pk %}" class="btn btn-danger">Изтриване</a>
+            {% elif request.user|has_group:'document_controller' %}
+                <a href="{% url 'outgoing-edit' pk=object.pk %}" class="btn btn-warning">Редактиране</a>
+            {% endif %}
+        </div>
 
     </section>
 {% endblock  %}
