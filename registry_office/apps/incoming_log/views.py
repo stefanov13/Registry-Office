@@ -67,6 +67,19 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         context['object'] = self.object
         return context
     
+    def get_initial(self):
+        initial = super().get_initial()
+        user = self.request.user
+
+        person_opinion = get_object_or_404(
+            PersonOpinion,
+            profile_owner=user.profile,
+            document=self.object
+        )
+
+        initial['opinion'] = person_opinion.opinion
+        return initial
+    
     def form_valid(self, form):
         opinion = form.cleaned_data.get('opinion', None)
         
@@ -75,18 +88,14 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
             po.opinion = opinion
             po.save()
         elif opinion:
-            po = PersonOpinion.objects.create(profile_owner = self.request.user.profile, opinion=opinion, document=self.object)
+            po = PersonOpinion.objects.create(profile_owner=self.request.user.profile, opinion=opinion, document=self.object)
             po.save()
             form.instance.opinions = po
 
-        return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)
     
     def get_success_url(self):
         return reverse('incoming-details', kwargs={'pk': self.object.pk})
-    
-    
-
-        # return super().get_queryset()
          
 class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.DeleteView):
     template_name = 'incoming_log/incoming-delete.html'
