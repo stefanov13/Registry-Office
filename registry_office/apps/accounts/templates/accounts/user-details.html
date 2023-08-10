@@ -2,16 +2,21 @@
 
 {% block content %}
 
-    <section>
+    <section class="card text-bg-light mb-3" style="max-width: 50rem;">
 
-        <h2>Информация за потребителският профил</h2>
+        <h2 class="card-header">Информация за потребителският профил</h2>
 
-        <p>Имейл адрес: <span>{{ request.user.email }}</span></p>
-        <p>Име: <span>{{ request.user.profile.first_name }}</span></p>
-        <p>Фамилия: <span>{{ request.user.profile.last_name }}</span></p>
-        <p>Длъжност: <span>{{ request.user.profile.position }}</span></p>
-        <a class="btn btn-warning" href="{% url 'user-edit' %}">Редактиране</a>
-        <a class="btn btn-danger" href="{% url 'user-delete' %}">Изтриване</a>
+        <div class="card-body">
+            <p class="card-text">Имейл адрес: <span>{{ request.user.email }}</span></p>
+            <p class="card-text">Име: <span>{{ request.user.profile.first_name }}</span></p>
+            <p class="card-text">Фамилия: <span>{{ request.user.profile.last_name }}</span></p>
+            <p class="card-text">Длъжност: <span>{{ request.user.profile.position }}</span></p>
+        </div>
+
+        <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+            <a class="btn btn-warning" href="{% url 'user-edit' %}">Редактиране</a>
+            <a class="btn btn-danger" href="{% url 'user-delete' %}">Изтриване</a>
+        </div>
 
     </section>
 

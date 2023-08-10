@@ -62,7 +62,7 @@ class IncomingLogModel(models.Model):
     document_img = models.ImageField(
         blank=True,
         null=True,
-        upload_to='outgoing_doc_img',
+        upload_to='incoming_doc_img',
         verbose_name=_('Document Image'),
     )
 

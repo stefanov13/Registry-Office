@@ -21,12 +21,12 @@
                         <tr>
                             <td><a href="{% url 'news-details' pk=news.pk %}">{{ news.title|truncatechars:50 }}</a></td>
                             <td>{{ news.author }}</td>
-                            <td>{{ news.date|date:"d.m.Y - H:i" }}</td>
+                            <td>{{ news.date|date:"d.m.Yг. в H:i часа." }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% endif %}
-        <p>{{ request.user }}</p>
+        
     </section>
 {% endblock  %}

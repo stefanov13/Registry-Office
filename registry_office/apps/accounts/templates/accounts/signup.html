@@ -1,15 +1,26 @@
 {% extends 'base.html' %}
+{% load add_field_attribute %}
 
 {% block content %}
 
     <form method="post">
+        
 
-        {{ form }}
-        {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
 
-        <button type="submit">РЕГИСТРИРАЙ СЕ</button>
-        <p>Ако вече сте регистриран потребител, може да се впишете в системата от <a href="{% url 'login' %}">тук</a></p>
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field|add_field_classes:'form-control' }}
+
+                </div>
+            {% endfor %}
+
+            {% csrf_token %}
+
+        
+        <button type="submit" class="btn btn-primary mb-3">РЕГИСТРИРАЙ СЕ</button>
 
     </form>
+    <p>Ако вече сте регистриран потребител, може да се впишете в системата от <a href="{% url 'login' %}">тук</a></p>
 
 {% endblock  %}

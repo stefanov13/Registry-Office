@@ -2,19 +2,29 @@
 
 {% block content %}
 
-    <h2>Изтриване на потребителският профил</h2>
+    <section class="card border-danger mb-3" style="max-width: 50rem;">
 
-    <h4>Внимание !</h4>
-    <p></p>
-   
-    <form method="post">
+        <h2 class="card-header">Изтриване на потребителският профил</h2>
 
-        {% csrf_token %}
+        <div class="card-body text-danger">
 
-        <button type="submit">Изтриване</button>
-    </form>
+            <h4 class="card-title">Внимание !</h4>
+            
+            <p class="card-text">Това действие ще изтрие акаунта Ви !</p>
+            <p class="card-text">Сигурно ли е, че искате да направите това ?</p>
+        
+        </div>
     
-    <a href="{% url 'user-details' %}">Отказ</a>
-    
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+                <button type="submit" class="btn btn-danger">Изтриване</button>
+                <a href="{% url 'user-details' %}" class="btn btn-outline-info">Отказ</a>
+            </div>
+        </form>
+
+    </section>
 
 {% endblock %}
