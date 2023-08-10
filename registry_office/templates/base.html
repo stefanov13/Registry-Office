@@ -26,11 +26,11 @@
                         <li class="nav-item"><a href="{% url 'incoming-dashboard' %}" class="nav-link">ВХОДЯЩ РЕГИСТЪР</a></li>
                         <li class="nav-item"><a href="{% url 'outgoing-dashboard' %}" class="nav-link">ИЗХОДЯЩ РЕГИСТЪР</a></li>
                         {% if request.user.profile.first_name or request.user.profile.last_name %}
-                            <li class="nav-item"><a href="{% url 'user-details' %}" class="nav-link">Потребител: {{request.user.profile.first_name}} {{request.user.profile.last_name}}</a></li>
+                            <li class="nav-item"><a href="{% url 'user-details' %}" class="nav-link">Потребител: {{ request.user.profile.first_name }} {{ request.user.profile.last_name }}</a></li>
                         {% else %}
                             <li class="nav-item"><a href="{% url 'user-details' %}" class="nav-link">Добави профил</a></li>
                         {% endif %}
-                        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">ИЗХОД</a></li>
+                        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">{{ request.user }} ИЗХОД</a></li>
                     {% else %}
                         <li class="nav-item"><a href="{% url 'register-user' %}" class="nav-link">РЕГИСТРАЦИЯ</a></li>
                         <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">ВХОД</a></li>
@@ -46,8 +46,10 @@
         {% endblock  %}
     </main>
 
-    <footer>
-        <p> &copy; Lokumchev 2023. All rights reserved.</p>
+    <footer class="footer bg-dark text-white text-center py-3">
+        <div class="container">
+            <p> &copy; Lokumchev 2023. All rights reserved.</p>
+        </div>
     </footer>
 
     </div>
