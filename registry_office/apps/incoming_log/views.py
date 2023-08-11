@@ -54,7 +54,7 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         self.rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
-            self.request.user.is_staff
+            self.request.user.is_staff,
         ]
 
         return any(self.rights) or self.request.user.profile in self.get_object().responsible_people.all()
@@ -64,6 +64,7 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        a=5
         context['object'] = self.object
         return context
     
@@ -71,13 +72,15 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         initial = super().get_initial()
         user = self.request.user
 
-        person_opinion = get_object_or_404(
-            PersonOpinion,
-            profile_owner=user.profile,
-            document=self.object
-        )
+        try:
+            person_opinion = PersonOpinion.objects.get(
+                profile_owner=user.profile,
+                document=self.object
+            )
+            initial['opinion'] = person_opinion.opinion
+        except PersonOpinion.DoesNotExist:
+            pass
 
-        initial['opinion'] = person_opinion.opinion
         return initial
     
     def form_valid(self, form):

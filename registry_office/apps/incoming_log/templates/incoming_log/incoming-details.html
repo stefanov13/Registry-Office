@@ -9,7 +9,10 @@
         <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
         <p class="card-text">Описание: {{ object.title }}</p>
         {% if object.rectors_resolution %}
-            <p>Резолюция на ректора: {{ object.rectors_resolution }}</p>
+            <div class="card text-bg-light mb-3" style="max-width: 50rem;">
+                <p class="card-text">Резолюция на ректора:</p>
+                <span style="color: #FF7D4C">{{ object.rectors_resolution }}</span>
+            </div>
         {% endif %}
         {% if object.responsible_people %}
             <ul class="card-text">Отговорни лица:
@@ -27,8 +30,9 @@
         
         {% for opinion in object.personopinion_set.all %}
             <div class="card text-bg-light mb-3" style="max-width: 50rem;">
-                <p class="card-text">Автор: <span>{{ opinion.profile_owner }}</span></p>
-                <p class="card-text">Становище: <span>{{ opinion.opinion }}</span></p>
+                <p class="card-text">Автор: <span style="color: #2B82E5">{{ opinion.profile_owner }}</span></p>
+                <p class="card-text">Становище:</p>
+                <span style="color: #2B82E5">{{ opinion.opinion }}</span>
             </div>
         {% endfor %}
         
