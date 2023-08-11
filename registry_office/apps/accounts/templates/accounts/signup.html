@@ -10,6 +10,13 @@
                 <div class="mb-3">
 
                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li><span>{{ error }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                     {{ field|add_field_classes:'form-control' }}
 
                 </div>
