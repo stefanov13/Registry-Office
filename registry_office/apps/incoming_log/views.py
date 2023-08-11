@@ -73,11 +73,12 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         user = self.request.user
 
         try:
-            person_opinion = PersonOpinion.objects.get(
+            person_opinion = PersonOpinion.objects.filter(
                 profile_owner=user.profile,
                 document=self.object
-            )
+            ).get()
             initial['opinion'] = person_opinion.opinion
+            
         except PersonOpinion.DoesNotExist:
             pass
 

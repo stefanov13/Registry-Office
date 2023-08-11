@@ -37,7 +37,7 @@
                     {{ form.opinion|add_field_classes:'form-control' }}
 
                 </div>
-                <p>Последна промяна: <span></span></p>
+                <p>Последна промяна: <span>{{ object.last_change_date|date:"d.m.Yг. в H:i часа."}}</span></p>
             {% endif %}
 
             <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа."}}</p>
