@@ -19,7 +19,7 @@
             <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
             {% csrf_token %}
 
-            <div class="vstack gap-2 col-md-5 mx-auto">
+            <div class="vstack gap-2 col-md-5 mx-auto mb-3">
                 <button type="submit" class="btn btn-danger">Изтрий</button>
                 <a href="{% url 'outgoing-details' pk=object.pk %}" class="btn btn-outline-secondary">Откажи промените</a>
             </div>
