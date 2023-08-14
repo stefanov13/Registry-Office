@@ -1,8 +1,7 @@
-# from enum import Enum
-# from .mixins.choices_mixin import ChoicesMixin
+"""This function used by old SRS"""
+
 from django.utils.translation import gettext_lazy as _
 from apps.user_profiles.models import Profile
-
 
 
 def full_profile_name():
