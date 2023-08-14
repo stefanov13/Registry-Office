@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
 from django.utils.translation import gettext_lazy as _
@@ -10,7 +10,8 @@ from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 
 
-class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.CreateView):
+class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                            views.CreateView):
     template_name = 'outgoing_log/outgoing-create.html'
     form_class = CreateOutgoingLogForm
     success_url = reverse_lazy('outgoing-dashboard')
@@ -32,17 +33,20 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         
         signatory_profile = current_object.signatory_profile
-        if not any([
-            set(current_user_groups).intersection(set(self.allowed_groups)),
-            signatory_profile == current_user_profile,
-            self.request.user.is_superuser,
-            self.request.user.is_staff
-            ]):
+        rights = [
+                set(current_user_groups).intersection(set(self.allowed_groups)),
+                signatory_profile == current_user_profile,
+                self.request.user.is_superuser,
+                self.request.user.is_staff
+            ]
+
+        if not any(rights):
             raise Http404()
         
         return current_object
 
-class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.UpdateView):
+class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                          views.UpdateView):
     template_name = 'outgoing_log/outgoing-edit.html'
     form_class = EditOutgoingLogForm
     model = OutgoingLogModel
@@ -52,6 +56,7 @@ class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, vi
     def get_object(self, queryset=None):
         # Get the object to edit based on the primary key (pk) from the URL
         pk = self.kwargs.get('pk')
+
         return get_object_or_404(self.model, pk=pk)
   
     def get_success_url(self):
@@ -61,7 +66,8 @@ class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, vi
     def form_valid(self, form):
         return super().form_valid(form)
 
-class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.DeleteView):
+class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                            views.DeleteView):
     template_name = 'outgoing_log/outgoing-delete.html'
     form_class = DeleteOutgoingLogForm
     model = OutgoingLogModel
@@ -71,6 +77,7 @@ class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, 
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
+
         return get_object_or_404(self.model, pk=pk)
     
     def get_context_data(self, **kwargs):

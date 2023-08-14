@@ -17,6 +17,7 @@ class NewsFeedCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
 
     def form_valid(self, form):
         form.instance.request = self.request  # Pass the request to the model instance
+
         return super().form_valid(form)
 
 class NewsFeedDetailsView(views.DetailView):
@@ -27,6 +28,7 @@ class NewsFeedDetailsView(views.DetailView):
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
+
         return get_object_or_404(queryset, pk=pk)
 
 class NewsFeedEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
@@ -38,15 +40,15 @@ class NewsFeedEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
         current_object = get_object_or_404(queryset, pk=pk)
-
         current_user_profile = self.request.user.profile
-        
         author = current_object.author
-        if not any([
-            author == current_user_profile,
-            self.request.user.is_superuser,
-            self.request.user.is_staff
-            ]):
+        rights = [
+                author == current_user_profile,
+                self.request.user.is_superuser,
+                self.request.user.is_staff
+            ]
+
+        if not any(rights):
             raise Http404()
         
         return current_object
@@ -70,15 +72,15 @@ class NewsFeedDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
         current_object = get_object_or_404(queryset, pk=pk)
-
         current_user_profile = self.request.user.profile
-        
         author = current_object.author
-        if not any([
-            author == current_user_profile,
-            self.request.user.is_superuser,
-            self.request.user.is_staff
-            ]):
+        rights = [
+                author == current_user_profile,
+                self.request.user.is_superuser,
+                self.request.user.is_staff
+            ]
+
+        if not any(rights):
             raise Http404()
         
         return current_object

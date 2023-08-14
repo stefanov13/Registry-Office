@@ -1,3 +1,5 @@
+"""This function used by old SRS"""
+
 
 def process_signatory_profile(form, not_specified_choice):
     # Get the cleaned data from the form
