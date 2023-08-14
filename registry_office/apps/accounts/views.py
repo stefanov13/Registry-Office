@@ -42,7 +42,9 @@ class UserDetailsView(auth_mixins.LoginRequiredMixin, views.ListView):
     model = UserModel
     template_name = 'accounts/user-details.html'
 
-class UserEditView(auth_mixins.UserPassesTestMixin, auth_mixins.LoginRequiredMixin, views.UpdateView):
+class UserEditView(auth_mixins.UserPassesTestMixin,
+                   auth_mixins.LoginRequiredMixin,
+                   views.UpdateView):
     model = UserModel
     template_name = 'accounts/user-edit.html'
     form_class = EditUserForm

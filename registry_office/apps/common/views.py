@@ -28,7 +28,13 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        if any([set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]):
+        rights = [
+                set(current_user_groups).intersection(set(self.allowed_groups)),
+                self.request.user.is_superuser,
+                self.request.user.is_staff
+            ]
+        
+        if any(rights):
             queryset = self.model.objects.order_by('-pk')
         else:
             queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-pk')
@@ -40,6 +46,7 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
 
         # Modify the 'document_img' field in the context to display only the file name
         documents = context['object_list']
+
         for document in documents:
             document.document_img = os.path.basename(document.document_img.name)
 
@@ -53,7 +60,13 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        if any([set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]):
+        rights = [
+                set(current_user_groups).intersection(set(self.allowed_groups)),
+                self.request.user.is_superuser,
+                self.request.user.is_staff
+            ]
+
+        if any():
             queryset = self.model.objects.order_by('-pk')
         else:
             queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
@@ -65,6 +78,7 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
 
         # Modify the 'document_img' field in the context to display only the file name
         documents = context['object_list']
+        
         for document in documents:
             document.document_img = os.path.basename(document.document_img.name)
 

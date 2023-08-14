@@ -15,19 +15,25 @@ class RegisterUserForm(auth_forms.UserCreationForm):
     first_name = forms.CharField(
         max_length=FIRST_NAME_MAX_LENGTH,
         required=True,
-        validators=(validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator),
+        validators=(validators.MinLengthValidator(
+                    2, 'Името трябва да съдържа поне 2 букви'),
+                name_cyrillic_letters_and_hyphens_validator),
         )
     
     last_name = forms.CharField(
         max_length=LAST_NAME_MAX_LENGTH,
         required=True,
-        validators=(validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator),
+        validators=(validators.MinLengthValidator(
+                2, 'Името трябва да съдържа поне 2 букви'), 
+                name_cyrillic_letters_and_hyphens_validator),
     )
 
     position = forms.CharField(
         max_length=POSITION_MAX_LENGTH,
         required=True,
-        validators=(validators.MinLengthValidator(2, 'Длъжността трябва да съдържа поне 2 букви'), position_field_validator),
+        validators=(validators.MinLengthValidator(
+                2, 'Длъжността трябва да съдържа поне 2 букви'),
+                position_field_validator),
     )
 
     def __init__(self, *args, **kwargs):
@@ -43,6 +49,7 @@ class RegisterUserForm(auth_forms.UserCreationForm):
             position=self.cleaned_data['position'],
             owner=user,
         )
+
         if commit:
             profile.save()
 
@@ -60,19 +67,25 @@ class EditUserForm(forms.ModelForm):
     first_name = forms.CharField(
         max_length=100,
         required=True,
-        validators=(validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator),
+        validators=(validators.MinLengthValidator(
+                2, 'Името трябва да съдържа поне 2 букви'),
+                name_cyrillic_letters_and_hyphens_validator),
         )
     
     last_name = forms.CharField(
         max_length=100,
         required=True,
-        validators=(validators.MinLengthValidator(2, 'Името трябва да съдържа поне 2 букви'), name_cyrillic_letters_and_hyphens_validator),
+        validators=(validators.MinLengthValidator(
+                2, 'Името трябва да съдържа поне 2 букви'),
+                name_cyrillic_letters_and_hyphens_validator),
     )
 
     position = forms.CharField(
         max_length=100,
         required=True,
-        validators=(validators.MinLengthValidator(2, 'Длъжността трябва да съдържа поне 2 букви'), position_field_validator),
+        validators=(validators.MinLengthValidator(
+                2, 'Длъжността трябва да съдържа поне 2 букви'),
+                position_field_validator),
     )
 
     class Meta:
@@ -81,6 +94,7 @@ class EditUserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance')
+
         try:
             profile_instance = instance.profile
             kwargs['initial'] = {
@@ -88,12 +102,14 @@ class EditUserForm(forms.ModelForm):
                 'last_name': profile_instance.last_name,
                 'position': profile_instance.position,
             }
+
         except Profile.DoesNotExist:
             kwargs['initial'] = {
                 'first_name': '',
                 'last_name': '',
                 'position': '',
             }
+            
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):

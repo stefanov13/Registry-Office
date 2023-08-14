@@ -22,7 +22,7 @@
                 {% endfor %}
             {% elif request.user|has_group:'document_controller' %}
 
-                {% for field in form|disabled_field:"rectors_resolution,opinion" %}
+                {% for field in form %} {% comment %} |disabled_field:"rectors_resolution,opinion" {% endcomment %}
                     <div class="mb-3">
                         
                         <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>

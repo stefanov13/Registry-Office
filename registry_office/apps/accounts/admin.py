@@ -34,7 +34,13 @@ class AppCustomUserAdmin(auth_admin.UserAdmin):
             _('Create User'),
             {
                 'classes': ('wide',),
-                'fields': ('email', 'password1', 'password2', 'first_name', 'last_name', 'position'),
+                'fields': (
+                    'email',
+                    'password1',
+                    'password2',
+                    'first_name',
+                    'last_name',
+                    'position'),
             },
         ),
     )

@@ -11,7 +11,8 @@ from .forms import EditIncomingLogForm, DeleteIncomingLogForm, EditIncomingLogOp
 
 # Create your views here.
 
-class IncomingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.CreateView):
+class IncomingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                            views.CreateView):
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
@@ -28,16 +29,23 @@ class IncomingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
-        rights = [set(current_user_groups).intersection(set(self.allowed_groups)), self.request.user.is_superuser, self.request.user.is_staff]
+        rights = [
+                set(current_user_groups).intersection(set(self.allowed_groups)),
+                self.request.user.is_superuser,
+                self.request.user.is_staff
+            ]
 
         if any(rights):
             queryset = self.model.objects.order_by('-pk')
         else:
-            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-pk')
+            queryset = self.model.objects.filter(
+                responsible_people__in=[current_user_profile]
+                ).order_by('-pk')
 
         return queryset
 
-class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPassesTestMixin, views.UpdateView):
+class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPassesTestMixin,
+                          views.UpdateView):
 
     template_name = 'incoming_log/incoming-edit.html'
     model = IncomingLogModel
@@ -52,10 +60,10 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     def test_func(self):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         self.rights = [
-            set(current_user_groups).intersection(set(self.allowed_groups)),
-            self.request.user.is_superuser,
-            self.request.user.is_staff,
-        ]
+                set(current_user_groups).intersection(set(self.allowed_groups)),
+                self.request.user.is_superuser,
+                self.request.user.is_staff,
+            ]
 
         return any(self.rights) or self.request.user.profile in self.get_object().responsible_people.all()
     
@@ -64,8 +72,8 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        a=5
         context['object'] = self.object
+
         return context
     
     def get_initial(self):
@@ -92,7 +100,8 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
             po.opinion = opinion
             po.save()
         elif opinion:
-            po = PersonOpinion.objects.create(profile_owner=self.request.user.profile, opinion=opinion, document=self.object)
+            po = PersonOpinion.objects.create(profile_owner=self.request.user.profile,
+                                              opinion=opinion, document=self.object)
             po.save()
             form.instance.opinions = po
 
@@ -111,6 +120,7 @@ class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, 
 
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
+
         return get_object_or_404(self.model, pk=pk)
     
     def get_context_data(self, **kwargs):

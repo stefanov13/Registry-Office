@@ -29,6 +29,7 @@ class DeleteIncomingLogForm(forms.ModelForm):
     def save(self, commit=True):
         if commit:
             self.instance.delete()
+            
         return self.instance
 
     def __set_disabled_fields(self):
