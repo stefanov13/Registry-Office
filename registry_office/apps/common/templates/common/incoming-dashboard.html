@@ -32,7 +32,7 @@
                             {% else %}
                                 <td>Няма</td>
                             {% endif %}
-                            {% if document.responsible_people %}
+                            {% if document.responsible_people.exists %}
                                 <td>Има</td>
                             {% else %}
                                 <td>Няма</td>
