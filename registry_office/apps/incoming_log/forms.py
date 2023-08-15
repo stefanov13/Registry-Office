@@ -10,7 +10,7 @@ class EditIncomingLogForm(forms.ModelForm):
     )
     class Meta:
         model = IncomingLogModel
-        fields = '__all__'
+        exclude = ['category']
 
 class EditIncomingLogOpinionForm(EditIncomingLogForm):
     class Meta:
