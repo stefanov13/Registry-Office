@@ -1,13 +1,9 @@
 import os
-from django.shortcuts import render
-from django.http import Http404
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
-from ..user_profiles.models import Profile
 from ..news_feed.models import NewsFeedModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
-from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 # Create your views here.
 
@@ -66,7 +62,7 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
                 self.request.user.is_staff
             ]
 
-        if any():
+        if any(rights):
             queryset = self.model.objects.order_by('-pk')
         else:
             queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')

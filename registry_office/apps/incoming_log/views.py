@@ -1,13 +1,11 @@
-from typing import Any
-from django.db import models
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
-from .models import IncomingLogModel, PersonOpinion
-from .forms import EditIncomingLogForm, DeleteIncomingLogForm, EditIncomingLogOpinionForm
+from .models import IncomingLogModel, PersonOpinionModel
+from . import forms
 
 # Create your views here.
 
@@ -53,9 +51,9 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
 
     def get_form_class(self):
         if any(self.rights):
-            return EditIncomingLogForm
+            return forms.EditIncomingLogForm
         elif self.request.user.profile in self.get_object().responsible_people.all():
-            return EditIncomingLogOpinionForm
+            return forms.EditIncomingLogOpinionForm
 
     def test_func(self):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
@@ -81,13 +79,13 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         user = self.request.user
 
         try:
-            person_opinion = PersonOpinion.objects.filter(
+            person_opinion = PersonOpinionModel.objects.filter(
                 profile_owner=user.profile,
                 document=self.object
             ).get()
             initial['opinion'] = person_opinion.opinion
             
-        except PersonOpinion.DoesNotExist:
+        except PersonOpinionModel.DoesNotExist:
             pass
 
         return initial
@@ -95,12 +93,12 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     def form_valid(self, form):
         opinion = form.cleaned_data.get('opinion', None)
         
-        if self.object.personopinion_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
-            po = PersonOpinion.objects.filter(profile_owner = self.request.user.profile).get()
+        if self.object.personopinionmodel_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
+            po = PersonOpinionModel.objects.filter(profile_owner = self.request.user.profile).get()
             po.opinion = opinion
             po.save()
         elif opinion:
-            po = PersonOpinion.objects.create(profile_owner=self.request.user.profile,
+            po = PersonOpinionModel.objects.create(profile_owner=self.request.user.profile,
                                               opinion=opinion, document=self.object)
             po.save()
             form.instance.opinions = po
@@ -110,9 +108,10 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     def get_success_url(self):
         return reverse('incoming-details', kwargs={'pk': self.object.pk})
          
-class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, views.DeleteView):
+class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                            views.DeleteView):
     template_name = 'incoming_log/incoming-delete.html'
-    form_class = DeleteIncomingLogForm
+    form_class = forms.DeleteIncomingLogForm
     model = IncomingLogModel
     success_url = reverse_lazy('incoming-dashboard')
 
@@ -133,3 +132,27 @@ class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin, 
             context['form'] = form
 
         return context
+
+class PersonOpinionEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                            views.DeleteView):
+    # TODO:
+    template_name = 'incoming_log/person-opinion-edit.html'
+    model = PersonOpinionModel
+    form_class = forms.EditPersonOpinionForm
+    allowed_groups = ['admin']
+
+    def get_success_url(self):
+        return reverse('incoming-details', kwargs={'pk': self.object.document_id})
+    
+
+
+class PersonOpinionDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
+                            views.DeleteView):
+    template_name = 'incoming_log/person-opinion-delete.html'
+    form_class = forms.DeletePersonOpinionForm
+    model = PersonOpinionModel
+
+    allowed_groups = ['admin',]
+
+    def get_success_url(self):
+        return reverse('incoming-details', kwargs={'pk': self.object.document_id})

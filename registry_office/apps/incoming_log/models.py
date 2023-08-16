@@ -78,7 +78,7 @@ class IncomingLogModel(models.Model):
 
         super().save(*args, **kwargs)
 
-class PersonOpinion(models.Model):
+class PersonOpinionModel(models.Model):
     opinion = models.TextField(
         blank=True,
         null=True,
