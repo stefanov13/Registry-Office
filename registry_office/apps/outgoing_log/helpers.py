@@ -9,6 +9,7 @@ def process_signatory_profile(form, not_specified_choice):
 
     # Split the value by space (assuming it is formatted as "first_name last_name position")
     first_name, last_name, position = signatory_profile.split()
+    
     if signatory_profile == not_specified_choice:
         first_name, last_name, position = not_specified_choice, '', not_specified_choice
 

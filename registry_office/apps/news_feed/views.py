@@ -43,10 +43,10 @@ class NewsFeedEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         current_user_profile = self.request.user.profile
         author = current_object.author
         rights = [
-                author == current_user_profile,
-                self.request.user.is_superuser,
-                self.request.user.is_staff
-            ]
+            author == current_user_profile,
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+        ]
 
         if not any(rights):
             raise Http404()
@@ -75,10 +75,10 @@ class NewsFeedDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         current_user_profile = self.request.user.profile
         author = current_object.author
         rights = [
-                author == current_user_profile,
-                self.request.user.is_superuser,
-                self.request.user.is_staff
-            ]
+            author == current_user_profile,
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+        ]
 
         if not any(rights):
             raise Http404()

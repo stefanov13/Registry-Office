@@ -33,11 +33,11 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         
         signatory_profile = current_object.signatory_profile
         rights = [
-                set(current_user_groups).intersection(set(self.allowed_groups)),
-                signatory_profile == current_user_profile,
-                self.request.user.is_superuser,
-                self.request.user.is_staff
-            ]
+            set(current_user_groups).intersection(set(self.allowed_groups)),
+            signatory_profile == current_user_profile,
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+        ]
 
         if not any(rights):
             raise Http404()
