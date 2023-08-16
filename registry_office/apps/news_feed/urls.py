@@ -1,13 +1,13 @@
 from django.urls import path, include
-from .views import NewsFeedCreateView, NewsFeedDetailsView, NewsFeedEditView, NewsFeedDeleteView
+from . import views
 
 
 urlpatterns = [
-    path('create/', NewsFeedCreateView.as_view(), name='news-create'),
+    path('create/', views.NewsFeedCreateView.as_view(), name='news-create'),
     path('<int:pk>/', include([
-        path('details/', NewsFeedDetailsView.as_view(), name='news-details'),
-        path('edit/', NewsFeedEditView.as_view(), name='news-edit'),
-        path('delete/', NewsFeedDeleteView.as_view(), name='news-delete'),
+        path('details/', views.NewsFeedDetailsView.as_view(), name='news-details'),
+        path('edit/', views.NewsFeedEditView.as_view(), name='news-edit'),
+        path('delete/', views.NewsFeedDeleteView.as_view(), name='news-delete'),
     ]))
 ]
 

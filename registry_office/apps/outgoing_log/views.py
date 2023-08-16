@@ -9,7 +9,6 @@ from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLog
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 
-
 class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
                             views.CreateView):
     template_name = 'outgoing_log/outgoing-create.html'
