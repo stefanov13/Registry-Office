@@ -96,8 +96,8 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
         opinion = form.cleaned_data.get('opinion', None)
         
         if self.object.personopinionmodel_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
-            po = PersonOpinionModel.objects.filter(profile_owner = self.request.user.profile,
-                                                   document = self.object).get()
+            po = PersonOpinionModel.objects.filter(profile_owner=self.request.user.profile,
+                                                   document=self.object).get()
             po.opinion = opinion
             po.save()
 
