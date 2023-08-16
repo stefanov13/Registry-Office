@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load add_field_attribute %}
+
+{% block content %}
+
+    <section>
+        <h2>Редактиране на информацията в потребителският профил</h2>
+
+        <form method="post">
+
+            {% for field in form %}
+                <div class="mb-3">
+
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li><span>{{ error }}</span></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {{ field|add_field_classes:'form-control' }}
+
+                </div>
+                {% endfor %}
+
+            {% csrf_token %}
+            
+            <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+                <button type="sumit" class="btn btn-success">Запазване на промените</button>
+                <a href="{% url 'user-details' %}" class="btn btn-outline-info">Отказ на промените</a>
+            </div>
+
+
+        </form>
+
+        <br>
+        <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+            <a href="{% url 'change-password' %}" class="btn btn-secondary">Промяна на парола</a>
+        </div>
+    </section>
+    
+
+{% endblock %}

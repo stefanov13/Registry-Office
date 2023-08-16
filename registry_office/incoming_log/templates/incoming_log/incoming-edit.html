@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load check_group_exists %}
+{% load add_field_attribute %}
+
+{% block content %}
+
+    <section>
+        <h2>Редактиране на документ във входящ регистър.</h2>
+
+        <form method="post" enctype="multipart/form-data">
+
+            <p>Номер в регистъра: {{ object.log_num }}</p>
+
+            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                {% for field in form %}
+                    <div class="mb-3">
+
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|add_field_classes:'form-control' }}
+
+                    </div>
+                {% endfor %}
+            {% elif request.user|has_group:'document_controller' %}
+
+                {% for field in form %} {% comment %} |disabled_field:"rectors_resolution,opinion" {% endcomment %}
+                    <div class="mb-3">
+                        
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|add_field_classes:'form-control' }}  
+
+                    </div>
+                {% endfor %}
+                
+            {% else %}
+                <div class="mb-3">
+
+                    <label for="{{ form.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ form.opinion|add_field_classes:'form-control' }}
+
+                </div>
+                <p>Последна промяна: <span>{{ object.last_change_date|date:"d.m.Yг. в H:i часа."}}</span></p>
+            {% endif %}
+
+            <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа."}}</p>
+            {% csrf_token %}
+
+            <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+                <button type="submit" class="btn btn-success">Редактирай</button>
+                <a href="{% url 'incoming-dashboard' %}" class="btn btn-outline-secondary">Откажи промените</a>
+            </div>
+        </form>
+
+    </section>
+    
+{% endblock  %}
