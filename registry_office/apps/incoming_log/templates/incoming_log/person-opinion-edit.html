@@ -4,12 +4,12 @@
 
 {% block content %}
     <section>
-        <h2>Редактиране на становище по документ относно {{ object.document_id.title }} във входящ регистър.</h2>
+        <h2>Редактиране на становище по документ относно {{ object.document.title }} във входящ регистър.</h2>
 
         <form method="post">
 
-            <p>Номер в регистъра: {{ object.document_id.log_num }}</p>
-            <p>Описание: {{ object.document_id.title }}</p>
+            <p>Номер в регистъра: {{ object.document.log_num }}</p>
+            <p>Описание: {{ object.document.title }}</p>
 
             {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
                 {% for field in form %}
@@ -22,7 +22,7 @@
                 {% endfor %}
             {% endif %}
             
-            <p>Регистриран на: {{ object.document_id.creation_date|date:"d.m.Yг. в H:i часа."}}</p>
+            <p>Регистриран на: {{ object.document.creation_date|date:"d.m.Yг. в H:i часа."}}</p>
             {% csrf_token %}
 
             <div class="vstack gap-2 col-md-5 mx-auto mb-3">

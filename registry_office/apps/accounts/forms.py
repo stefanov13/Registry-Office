@@ -18,7 +18,7 @@ class RegisterUserForm(auth_forms.UserCreationForm):
         validators=(validators.MinLengthValidator(
                     2, 'Името трябва да съдържа поне 2 букви'),
                 name_cyrillic_letters_and_hyphens_validator),
-        )
+    )
     
     last_name = forms.CharField(
         max_length=LAST_NAME_MAX_LENGTH,
@@ -70,7 +70,7 @@ class EditUserForm(forms.ModelForm):
         validators=(validators.MinLengthValidator(
                 2, 'Името трябва да съдържа поне 2 букви'),
                 name_cyrillic_letters_and_hyphens_validator),
-        )
+    )
     
     last_name = forms.CharField(
         max_length=100,

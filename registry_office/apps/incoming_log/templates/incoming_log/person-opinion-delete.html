@@ -4,11 +4,11 @@
 
 {% block content %}
     <section>
-        <h2>Изтриване на становище от документ относно {{ object.document_id.title }} във входящ регистър.</h2>
+        <h2>Изтриване на становище от документ относно {{ object.document.title }} във входящ регистър.</h2>
 
         <form method="post">
 
-            <p>Номер в регистъра: {{ object.document_id.log_num }}</p>
+            <p>Номер в регистъра: {{ object.document.log_num }}</p>
             {% for field in form %}
                 <div class="mb-3">
 
@@ -17,8 +17,8 @@
 
                 </div>
             {% endfor %}
-            <p>Регистриран на: {{ object.document_id.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
-            <p>Последна промяна: {{ object.document_id.last_change_date|date:"d.m.Yг. в H:i часа." }}</p>
+            <p>Регистриран на: {{ object.document.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
+            <p>Последна промяна: {{ object.document.last_change_date|date:"d.m.Yг. в H:i часа." }}</p>
             {% csrf_token %}
 
             <div class="vstack gap-2 col-md-5 mx-auto mb-3">
