@@ -39,9 +39,12 @@ class NewsFeedEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
+
         current_object = get_object_or_404(queryset, pk=pk)
         current_user_profile = self.request.user.profile
+
         author = current_object.author
+
         rights = [
             author == current_user_profile,
             self.request.user.is_superuser,
@@ -71,9 +74,12 @@ class NewsFeedDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
+
         current_object = get_object_or_404(queryset, pk=pk)
         current_user_profile = self.request.user.profile
+
         author = current_object.author
+        
         rights = [
             author == current_user_profile,
             self.request.user.is_superuser,

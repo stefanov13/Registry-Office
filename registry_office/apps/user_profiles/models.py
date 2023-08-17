@@ -13,12 +13,17 @@ class Profile(models.Model):
     FIRST_NAME_MAX_LENGTH = 50
     LAST_NAME_MAX_LENGTH = 50
     POSITION_MAX_LENGTH = 70
+    MIN_LENGTH = 2
 
     first_name = models.CharField(
         max_length=FIRST_NAME_MAX_LENGTH,
-        validators=[validators.MinLengthValidator(
-            2, 'Името трябва да съдържа поне 2 букви'),
-            name_cyrillic_letters_and_hyphens_validator],
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Името трябва да съдържа поне 2 букви',
+            ),
+            name_cyrillic_letters_and_hyphens_validator,
+        ],
         blank=False,
         null=False,
         verbose_name=_('First Name'),
@@ -26,9 +31,13 @@ class Profile(models.Model):
 
     last_name = models.CharField(
         max_length=LAST_NAME_MAX_LENGTH,
-        validators=[validators.MinLengthValidator(
-            2, 'Фамилията трябва да съдържа поне 2 букви'),
-            name_cyrillic_letters_and_hyphens_validator],
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Фамилията трябва да съдържа поне 2 букви',
+            ),
+            name_cyrillic_letters_and_hyphens_validator,
+        ],
         blank=False,
         null=False,
         verbose_name=_('Last Name'),
@@ -38,9 +47,13 @@ class Profile(models.Model):
         max_length=POSITION_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(
-            2, 'Длъжността трябва да съдържа поне 2 букви'),
-            position_field_validator],
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Длъжността трябва да съдържа поне 2 букви',
+            ),
+            position_field_validator,
+        ],
         verbose_name=_('Position'),
     )
 

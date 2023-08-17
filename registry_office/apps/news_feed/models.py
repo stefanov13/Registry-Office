@@ -20,8 +20,12 @@ class NewsFeedModel(models.Model):
         max_length=TITLE_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(
-            TITLE_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви'),],
+        validators=[
+            validators.MinLengthValidator(
+            TITLE_MIN_LENGTH,
+            'Полето трябва да съдържа поне 2 букви',
+            ),
+        ],
     )
 
     description = models.TextField(
@@ -34,7 +38,7 @@ class NewsFeedModel(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        # # If the object is being created and the author field is not set, fill it with the currently logged-in user's profile
+        # If the object is being created and the author field is not set, fill it with the currently logged-in user's profile
         if not self.author_id  \
                 and hasattr(self, 'request') \
                 and hasattr(self.request, 'user') \

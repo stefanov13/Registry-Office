@@ -9,19 +9,26 @@ from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLog
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 
 
-class OutgoingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                            views.CreateView):
+class OutgoingLogCreateView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.CreateView
+):
     template_name = 'outgoing_log/outgoing-create.html'
     form_class = CreateOutgoingLogForm
     success_url = reverse_lazy('outgoing-dashboard')
 
     allowed_groups = ['admin', 'document_controller']
 
-class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
+class OutgoingLogDetailsView(
+    auth_mixins.LoginRequiredMixin,
+    views.DetailView
+):
     template_name = 'outgoing_log/outgoing-details.html'
     model = OutgoingLogModel
-    allowed_groups = ['admin', 'document_controller']
     pk_url_kwarg = 'pk'
+
+    allowed_groups = ['admin', 'document_controller']
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
@@ -32,6 +39,7 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         
         signatory_profile = current_object.signatory_profile
+
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             signatory_profile == current_user_profile,
@@ -44,8 +52,11 @@ class OutgoingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
         
         return current_object
 
-class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                          views.UpdateView):
+class OutgoingLogEditView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.UpdateView
+):
     template_name = 'outgoing_log/outgoing-edit.html'
     form_class = EditOutgoingLogForm
     model = OutgoingLogModel
@@ -65,8 +76,11 @@ class OutgoingLogEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
     def form_valid(self, form):
         return super().form_valid(form)
 
-class OutgoingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                            views.DeleteView):
+class OutgoingLogDeleteView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.DeleteView
+):
     template_name = 'outgoing_log/outgoing-delete.html'
     form_class = DeleteOutgoingLogForm
     model = OutgoingLogModel

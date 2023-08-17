@@ -22,8 +22,12 @@ class OutgoingLogModel(models.Model):
         max_length=TITLE_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(
-            TITLE_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви')],
+        validators=[
+            validators.MinLengthValidator(
+            TITLE_MIN_LENGTH, 
+            'Полето трябва да съдържа поне 2 букви',
+            )
+        ],
         verbose_name=_('Title'),
     )
 
@@ -31,8 +35,12 @@ class OutgoingLogModel(models.Model):
         max_length=RECIPIENT_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(
-            RECIPIENT_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви')],
+        validators=[
+            validators.MinLengthValidator(
+            RECIPIENT_MIN_LENGTH, 
+            'Полето трябва да съдържа поне 2 букви',
+            )
+        ],
         verbose_name=_('Recipient'),
     )
 
