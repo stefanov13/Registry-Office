@@ -11,7 +11,10 @@ from .forms import RegisterUserForm, EditUserForm
 
 UserModel = get_user_model()
 
-class UserRegisterView(auth_mixins.UserPassesTestMixin, views.CreateView):
+class UserRegisterView(
+    auth_mixins.UserPassesTestMixin,
+    views.CreateView
+):
     template_name = 'accounts/signup.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('index')
@@ -38,19 +41,25 @@ class UserLoginView(auth_views.LoginView):
 class UserLogoutView(auth_views.LogoutView):
     pass
 
-class UserDetailsView(auth_mixins.LoginRequiredMixin, views.ListView):
+class UserDetailsView(
+    auth_mixins.LoginRequiredMixin,
+    views.ListView
+):
     model = UserModel
     template_name = 'accounts/user-details.html'
 
-class UserEditView(auth_mixins.UserPassesTestMixin,
-                   auth_mixins.LoginRequiredMixin,
-                   views.UpdateView):
+class UserEditView(
+    auth_mixins.UserPassesTestMixin,
+    auth_mixins.LoginRequiredMixin,
+    views.UpdateView
+):
     model = UserModel
     template_name = 'accounts/user-edit.html'
     form_class = EditUserForm
 
     def test_func(self):
-        return self.get_object().pk == self.request.user.pk or self.request.user.is_superuser \
+        return self.get_object().pk == self.request.user.pk \
+            or self.request.user.is_superuser \
             or self.request.user.is_staff
     
     def handle_no_permission(self):
@@ -62,14 +71,19 @@ class UserEditView(auth_mixins.UserPassesTestMixin,
     def get_success_url(self):
         return reverse_lazy('user-details') 
 
-class UserDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
+class UserDeleteView(
+    auth_mixins.LoginRequiredMixin,
+    views.DeleteView
+):
     template_name = 'accounts/user-delete.html'
     success_url = reverse_lazy('index')
     
     def get_object(self, queryset=None):
         return self.request.user
 
-class UserChangePasswordView(auth_mixins.LoginRequiredMixin, auth_views.PasswordChangeView):
+class UserChangePasswordView(
+    auth_mixins.LoginRequiredMixin,
+    auth_views.PasswordChangeView
+):
     template_name = 'accounts/password_change.html'
     success_url = reverse_lazy('user-details')
-

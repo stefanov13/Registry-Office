@@ -33,8 +33,12 @@ class IncomingLogModel(models.Model):
         max_length=TITLE_MAX_LENGTH,
         blank=False,
         null=False,
-        validators=[validators.MinLengthValidator(
-            TITLE_MIN_LENGTH, 'Полето трябва да съдържа поне 2 букви'),],
+        validators=[
+            validators.MinLengthValidator(
+            TITLE_MIN_LENGTH, 
+            'Полето трябва да съдържа поне 2 букви',
+            ),
+        ],
         verbose_name=_('Title'),
     )
 
@@ -73,6 +77,7 @@ class IncomingLogModel(models.Model):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_log_num = IncomingLogModel.objects.order_by('-pk').first()
+            
             next_log_num = 1 if last_log_num is None else int(last_log_num.log_num.split('-')[-1]) + 1
             self.log_num = f'{selected_category}-{next_log_num}'
 

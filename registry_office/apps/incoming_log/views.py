@@ -9,8 +9,11 @@ from . import forms
 
 # Create your views here.
 
-class IncomingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                            views.CreateView):
+class IncomingLogCreateView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.CreateView
+):
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
@@ -18,7 +21,10 @@ class IncomingLogCreateView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
 
     allowed_groups = ['admin', 'document_controller']
 
-class IncomingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
+class IncomingLogDetailsView(
+    auth_mixins.LoginRequiredMixin,
+    views.DetailView
+):
     template_name = 'incoming_log/incoming-details.html'
     model = IncomingLogModel
 
@@ -27,6 +33,7 @@ class IncomingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
@@ -43,11 +50,15 @@ class IncomingLogDetailsView(auth_mixins.LoginRequiredMixin, views.DetailView):
 
         return queryset
 
-class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPassesTestMixin,
-                          views.UpdateView):
+class IncomingLogEditView(
+    auth_mixins.LoginRequiredMixin,
+    auth_mixins.UserPassesTestMixin,
+    views.UpdateView
+):
 
     template_name = 'incoming_log/incoming-edit.html'
     model = IncomingLogModel
+
     allowed_groups = ['admin', 'document_controller']
 
     def get_form_class(self):
@@ -59,13 +70,15 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
 
     def test_func(self):
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
         self.rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
             self.request.user.is_staff,
         ]
 
-        return any(self.rights) or self.request.user.profile in self.get_object().responsible_people.all()
+        return any(self.rights) \
+            or self.request.user.profile in self.get_object().responsible_people.all()
     
     def handle_no_permission(self):
         raise Http404()
@@ -85,6 +98,7 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
                 profile_owner=user.profile,
                 document=self.object
             ).get()
+            
             initial['opinion'] = person_opinion.opinion
             
         except PersonOpinionModel.DoesNotExist:
@@ -95,15 +109,20 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     def form_valid(self, form):
         opinion = form.cleaned_data.get('opinion', None)
         
-        if self.object.personopinionmodel_set.filter(profile_owner_id=self.request.user.profile.pk).exists():
-            po = PersonOpinionModel.objects.filter(profile_owner=self.request.user.profile,
-                                                   document=self.object).get()
+        if self.object.personopinionmodel_set.filter(
+            profile_owner_id=self.request.user.profile.pk).exists():
+            po = PersonOpinionModel.objects.filter(
+                profile_owner=self.request.user.profile,
+                document=self.object).get()
+            
             po.opinion = opinion
             po.save()
 
         elif opinion:
-            po = PersonOpinionModel.objects.create(profile_owner=self.request.user.profile,
-                                              opinion=opinion, document=self.object)
+            po = PersonOpinionModel.objects.create(
+                profile_owner=self.request.user.profile,
+                opinion=opinion, document=self.object)
+            
             po.save()
             form.instance.opinions = po
 
@@ -112,8 +131,11 @@ class IncomingLogEditView(auth_mixins.LoginRequiredMixin, auth_mixins.UserPasses
     def get_success_url(self):
         return reverse('incoming-details', kwargs={'pk': self.object.pk})
          
-class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                            views.DeleteView):
+class IncomingLogDeleteView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.DeleteView
+):
     template_name = 'incoming_log/incoming-delete.html'
     form_class = forms.DeleteIncomingLogForm
     model = IncomingLogModel
@@ -137,8 +159,11 @@ class IncomingLogDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
 
         return context
 
-class PersonOpinionEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                            views.UpdateView):
+class PersonOpinionEditView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.UpdateView
+):
     template_name = 'incoming_log/person-opinion-edit.html'
     model = PersonOpinionModel
     form_class = forms.EditPersonOpinionForm
@@ -155,8 +180,11 @@ class PersonOpinionEditView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
     def get_success_url(self):
         return reverse('incoming-details', kwargs={'pk': self.object.document_id})
 
-class PersonOpinionDeleteView(auth_mixins.LoginRequiredMixin, GroupRequiredMixin,
-                            views.DeleteView):
+class PersonOpinionDeleteView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.DeleteView
+):
     template_name = 'incoming_log/person-opinion-delete.html'
     form_class = forms.DeletePersonOpinionForm
     model = PersonOpinionModel

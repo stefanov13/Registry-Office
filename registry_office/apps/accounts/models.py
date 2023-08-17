@@ -42,7 +42,10 @@ class AppUserManager(auth_models.BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class AppCustomUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
+class AppCustomUser(
+    auth_models.AbstractBaseUser,
+    auth_models.PermissionsMixin
+):
     USERNAME_FIELD = 'email'
 
     objects = AppUserManager()

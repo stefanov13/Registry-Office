@@ -16,7 +16,10 @@ class BaseNewsFeedView(views.ListView):
         return self.model.objects.order_by('-date')
     
 
-class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
+class IncomingDashboardView(
+    auth_mixins.LoginRequiredMixin,
+    views.ListView
+):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
     allowed_groups = ['admin', 'document_controller']   
@@ -24,6 +27,7 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
@@ -32,6 +36,7 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
         
         if any(rights):
             queryset = self.model.objects.order_by('-pk')
+
         else:
             queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-pk')
 
@@ -48,7 +53,10 @@ class IncomingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
 
         return context
 
-class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
+class OutgoingDashboardView(
+    auth_mixins.LoginRequiredMixin,
+    views.ListView
+):
     template_name = 'common/outgoing-dashboard.html'
     model = OutgoingLogModel
     allowed_groups = ['admin', 'document_controller']
@@ -56,6 +64,7 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
     def get_queryset(self):
         current_user_profile = self.request.user.profile
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
@@ -64,6 +73,7 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
 
         if any(rights):
             queryset = self.model.objects.order_by('-pk')
+
         else:
             queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
 
@@ -79,4 +89,3 @@ class OutgoingDashboardView(auth_mixins.LoginRequiredMixin, views.ListView):
             document.document_img = os.path.basename(document.document_img.name)
 
         return context
-

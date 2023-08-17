@@ -35,8 +35,8 @@
                 <span style="color: #2B82E5">{{ opinion.opinion }}</span>
                 <div class="vstack gap-2 col-md-5 mx-auto mb-3">
                     {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
-                        <a href="{% url 'person-opinion-edit' pk=opinion.pk %}">Редактиране</a>
-                        <a href="{% url 'person-opinion-delete' pk=opinion.pk %}">Изтриване</a>
+                        <a href="{% url 'person-opinion-edit' pk=opinion.pk %}" class="btn btn-outline-warning">Редактирай становище</a>
+                        <a href="{% url 'person-opinion-delete' pk=opinion.pk %}" class="btn btn-danger">Изтрий становище</a>
                     {% endif %}
                 </div>
             </div>

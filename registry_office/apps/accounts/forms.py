@@ -11,29 +11,42 @@ class RegisterUserForm(auth_forms.UserCreationForm):
     FIRST_NAME_MAX_LENGTH = 50
     LAST_NAME_MAX_LENGTH = 50
     POSITION_MAX_LENGTH = 70
+    MIN_LENGTH = 2
 
     first_name = forms.CharField(
         max_length=FIRST_NAME_MAX_LENGTH,
         required=True,
-        validators=(validators.MinLengthValidator(
-                    2, 'Името трябва да съдържа поне 2 букви'),
-                name_cyrillic_letters_and_hyphens_validator),
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Името трябва да съдържа поне 2 букви',
+            ),
+            name_cyrillic_letters_and_hyphens_validator,
+        ],
     )
     
     last_name = forms.CharField(
         max_length=LAST_NAME_MAX_LENGTH,
         required=True,
-        validators=(validators.MinLengthValidator(
-                2, 'Името трябва да съдържа поне 2 букви'), 
-                name_cyrillic_letters_and_hyphens_validator),
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH, 
+                'Името трябва да съдържа поне 2 букви',
+            ), 
+            name_cyrillic_letters_and_hyphens_validator,
+        ],
     )
 
     position = forms.CharField(
         max_length=POSITION_MAX_LENGTH,
         required=True,
-        validators=(validators.MinLengthValidator(
-                2, 'Длъжността трябва да съдържа поне 2 букви'),
-                position_field_validator),
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Длъжността трябва да съдържа поне 2 букви',
+            ),
+            position_field_validator,
+        ],
     )
 
     def __init__(self, *args, **kwargs):
@@ -64,28 +77,42 @@ class RegisterUserForm(auth_forms.UserCreationForm):
         fields = ('email',)
 
 class EditUserForm(forms.ModelForm):
+    MIN_LENGTH = 2
+
     first_name = forms.CharField(
         max_length=100,
         required=True,
-        validators=(validators.MinLengthValidator(
-                2, 'Името трябва да съдържа поне 2 букви'),
-                name_cyrillic_letters_and_hyphens_validator),
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Името трябва да съдържа поне 2 букви',
+            ),
+            name_cyrillic_letters_and_hyphens_validator,
+        ],
     )
     
     last_name = forms.CharField(
         max_length=100,
         required=True,
-        validators=(validators.MinLengthValidator(
-                2, 'Името трябва да съдържа поне 2 букви'),
-                name_cyrillic_letters_and_hyphens_validator),
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Името трябва да съдържа поне 2 букви',
+            ),
+            name_cyrillic_letters_and_hyphens_validator,
+        ],
     )
 
     position = forms.CharField(
         max_length=100,
         required=True,
-        validators=(validators.MinLengthValidator(
-                2, 'Длъжността трябва да съдържа поне 2 букви'),
-                position_field_validator),
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Длъжността трябва да съдържа поне 2 букви',
+            ),
+            position_field_validator,
+        ],
     )
 
     class Meta:

@@ -9,6 +9,7 @@ class EditIncomingLogForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'rows': 4}),
         label=_('Opinion')
     )
+    
     class Meta:
         model = models.IncomingLogModel
         exclude = ['category']
