@@ -17,7 +17,7 @@ class IncomingLogCreateView(
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
-    fields = ['category', 'title', 'responsible_people', 'document_img']
+    fields = ['category', 'title', 'responsible_people', 'document_file']
 
     allowed_groups = ['admin', 'document_controller']
 

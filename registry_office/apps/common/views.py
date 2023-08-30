@@ -49,7 +49,7 @@ class IncomingDashboardView(
         documents = context['object_list']
 
         for document in documents:
-            document.document_img = os.path.basename(document.document_img.name)
+            document.document_file = os.path.basename(document.document_file.name)
 
         return context
 

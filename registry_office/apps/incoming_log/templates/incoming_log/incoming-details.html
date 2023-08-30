@@ -6,27 +6,30 @@
         <h2 class="card-header">Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Yг. в H:i часа" }}</h2>
 
         <div class="card-body">
-        <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
-        <p class="card-text">Описание: {{ object.title }}</p>
-        {% if object.rectors_resolution %}
-            <div class="card text-bg-light mb-3" style="max-width: 50rem;">
-                <p class="card-text">Резолюция на ректора:</p>
-                <span style="color: #FF7D4C">{{ object.rectors_resolution }}</span>
-            </div>
-        {% endif %}
-        {% if object.responsible_people %}
-            <ul class="card-text">Отговорни лица:
-            {% for r_person in object.responsible_people.all %}
-                <li>{{ r_person }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        <p class="card-text">Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
-        <p class="card-text">Последна промяна: {{ object.last_change_date|date:"d.m.Yг. в H:i часа." }}</p>
+            <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
+            <p class="card-text">Описание: {{ object.title }}</p>
+            {% if object.rectors_resolution %}
+                <div class="card text-bg-light mb-3" style="max-width: 50rem;">
+                    <p class="card-text">Резолюция на ректора:</p>
+                    <span style="color: #FF7D4C">{{ object.rectors_resolution }}</span>
+                </div>
+            {% endif %}
+            {% if object.responsible_people %}
+                <ul class="card-text">Отговорни лица:
+                {% for r_person in object.responsible_people.all %}
+                    <li>{{ r_person }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            <p class="card-text">Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
+            <p class="card-text">Последна промяна: {{ object.last_change_date|date:"d.m.Yг. в H:i часа." }}</p>
+            {% if object.document_file %}
+                <embed src="{{ object.document_file.url }}" type="application/pdf" width="100%" height="500px" />
+                <a href="{{ object.document_file.url }}" target="_blank" class="mb-3 card-text">Преглед на документа</a>
+                {% comment %} <img src="{{ object.document_file.url }}" class="mb-3" alt="Incoming Document Image"> {% endcomment %}
+            {% endif %}
         </div>
-        {% if object.document_img %}
-            <img src="{{ object.document_img.url }}" class="mb-3" alt="Incoming Document Image">
-        {% endif %}
+        
         
         {% for opinion in object.personopinionmodel_set.all %}
             <div class="card text-bg-light mb-3" style="max-width: 50rem;">

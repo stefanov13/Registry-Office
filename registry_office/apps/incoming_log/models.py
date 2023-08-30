@@ -64,11 +64,11 @@ class IncomingLogModel(models.Model):
         verbose_name=_('Last Change Date'),
     )
 
-    document_img = models.ImageField(
+    document_file = models.FileField(
         blank=True,
         null=True,
-        upload_to='incoming_doc_img',
-        verbose_name=_('Document Image'),
+        upload_to='incoming_doc_files',
+        verbose_name=_('Document File'),
     )
 
     def save(self, *args, **kwargs):
