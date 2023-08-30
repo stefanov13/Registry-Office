@@ -183,4 +183,4 @@ LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 LOGIN_URL = reverse_lazy('login')
 
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
