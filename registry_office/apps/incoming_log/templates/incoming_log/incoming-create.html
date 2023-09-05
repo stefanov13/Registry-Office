@@ -6,6 +6,13 @@
         <h2>Регистриране на документи във входящ регистър.</h2>
 
         <form method="post" enctype="multipart/form-data">
+            
+            <p>Номер в регистъра:
+                В /  
+                <span>{{ next_log_num }}</span>
+                / 
+                <span>{{ current_date|date:"d.m.Yг." }}</span>
+            </p>
 
             {% for field in form %}
                 <div class="mb-3">

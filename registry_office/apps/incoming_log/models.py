@@ -1,5 +1,6 @@
 from django.db import models
 from django.core import validators
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ..user_profiles.models import Profile
 from core.register_category_types_choices import CategoryTypesChoices
@@ -16,15 +17,14 @@ class IncomingLogModel(models.Model):
         max_length=LOGS_NUM_MAX_LENGTH,
         blank=False,
         null=False, 
-        unique=True, 
-        editable=False,
+        unique=True,
         verbose_name=_('Log\'s number')
     )
 
     category = models.CharField(
         max_length=CategoryTypesChoices.max_length(),
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         choices=CategoryTypesChoices.choices(),
         verbose_name=_('Category'),
     )
@@ -55,7 +55,7 @@ class IncomingLogModel(models.Model):
     )
 
     creation_date = models.DateTimeField(
-        auto_now_add=True,
+        default=timezone.now,
         verbose_name=_('Creation Date'),
     )
 
@@ -72,16 +72,26 @@ class IncomingLogModel(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        selected_category = self.category.replace('_', '-')
-
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_log_num = IncomingLogModel.objects.order_by('-pk').first()
-            
-            next_log_num = 1 if last_log_num is None else int(last_log_num.log_num.split('-')[-1]) + 1
-            self.log_num = f'{selected_category}-{next_log_num}'
+            last_instance = IncomingLogModel.objects.order_by('-log_num').first()
+            self.log_num = int(last_instance.log_num) + 1 if last_instance else 1
 
         super().save(*args, **kwargs)
+
+    """By old SRS"""
+
+    # def save(self, *args, **kwargs):
+    #     selected_category = self.category.replace('_', '-')
+
+    #     if not self.log_num:
+    #         # Auto-generate the log_num value on first save
+    #         last_log_num = IncomingLogModel.objects.order_by('-pk').first()
+            
+    #         next_log_num = 1 if last_log_num is None else int(last_log_num.log_num.split('-')[-1]) + 1
+    #         self.log_num = f'{selected_category}-{next_log_num}'
+
+    #     super().save(*args, **kwargs)
 
 class PersonOpinionModel(models.Model):
     opinion = models.TextField(

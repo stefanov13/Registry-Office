@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
+from core.custom_views.extra_content_create_view import ExtraContentCreateView
 from .models import IncomingLogModel, PersonOpinionModel
 from . import forms
 
@@ -12,12 +13,12 @@ from . import forms
 class IncomingLogCreateView(
     auth_mixins.LoginRequiredMixin,
     GroupRequiredMixin,
-    views.CreateView
+    ExtraContentCreateView
 ):
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
-    fields = ['category', 'title', 'responsible_people', 'document_file']
+    fields = [ 'title', 'responsible_people', 'document_file']
 
     allowed_groups = ['admin', 'document_controller']
 
@@ -55,7 +56,6 @@ class IncomingLogEditView(
     auth_mixins.UserPassesTestMixin,
     views.UpdateView
 ):
-
     template_name = 'incoming_log/incoming-edit.html'
     model = IncomingLogModel
 
@@ -110,7 +110,8 @@ class IncomingLogEditView(
         opinion = form.cleaned_data.get('opinion', None)
         
         if self.object.personopinionmodel_set.filter(
-            profile_owner_id=self.request.user.profile.pk).exists():
+            profile_owner_id=self.request.user.profile.pk
+            ).exists():
             po = PersonOpinionModel.objects.filter(
                 profile_owner=self.request.user.profile,
                 document=self.object).get()

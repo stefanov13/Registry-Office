@@ -3,6 +3,24 @@ from django.utils.translation import gettext_lazy as _
 from . import models
 
 
+# class CreateIncomingLogForm(forms.ModelForm):
+#     class Meta:
+#         model = models.IncomingLogModel
+#         fields = ['log_num', 'title', 'responsible_people', 'document_file']
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.__gen_next_log_num()
+
+#     def __gen_next_log_num(self):
+#         last_instance = models.IncomingLogModel.objects.order_by('-pk').first()
+#         last_log_num = last_instance.log_num
+
+#         if not last_instance.log_num.isdigit():
+#             last_log_num = last_instance.log_num[:-1]
+
+#         self.instance.log_num = int(last_log_num) + 1 if last_instance else 1
+
 class EditIncomingLogForm(forms.ModelForm):
     opinion = forms.CharField(
         required=False,
@@ -12,7 +30,7 @@ class EditIncomingLogForm(forms.ModelForm):
     
     class Meta:
         model = models.IncomingLogModel
-        exclude = ['category']
+        fields = '__all__'
 
 class EditIncomingLogOpinionForm(EditIncomingLogForm):
     class Meta:

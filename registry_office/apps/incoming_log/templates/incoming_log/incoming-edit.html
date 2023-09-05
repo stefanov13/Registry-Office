@@ -9,7 +9,7 @@
 
         <form method="post" enctype="multipart/form-data">
 
-            <p>Номер в регистъра: {{ object.log_num }}</p>
+            {% comment %} <p>Номер в регистъра: {{ object.log_num }}</p> {% endcomment %}
 
             {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
                 {% for field in form %}

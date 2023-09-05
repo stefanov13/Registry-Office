@@ -35,23 +35,23 @@ class IncomingDashboardView(
         ]
         
         if any(rights):
-            queryset = self.model.objects.order_by('-pk')
+            queryset = self.model.objects.order_by('-log_num')
 
         else:
-            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-pk')
+            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-log_num')
 
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
 
-        # Modify the 'document_img' field in the context to display only the file name
-        documents = context['object_list']
+    #     # Modify the 'document_img' field in the context to display only the file name
+    #     documents = context['object_list']
 
-        for document in documents:
-            document.document_file = os.path.basename(document.document_file.name)
+    #     for document in documents:
+    #         document.document_file = os.path.basename(document.document_file.name)
 
-        return context
+    #     return context
 
 class OutgoingDashboardView(
     auth_mixins.LoginRequiredMixin,
@@ -72,20 +72,20 @@ class OutgoingDashboardView(
         ]
 
         if any(rights):
-            queryset = self.model.objects.order_by('-pk')
+            queryset = self.model.objects.order_by('-log_num')
 
         else:
-            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-pk')
+            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-log_num')
 
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
 
-        # Modify the 'document_img' field in the context to display only the file name
-        documents = context['object_list']
+    #     # Modify the 'document_img' field in the context to display only the file name
+    #     documents = context['object_list']
         
-        for document in documents:
-            document.document_img = os.path.basename(document.document_img.name)
+    #     for document in documents:
+    #         document.document_file = os.path.basename(document.document_file.name)
 
-        return context
+    #     return context

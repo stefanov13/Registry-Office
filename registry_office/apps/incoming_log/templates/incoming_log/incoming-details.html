@@ -6,6 +6,9 @@
         <h2 class="card-header">Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Yг. в H:i часа" }}</h2>
 
         <div class="card-body">
+            {% if object.category %}
+                <p class="card-text">Категория: {{ object.category }}</p>
+            {% endif %}
             <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
             <p class="card-text">Описание: {{ object.title }}</p>
             {% if object.rectors_resolution %}
