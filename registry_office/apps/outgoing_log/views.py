@@ -7,14 +7,16 @@ from django.http import Http404
 from .models import OutgoingLogModel
 from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLogForm
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
+from core.custom_views.extra_content_create_view import ExtraContentCreateView
 
 
 class OutgoingLogCreateView(
     auth_mixins.LoginRequiredMixin,
     GroupRequiredMixin,
-    views.CreateView
+    ExtraContentCreateView
 ):
     template_name = 'outgoing_log/outgoing-create.html'
+    model = OutgoingLogModel
     form_class = CreateOutgoingLogForm
     success_url = reverse_lazy('outgoing-dashboard')
 
