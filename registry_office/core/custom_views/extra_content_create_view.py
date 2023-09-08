@@ -8,7 +8,17 @@ class ExtraContentCreateView(views.CreateView):
         context = super().get_context_data(**kwargs)
 
         last_instance = self.model.objects.order_by('-log_num').first()
-        next_log_num = int(last_instance.log_num) + 1 if last_instance else 1
+
+        current_year = timezone.now().year
+
+        if last_instance and last_instance.creation_date.year == current_year:
+            last_log_num = last_instance.log_num
+        else:
+            last_log_num = '0'
+
+        numeric_part = ''.join(filter(str.isdigit, last_log_num))
+
+        next_log_num = int(numeric_part) + 1
 
         context['next_log_num'] = next_log_num
         context['current_date'] = timezone.now
