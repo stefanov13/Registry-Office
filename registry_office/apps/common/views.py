@@ -35,10 +35,10 @@ class IncomingDashboardView(
         ]
         
         if any(rights):
-            queryset = self.model.objects.order_by('-log_num')
+            queryset = self.model.objects.order_by('-creation_date', '-log_num')
 
         else:
-            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-log_num')
+            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-creation_date', '-log_num')
 
         return queryset
 
@@ -72,10 +72,10 @@ class OutgoingDashboardView(
         ]
 
         if any(rights):
-            queryset = self.model.objects.order_by('-log_num')
+            queryset = self.model.objects.order_by('-creation_date', '-log_num')
 
         else:
-            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-log_num')
+            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-creation_date', '-log_num')
 
         return queryset
 

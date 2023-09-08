@@ -3,7 +3,7 @@
 
 {% block content %}
     <section class="card text-bg-secondary mb-3" style="max-width: 50rem;">
-        <h2 class="card-header">Детайли за {{ object.title }} създаден на {{ object.creation_date|date:"d.m.Yг. в H:i часа" }}</h2>
+        <h2 class="card-header">{{ object.title }} с входящ номер {{ object.log_num }} от {{ object.creation_date|date:"d.m.Yг. - H:i часа" }}</h2>
 
         <div class="card-body">
             {% if object.category %}

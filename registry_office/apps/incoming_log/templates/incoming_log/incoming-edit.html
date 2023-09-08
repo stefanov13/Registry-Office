@@ -19,7 +19,11 @@
                         {{ field|add_field_classes:'form-control' }}
 
                     </div>
+
                 {% endfor %}
+
+                <p>Последна промяна: <span>{{ object.last_change_date|date:"d.m.Yг. в H:i часа."}}</span></p>
+
             {% elif request.user|has_group:'document_controller' %}
 
                 {% for field in form %} {% comment %} |disabled_field:"rectors_resolution,opinion" {% endcomment %}
@@ -29,7 +33,10 @@
                         {{ field|add_field_classes:'form-control' }}  
 
                     </div>
+
                 {% endfor %}
+                
+                <p>Последна промяна: <span>{{ object.last_change_date|date:"d.m.Yг. в H:i часа."}}</span></p>
                 
             {% else %}
                 <div class="mb-3">
@@ -38,10 +45,11 @@
                     {{ form.opinion|add_field_classes:'form-control' }}
 
                 </div>
+
                 <p>Последна промяна: <span>{{ object.last_change_date|date:"d.m.Yг. в H:i часа."}}</span></p>
             {% endif %}
 
-            <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа."}}</p>
+            {% comment %} <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа."}}</p> {% endcomment %}
             {% csrf_token %}
 
             <div class="vstack gap-2 col-md-5 mx-auto mb-3">
