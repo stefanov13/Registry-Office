@@ -16,9 +16,13 @@ class OutgoingLogModel(models.Model):
     log_num = models.CharField(
         max_length=LOG_NUM_MAX_LENGTH,
         blank=False,
-        null=False, 
-        unique=True,
+        null=False,
         verbose_name=_('Log\'s number')
+    )
+
+    creation_date = models.DateTimeField(
+        default=timezone.now,
+        verbose_name=_('Creation Date'),
     )
 
     title = models.CharField(
@@ -51,11 +55,6 @@ class OutgoingLogModel(models.Model):
         Profile,
         on_delete=models.DO_NOTHING,
     )
-    
-    creation_date = models.DateTimeField(
-        default=timezone.now,
-        verbose_name=_('Creation Date'),
-    )
 
     document_file = models.FileField(
         blank=True,
@@ -68,7 +67,17 @@ class OutgoingLogModel(models.Model):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_instance = OutgoingLogModel.objects.order_by('-log_num').first()
-            self.log_num = int(last_instance.log_num) + 1 if last_instance else 1
+
+            current_year = timezone.now().year
+
+            if last_instance and last_instance.creation_date.year == current_year:
+                last_log_num = last_instance.log_num
+            else:
+                last_log_num = '0'
+
+            numeric_part = ''.join(filter(str.isdigit, last_log_num))
+
+            self.log_num = int(numeric_part) + 1
 
         # file_type, encoding = mimetypes.guess_type(self.document_file.path)
 
