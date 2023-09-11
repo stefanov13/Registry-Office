@@ -66,7 +66,7 @@ class OutgoingLogModel(models.Model):
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = OutgoingLogModel.objects.order_by('-log_num').first()
+            last_instance = OutgoingLogModel.objects.order_by('-creation_date', '-log_num').first()
 
             current_year = timezone.now().year
 
