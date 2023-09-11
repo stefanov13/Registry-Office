@@ -7,7 +7,7 @@ class ExtraContentCreateView(views.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        last_instance = self.model.objects.order_by('-log_num').first()
+        last_instance = self.model.objects.order_by('-creation_date', '-log_num').first()
 
         current_year = timezone.now().year
 
