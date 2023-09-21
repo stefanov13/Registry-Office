@@ -41,10 +41,12 @@ class OutgoingLogDetailsView(
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         
         signatory_profile = current_object.signatory_profile
+        
 
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             signatory_profile == current_user_profile,
+
             self.request.user.is_superuser,
             self.request.user.is_staff
         ]

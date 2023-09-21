@@ -8,6 +8,26 @@ from core.validators import name_cyrillic_letters_and_hyphens_validator, positio
 
 UserModel = get_user_model()
 
+class DepartmentsModel(models.Model):
+    DEPARTMENT_NAME_MAX_LENGTH = 50
+    MIN_LENGTH = 2
+
+    department_name = models.CharField(
+        max_length=DEPARTMENT_NAME_MAX_LENGTH,
+        blank=False,
+        null=False,
+        validators=[
+            validators.MinLengthValidator(
+                MIN_LENGTH,
+                'Отделът трябва да съдържа поне 2 букви',
+            ),
+            position_field_validator,
+        ],
+        verbose_name=_('Department name'),
+    )
+
+    def __str__(self):
+        return f'{self.department_name}'
 
 class Profile(models.Model):
     FIRST_NAME_MAX_LENGTH = 50
@@ -60,6 +80,13 @@ class Profile(models.Model):
     owner = models.OneToOneField(
         UserModel,
         on_delete=models.SET_NULL,
+        null=True,
+    )
+
+    employee_department = models.ForeignKey(
+        DepartmentsModel,
+        on_delete=models.SET_NULL,
+        blank=True,
         null=True,
     )
 

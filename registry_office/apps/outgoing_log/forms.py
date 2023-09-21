@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class CreateOutgoingLogForm(forms.ModelForm):
     class Meta:
         model = OutgoingLogModel
-        fields = ['title', 'recipient', 'signatory_profile', 'document_file']
+        fields = ['title', 'recipient', 'signatory_profile', 'signatory_department', 'document_file']
 
 class EditOutgoingLogForm(forms.ModelForm):
     class Meta:
