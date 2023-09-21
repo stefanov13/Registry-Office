@@ -18,9 +18,13 @@ class IncomingLogCreateView(
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
-    fields = [ 'title', 'responsible_people', 'document_file']
+    fields = [ 'title', 'responsible_people', 'responsible_departments', 'document_file']
 
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+        ]
 
 class IncomingLogDetailsView(
     auth_mixins.LoginRequiredMixin,
@@ -29,7 +33,11 @@ class IncomingLogDetailsView(
     template_name = 'incoming_log/incoming-details.html'
     model = IncomingLogModel
 
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = [
+        'admin', 
+        'administrative_manager', 
+        'document_controller',
+        ]
 
     def get_queryset(self):
         current_user_profile = self.request.user.profile
@@ -42,12 +50,14 @@ class IncomingLogDetailsView(
         ]
 
         if any(rights):
-            queryset = self.model.objects.order_by('-pk')
+            queryset = self.model.objects.order_by('-pk') # TODO Changing order_by criteria 
+
+        # TODO add elif statement to check for responsible_departments
 
         else:
             queryset = self.model.objects.filter(
                 responsible_people__in=[current_user_profile]
-                ).order_by('-pk')
+                ).order_by('-pk') # TODO Changing order_by criteria
 
         return queryset
 
@@ -59,26 +69,31 @@ class IncomingLogEditView(
     template_name = 'incoming_log/incoming-edit.html'
     model = IncomingLogModel
 
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = ['admin', 'administrative_manager']
+    document_controller_group = 'document_controller'
 
     def get_form_class(self):
         if any(self.rights):
             return forms.EditIncomingLogForm
         
+        elif self.document_controller_group in self.current_user_groups:
+            return forms.EditIncomingLogDocControllerForm
+        
         elif self.request.user.profile in self.get_object().responsible_people.all():
             return forms.EditIncomingLogOpinionForm
 
     def test_func(self):
-        current_user_groups = self.request.user.groups.values_list('name', flat=True)
+        self.current_user_groups = self.request.user.groups.values_list('name', flat=True)
 
         self.rights = [
-            set(current_user_groups).intersection(set(self.allowed_groups)),
+            set(self.current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
             self.request.user.is_staff,
         ]
 
         return any(self.rights) \
-            or self.request.user.profile in self.get_object().responsible_people.all()
+            or self.request.user.profile in self.get_object().responsible_people.all() \
+            or self.document_controller_group in self.current_user_groups
     
     def handle_no_permission(self):
         raise Http404()

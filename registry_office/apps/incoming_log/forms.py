@@ -32,6 +32,17 @@ class EditIncomingLogForm(forms.ModelForm):
         model = models.IncomingLogModel
         fields = '__all__'
 
+class EditIncomingLogDocControllerForm(EditIncomingLogForm):
+    opinion = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'rows': 4}),
+        label=_('Opinion')
+    )
+    
+    class Meta:
+        model = models.IncomingLogModel
+        exclude = ['rectors_resolution']
+
 class EditIncomingLogOpinionForm(EditIncomingLogForm):
     class Meta:
         model = models.IncomingLogModel
