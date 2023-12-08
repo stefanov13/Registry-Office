@@ -2,8 +2,7 @@ from django.db import models
 from django.core import validators
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from ..user_profiles.models import Profile, DepartmentsModel
-import mimetypes
+from ..user_profiles.models import Profile, EmployeePositionsModel
 
 
 class OutgoingLogModel(models.Model):
@@ -51,16 +50,16 @@ class OutgoingLogModel(models.Model):
         verbose_name=_('Recipient'),
     )
 
-    signatory_profile = models.ForeignKey(
-        Profile,
-        on_delete=models.DO_NOTHING,
-        verbose_name=_('Signatory Profile'),
-    )
+    # signatory_profile = models.ForeignKey(
+    #     Profile,
+    #     on_delete=models.DO_NOTHING,
+    #     verbose_name=_('Signatory Profile'),
+    # )
 
-    signatory_department = models.ForeignKey(
-        DepartmentsModel,
+    signatory_employee_id = models.ForeignKey(
+        EmployeePositionsModel,
         on_delete=models.DO_NOTHING,
-        verbose_name=_('Signatory Department'),
+        verbose_name=_('Signatory Employee\'s ID'),
     )
 
     document_file = models.FileField(
