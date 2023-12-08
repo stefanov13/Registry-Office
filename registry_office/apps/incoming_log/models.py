@@ -2,7 +2,7 @@ from django.db import models
 from django.core import validators
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from ..user_profiles.models import Profile, DepartmentsModel
+from ..user_profiles.models import Profile, EmployeePositionsModel
 # from core.register_category_types_choices import CategoryTypesChoices
 
 # Create your models here.
@@ -52,16 +52,16 @@ class IncomingLogModel(models.Model):
         verbose_name=_('Rector\'s Resolution'),
     )
 
-    responsible_people = models.ManyToManyField(
-        Profile,
-        blank=True,
-        verbose_name=_('Responsible People'),
-    )
+    # responsible_people = models.ManyToManyField(
+    #     Profile,
+    #     blank=True,
+    #     verbose_name=_('Responsible People'),
+    # )
 
-    responsible_departments = models.ManyToManyField(
-        DepartmentsModel,
+    responsible_employees = models.ManyToManyField(
+        EmployeePositionsModel,
         blank=True,
-        verbose_name=_('Responsible Departments'),
+        verbose_name=_('Responsible Employee'),
     )
 
     last_change_date = models.DateTimeField(
@@ -113,6 +113,16 @@ class PersonOpinionModel(models.Model):
         blank=True,
         null=True,
         verbose_name=_('Opinion'),
+    )
+
+    creation_date = models.DateTimeField(
+        default=timezone.now,
+        verbose_name=_('Creation Date'),
+    )
+
+    last_change_date = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('Last Change Date'),
     )
 
     profile_owner = models.ForeignKey(
