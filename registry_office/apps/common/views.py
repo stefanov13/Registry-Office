@@ -1,7 +1,9 @@
 import os
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
+from core.mixins.moderator_group_mixin import GroupRequiredMixin
 from ..news_feed.models import NewsFeedModel
+from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
 
@@ -15,6 +17,21 @@ class BaseNewsFeedView(views.ListView):
     def get_queryset(self):
         return self.model.objects.order_by('-date')
     
+class EmployeePositionsIdView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.ListView,
+):
+    template_name = 'common/system-management.html'
+    model = EmployeePositionsModel
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]
+    
+    def get_queryset(self):
+        return self.model.objects.order_by('-pk')
 
 class IncomingDashboardView(
     auth_mixins.LoginRequiredMixin,
@@ -22,7 +39,11 @@ class IncomingDashboardView(
 ):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
-    allowed_groups = ['admin', 'document_controller']   
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]   
 
     def get_queryset(self):
         current_user_profile = self.request.user.profile
@@ -59,7 +80,11 @@ class OutgoingDashboardView(
 ):
     template_name = 'common/outgoing-dashboard.html'
     model = OutgoingLogModel
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]
 
     def get_queryset(self):
         current_user_profile = self.request.user.profile
