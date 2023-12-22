@@ -6,7 +6,7 @@
     <section>
         <h2>Редактиране на становище по документ относно {{ object.document.title }} във входящ регистър.</h2>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
 
             <p>Номер в регистъра: {{ object.document.log_num }}</p>
             <p>Описание: {{ object.document.title }}</p>

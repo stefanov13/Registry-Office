@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import AppCustomUser
 from .forms import RegisterUserForm
 
-# Register your models here.
+
 @admin.register(AppCustomUser)
 class AppCustomUserAdmin(auth_admin.UserAdmin):
     add_form = RegisterUserForm

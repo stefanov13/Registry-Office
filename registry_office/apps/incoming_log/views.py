@@ -18,13 +18,17 @@ class IncomingLogCreateView(
     template_name = 'incoming_log/incoming-create.html'
     success_url = reverse_lazy('incoming-dashboard')
     model = IncomingLogModel
-    fields = [ 'title', 'responsible_people', 'responsible_departments', 'document_file']
+    fields = [
+        'title',
+        'responsible_employees',
+        'document_file'
+    ]
 
     allowed_groups = [
         'admin',
         'administrative_manager',
         'document_controller',
-        ]
+    ]
 
 class IncomingLogDetailsView(
     auth_mixins.LoginRequiredMixin,
@@ -37,29 +41,46 @@ class IncomingLogDetailsView(
         'admin', 
         'administrative_manager', 
         'document_controller',
-        ]
+    ]
 
-    def get_queryset(self):
-        current_user_profile = self.request.user.profile
-        current_user_groups = self.request.user.groups.values_list('name', flat=True)
+    def dispatch(self, request, *args, **kwargs):
+
+        current_user_permissions = self.request.user.profile.employeepositionsmodel_set.all() #Must get ID from EmployeePositionsModel
+        a=5
+        current_user_groups = request.user.groups.values_list('name', flat=True)
 
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
-            self.request.user.is_staff
+            self.request.user.is_staff,
         ]
+        
+        if not any(rights):
+            return self.handle_no_permission()
 
-        if any(rights):
-            queryset = self.model.objects.order_by('-pk') # TODO Changing order_by criteria 
+        return super().dispatch(request, *args, **kwargs)
 
-        # TODO add elif statement to check for responsible_departments
+    # def get_queryset(self):
+    #     current_user_profile = self.request.user.profile #Must get ID from EmployeePositionsModel
+    #     current_user_groups = self.request.user.groups.values_list('name', flat=True)
 
-        else:
-            queryset = self.model.objects.filter(
-                responsible_people__in=[current_user_profile]
-                ).order_by('-pk') # TODO Changing order_by criteria
+    #     rights = [
+    #         set(current_user_groups).intersection(set(self.allowed_groups)),
+    #         self.request.user.is_superuser,
+    #         self.request.user.is_staff
+    #     ]
 
-        return queryset
+    #     if any(rights):
+    #         queryset = self.model.objects.order_by('-pk') # TODO Changing order_by criteria # Probably not necessary 
+
+    #     # TODO add elif statement to check for responsible_departments
+
+    #     else:
+    #         queryset = self.model.objects.filter(
+    #             responsible_people__in=[current_user_profile]
+    #             ).order_by('-pk') # TODO Changing order_by criteria
+
+    #     return queryset
 
 class IncomingLogEditView(
     auth_mixins.LoginRequiredMixin,
@@ -93,7 +114,7 @@ class IncomingLogEditView(
 
         return any(self.rights) \
             or self.request.user.profile in self.get_object().responsible_people.all() \
-            or self.document_controller_group in self.current_user_groups
+            or self.document_controller_group in self.current_user_groups # Here must make corrections
     
     def handle_no_permission(self):
         raise Http404()

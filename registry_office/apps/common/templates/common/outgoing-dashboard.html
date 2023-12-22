@@ -41,7 +41,7 @@
             </table>
         {% endif %}
         
-        {% if request.user|has_group:'admin' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+        {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
             <a href="{% url 'outgoing-create' %}" class="btn btn-outline-dark mb-3">Регистриране на нов документ</a>
         {% endif %}
     </section>

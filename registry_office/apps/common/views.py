@@ -7,8 +7,6 @@ from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
 
-# Create your views here.
-
 
 class BaseNewsFeedView(views.ListView):
     template_name = 'common/index.html'
@@ -24,6 +22,7 @@ class EmployeePositionsIdView(
 ):
     template_name = 'common/system-management.html'
     model = EmployeePositionsModel
+    
     allowed_groups = [
         'admin',
         'administrative_manager',
