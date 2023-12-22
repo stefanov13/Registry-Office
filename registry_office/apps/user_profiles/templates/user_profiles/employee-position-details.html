@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load check_group_exists %}
+
+{% block content %}
+    <section class="card text-bg-secondary mb-3" style="max-width: 50rem;">
+        <h2 class="card-header">Детайли за {{ object.employee_position_id }}</h2>
+
+        <div class="card-body">
+            {% if object.first_name or object.last_name %}
+                <p class="card-text">Име и фамилия на служителя: {{ object.first_name }} {{ object.last_name }}</p>
+            {% endif %}
+            {% if object.employee_position %}
+                <p class="card-text">Длъжност на служителя: {{ object.employee_position }}</p>
+            {% endif %}
+            {% if object.employee_department %}
+                <p class="card-text">Отдел на служителя: {{ object.employee_department }}</p>
+            {% endif %}
+            <ul>Профили на притежателите на идентификатора:
+                {% for profile in object.employee_owner.all %}
+                    <li>{{ profile }}</li>                
+                {% endfor %}
+            </ul>
+           
+        </div>
+            
+        <div class="vstack gap-2 col-md-5 mx-auto mb-3">
+            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                <a href="{% url 'employee-pos-edit' pk=object.pk %}" class="btn btn-warning">Редактиране</a>
+                <a href="{% url 'employee-pos-delete' pk=object.pk %}" class="btn btn-danger">Изтриване</a>
+            {% elif request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' %}
+                <a href="{% url 'employee-pos-edit' pk=object.pk %}" class="btn btn-warning">Редактиране</a>
+            {% endif %}
+        </div>
+
+    </section>
+{% endblock  %}

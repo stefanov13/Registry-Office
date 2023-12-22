@@ -146,11 +146,10 @@ class EmployeePositionsModel(models.Model):
 
     employee_owner = models.ManyToManyField(
         Profile,
-        on_delete=models.SET_NULL,
         blank=True,
-        null=True,
+        verbose_name=_('Employee owner'),
     )
 
     def __str__(self):
-        return f'{self.employee_position_id} {self.first_name} {self.last_name} - {self.employee_position}, {self.employee_department}'
+        return f'{self.employee_position_id} - {self.first_name} {self.last_name} - {self.employee_position}, {self.employee_department}'
     

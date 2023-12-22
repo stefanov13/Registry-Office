@@ -64,7 +64,6 @@ class NewsFeedEditView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         return super().form_valid(form)
 
 class NewsFeedDeleteView(auth_mixins.LoginRequiredMixin, views.DeleteView):
-    
     template_name = 'news_feed/news-delete.html'
     form_class = DeleteNewsFeedForm
     model = NewsFeedModel

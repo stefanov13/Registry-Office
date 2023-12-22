@@ -1,20 +1,15 @@
 from django import forms
-from .models import OutgoingLogModel
-from django.utils.translation import gettext_lazy as _
+from .models import EmployeePositionsModel
 
-class CreateOutgoingLogForm(forms.ModelForm):
+class EditEmployeePositionsForm(forms.ModelForm):
     class Meta:
-        model = OutgoingLogModel
-        fields = ['title', 'recipient', 'signatory_employee_id', 'document_file']
-
-class EditOutgoingLogForm(forms.ModelForm):
-    class Meta:
-        model = OutgoingLogModel
+        model = EmployeePositionsModel
         fields = '__all__'
 
-class DeleteOutgoingLogForm(forms.ModelForm):
+
+class DeleteEmployeePositionsForm(forms.ModelForm):
     class Meta:
-        model = OutgoingLogModel
+        model = EmployeePositionsModel
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):

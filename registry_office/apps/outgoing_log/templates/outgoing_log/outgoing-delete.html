@@ -5,7 +5,7 @@
     <section>
         <h2>Изтриване на документ в изходящ регистър.</h2>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
 
             <p>Номер в регистъра: {{ object.log_num }}</p>
             {% for field in form %}
@@ -15,7 +15,7 @@
                     {{ field|add_field_classes:'form-control' }}
 
                 </div>
-            {% endfor %}}
+            {% endfor %}
             <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
             {% csrf_token %}
 

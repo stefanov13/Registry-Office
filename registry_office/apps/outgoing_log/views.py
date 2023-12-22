@@ -20,7 +20,11 @@ class OutgoingLogCreateView(
     form_class = CreateOutgoingLogForm
     success_url = reverse_lazy('outgoing-dashboard')
 
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]
 
 class OutgoingLogDetailsView(
     auth_mixins.LoginRequiredMixin,
@@ -30,7 +34,11 @@ class OutgoingLogDetailsView(
     model = OutgoingLogModel
     pk_url_kwarg = 'pk'
 
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]
 
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
@@ -65,7 +73,11 @@ class OutgoingLogEditView(
     form_class = EditOutgoingLogForm
     model = OutgoingLogModel
 
-    allowed_groups = ['admin', 'document_controller']
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]
 
     def get_object(self, queryset=None):
         # Get the object to edit based on the primary key (pk) from the URL
