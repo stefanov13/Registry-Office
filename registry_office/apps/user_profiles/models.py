@@ -81,9 +81,8 @@ class EmployeePositionsModel(models.Model):
             validators.MinLengthValidator(
                 MIN_LENGTH,
                 'The identifier must contain at least 2 symbols', 
-                #'Идентификаторът трябва да съдържа поне 2 букви'
+                #'Идентификаторът трябва да съдържа поне 2 символа'
             ),
-            position_field_validator,
         ],
         verbose_name=_('Position\'s Identifier'),
     )

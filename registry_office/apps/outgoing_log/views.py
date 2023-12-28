@@ -45,16 +45,14 @@ class OutgoingLogDetailsView(
         pk = self.kwargs.get(self.pk_url_kwarg)
         current_object = get_object_or_404(queryset, pk=pk)
 
-        current_user_profile = self.request.user.profile
+        current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         
-        signatory_profile = current_object.signatory_profile
+        signatory_employee_id = current_object.signatory_employee_id
         
-
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
-            signatory_profile == current_user_profile,
-
+            signatory_employee_id in current_user_ids,
             self.request.user.is_superuser,
             self.request.user.is_staff
         ]
