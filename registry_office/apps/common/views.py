@@ -38,6 +38,7 @@ class IncomingDashboardView(
 ):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
+
     allowed_groups = [
         'admin',
         'administrative_manager',
@@ -45,7 +46,7 @@ class IncomingDashboardView(
     ]   
 
     def get_queryset(self):
-        current_user_profile = self.request.user.profile
+        current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
 
         rights = [
@@ -58,7 +59,7 @@ class IncomingDashboardView(
             queryset = self.model.objects.order_by('-creation_date', '-log_num')
 
         else:
-            queryset = self.model.objects.filter(responsible_people__in=[current_user_profile]).order_by('-creation_date', '-log_num')
+            queryset = self.model.objects.filter(responsible_employees__in=current_user_ids).order_by('-creation_date', '-log_num')
 
         return queryset
 
@@ -79,6 +80,7 @@ class OutgoingDashboardView(
 ):
     template_name = 'common/outgoing-dashboard.html'
     model = OutgoingLogModel
+
     allowed_groups = [
         'admin',
         'administrative_manager',
@@ -86,7 +88,7 @@ class OutgoingDashboardView(
     ]
 
     def get_queryset(self):
-        current_user_profile = self.request.user.profile
+        current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
 
         rights = [
@@ -99,7 +101,7 @@ class OutgoingDashboardView(
             queryset = self.model.objects.order_by('-creation_date', '-log_num')
 
         else:
-            queryset = self.model.objects.filter(signatory_profile=current_user_profile).order_by('-creation_date', '-log_num')
+            queryset = self.model.objects.filter(signatory_employee_id__in=current_user_ids).order_by('-creation_date', '-log_num')
 
         return queryset
 

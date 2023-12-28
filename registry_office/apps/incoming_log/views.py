@@ -36,6 +36,7 @@ class IncomingLogDetailsView(
 ):
     template_name = 'incoming_log/incoming-details.html'
     model = IncomingLogModel
+    pk_url_kwarg = 'pk'
 
     allowed_groups = [
         'admin', 
@@ -44,13 +45,18 @@ class IncomingLogDetailsView(
     ]
 
     def dispatch(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        current_object = get_object_or_404(queryset, pk=pk)
 
-        current_user_permissions = self.request.user.profile.employeepositionsmodel_set.all() #Must get ID from EmployeePositionsModel
-        a=5
+        current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = request.user.groups.values_list('name', flat=True)
+
+        responsible_employees = current_object.responsible_employees.all()
 
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
+            set(current_user_ids).intersection(set(responsible_employees)),
             self.request.user.is_superuser,
             self.request.user.is_staff,
         ]
