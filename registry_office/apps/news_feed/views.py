@@ -9,11 +9,37 @@ from .forms import DeleteNewsFeedForm
 # Create your views here.
 
 
-class NewsFeedCreateView(auth_mixins.LoginRequiredMixin, views.CreateView):
+class NewsFeedCreateView(
+    auth_mixins.LoginRequiredMixin,
+    auth_mixins.UserPassesTestMixin,
+    views.CreateView,
+):
     template_name = 'news_feed/news-create.html'
     model = NewsFeedModel
     fields = ['title', 'description']
     success_url = reverse_lazy('index')
+
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller'
+    ]
+
+    def test_func(self):
+        self.current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
+        self.rights = [
+            set(self.current_user_groups).intersection(set(self.allowed_groups)),
+            self.request.user.is_superuser,
+            self.request.user.is_staff,
+        ]
+
+        return any(self.rights) \
+            or self.request.user.profile.employeepositionsmodel_set.all()
+           
+    
+    def handle_no_permission(self):
+        raise Http404()
 
     def form_valid(self, form):
         form.instance.request = self.request  # Pass the request to the model instance

@@ -81,6 +81,7 @@ class OutgoingLogModel(models.Model):
             else:
                 last_log_num = '0'
 
+            last_log_num = last_log_num.split('-')[0]
             numeric_part = ''.join(filter(str.isdigit, last_log_num))
 
             self.log_num = int(numeric_part) + 1
