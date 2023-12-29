@@ -27,8 +27,8 @@
                             <td>И / {{ document.log_num }} / {{ document.creation_date|date:"d.m.Yг." }}</td>
                             <td><a href="{% url 'outgoing-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
                             <td>{{ document.recipient }}</td>
-                            <td>{{ document.signatory_profile.first_name }} {{ document.signatory_profile.last_name }}</td>
-                            <td>{{ document.signatory_profile.position }}</td>
+                            <td>{{ document.signatory_employee_id.employee_owner.first.first_name }} {{ document.signatory_employee_id.employee_owner.first.last_name }}</td>
+                            <td>{{ document.signatory_employee_id.employee_owner.first.position }}</td>
                             <td>{{ document.creation_date|date:"H:i часа" }}</td>
                             <td>
                                 {% if document.document_file %}

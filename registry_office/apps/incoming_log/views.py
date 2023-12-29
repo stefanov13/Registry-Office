@@ -1,3 +1,4 @@
+from typing import Any
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -8,7 +9,6 @@ from core.custom_views.extra_content_create_view import ExtraContentCreateView
 from .models import IncomingLogModel, PersonOpinionModel
 from . import forms
 
-# Create your views here.
 
 class IncomingLogCreateView(
     auth_mixins.LoginRequiredMixin,
@@ -44,49 +44,61 @@ class IncomingLogDetailsView(
         'document_controller',
     ]
 
-    def dispatch(self, request, *args, **kwargs):
+    # def dispatch(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+    #     pk = self.kwargs.get(self.pk_url_kwarg)
+    #     current_object = get_object_or_404(queryset, pk=pk)
+
+    #     current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
+    #     current_user_groups = request.user.groups.values_list('name', flat=True)
+
+    #     responsible_employees = current_object.responsible_employees.all()
+
+    #     rights = [
+    #         set(current_user_groups).intersection(set(self.allowed_groups)),
+    #         set(current_user_ids).intersection(set(responsible_employees)),
+    #         self.request.user.is_superuser,
+    #         self.request.user.is_staff,
+    #     ]
+        
+    #     if not any(rights):
+    #         return self.handle_no_permission()
+
+    #     return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        self.current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
+        current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
+        rights = [
+            set(current_user_groups).intersection(set(self.allowed_groups)),
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+        ]
+
+        if any(rights):
+            queryset = self.model.objects.order_by('-pk') 
+
+        else:
+            queryset = self.model.objects.filter(
+                responsible_employees__in=self.current_user_ids
+                ).order_by('-pk')
+
+        return queryset
+    
+    def get_context_data(self, *args, **kwargs: Any):
+        context = super().get_context_data(*args, **kwargs)
+
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
         current_object = get_object_or_404(queryset, pk=pk)
 
-        current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
-        current_user_groups = request.user.groups.values_list('name', flat=True)
-
         responsible_employees = current_object.responsible_employees.all()
 
-        rights = [
-            set(current_user_groups).intersection(set(self.allowed_groups)),
-            set(current_user_ids).intersection(set(responsible_employees)),
-            self.request.user.is_superuser,
-            self.request.user.is_staff,
-        ]
-        
-        if not any(rights):
-            return self.handle_no_permission()
+        current_user_auth = True if set(responsible_employees).intersection(self.current_user_ids) else False
+        context['is_auth'] = current_user_auth
 
-        return super().dispatch(request, *args, **kwargs)
-
-    # def get_queryset(self):
-    #     current_user_profile = self.request.user.profile #Must get ID from EmployeePositionsModel
-    #     current_user_groups = self.request.user.groups.values_list('name', flat=True)
-
-    #     rights = [
-    #         set(current_user_groups).intersection(set(self.allowed_groups)),
-    #         self.request.user.is_superuser,
-    #         self.request.user.is_staff
-    #     ]
-
-    #     if any(rights):
-    #         queryset = self.model.objects.order_by('-pk') # TODO Changing order_by criteria # Probably not necessary 
-
-    #     # TODO add elif statement to check for responsible_departments
-
-    #     else:
-    #         queryset = self.model.objects.filter(
-    #             responsible_people__in=[current_user_profile]
-    #             ).order_by('-pk') # TODO Changing order_by criteria
-
-    #     return queryset
+        return context
 
 class IncomingLogEditView(
     auth_mixins.LoginRequiredMixin,
@@ -106,8 +118,8 @@ class IncomingLogEditView(
         elif self.document_controller_group in self.current_user_groups:
             return forms.EditIncomingLogDocControllerForm
         
-        elif self.request.user.profile in self.get_object().responsible_people.all():
-            return forms.EditIncomingLogOpinionForm
+        # elif self.request.user.profile in self.get_object().responsible_people.all():
+        return forms.EditIncomingLogOpinionForm
 
     def test_func(self):
         self.current_user_groups = self.request.user.groups.values_list('name', flat=True)
@@ -119,8 +131,12 @@ class IncomingLogEditView(
         ]
 
         return any(self.rights) \
-            or self.request.user.profile in self.get_object().responsible_people.all() \
-            or self.document_controller_group in self.current_user_groups # Here must make corrections
+            or self.document_controller_group in self.current_user_groups \
+            or set(
+                self.request.user.profile.employeepositionsmodel_set.all()
+            ).intersection(
+                set(self.get_object().responsible_employees.all())
+            )
     
     def handle_no_permission(self):
         raise Http404()

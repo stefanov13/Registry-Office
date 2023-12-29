@@ -17,10 +17,12 @@
                     <span style="color: #FF7D4C">{{ object.rectors_resolution }}</span>
                 </div>
             {% endif %}
-            {% if object.responsible_employees %}
+            {% if object.responsible_employees.exists %}
                 <ul class="card-text">Отговорни служители:
                 {% for r_employees in object.responsible_employees.all %}
-                    <li>{{ r_employees.employee_owner.first_name }} {{ r_employees.employee_owner.last_name }}</li>
+                    {% for employee in r_employees.employee_owner.all %}
+                        <li>{{ employee.first_name }} {{ employee.last_name }}</li>
+                    {% endfor %}
                 {% endfor %}
                 </ul>
             {% endif %}
@@ -55,8 +57,7 @@
             {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
                 <a href="{% url 'incoming-edit' pk=object.pk %}" class="btn btn-outline-warning">Редактиране</a>
                 <a href="{% url 'incoming-delete' pk=object.pk %}" class="btn btn-danger">Изтриване</a>
-            {% comment %} TODO check current user profile in employee_id list {% endcomment %}
-            {% comment %} Not OK {% endcomment %} {% elif request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.profile.employeepositionsmodel_set.all in object.responsible_employees.all %}
+            {% elif request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or is_auth %}
                 <a href="{% url 'incoming-edit' pk=object.pk %}" class="btn btn-outline-warning">Редактиране</a>
             {% endif %}
         </div>
