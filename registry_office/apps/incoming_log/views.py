@@ -89,11 +89,11 @@ class IncomingLogDetailsView(
     def get_context_data(self, *args, **kwargs: Any):
         context = super().get_context_data(*args, **kwargs)
 
-        queryset = self.get_queryset()
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        current_object = get_object_or_404(queryset, pk=pk)
+        # queryset = self.get_queryset()
+        # pk = self.kwargs.get(self.pk_url_kwarg)
+        # current_object = get_object_or_404(queryset, pk=pk)
 
-        responsible_employees = current_object.responsible_employees.all()
+        responsible_employees = self.get_object().responsible_employees.all()
 
         current_user_auth = True if set(responsible_employees).intersection(self.current_user_ids) else False
         context['is_auth'] = current_user_auth
