@@ -12,8 +12,27 @@ class BaseNewsFeedView(views.ListView):
     template_name = 'common/index.html'
     model = NewsFeedModel
 
-    def get_queryset(self):
-        return self.model.objects.order_by('-date')
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+
+        search = self.request.GET.get('search', '')
+
+        queryset = self.model.objects.filter(
+                title__icontains=search
+            ).order_by('-date')
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['search'] = self.request.GET.get('search', '')
+        context['rows_per_page'] = self.request.GET.get('rows_per_page', 10)
+
+        return context
+    
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('rows_per_page', 10)
     
 class EmployeePositionsIdView(
     auth_mixins.LoginRequiredMixin,
@@ -45,9 +64,13 @@ class IncomingDashboardView(
         'document_controller',
     ]   
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+
         current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
+        search = self.request.GET.get('search', '')
 
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
@@ -56,23 +79,33 @@ class IncomingDashboardView(
         ]
         
         if any(rights):
-            queryset = self.model.objects.order_by('-creation_date', '-log_num')
+            queryset = self.model.objects.filter(
+                title__icontains=search
+            ).order_by('-creation_date', '-log_num')
 
         else:
-            queryset = self.model.objects.filter(responsible_employees__in=current_user_ids).order_by('-creation_date', '-log_num')
+            queryset = self.model.objects.filter(
+                responsible_employees__in=current_user_ids,
+                title__icontains=search
+            ).order_by('-creation_date', '-log_num')
 
         return queryset
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    #     # Modify the 'document_img' field in the context to display only the file name
-    #     documents = context['object_list']
+        context['search'] = self.request.GET.get('search', '')
+        context['rows_per_page'] = self.request.GET.get('rows_per_page', 10)
 
-    #     for document in documents:
-    #         document.document_file = os.path.basename(document.document_file.name)
+        # documents = context['object_list']
 
-    #     return context
+        # for document in documents:
+        #     document.document_file = os.path.basename(document.document_file.name)
+
+        return context
+    
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('rows_per_page', 10)
 
 class OutgoingDashboardView(
     auth_mixins.LoginRequiredMixin,
@@ -87,9 +120,13 @@ class OutgoingDashboardView(
         'document_controller',
     ]
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+
         current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
+
+        search = self.request.GET.get('search', '')
 
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
@@ -98,20 +135,30 @@ class OutgoingDashboardView(
         ]
 
         if any(rights):
-            queryset = self.model.objects.order_by('-creation_date', '-log_num')
+            queryset = self.model.objects.filter(
+                title__icontains=search
+            ).order_by('-creation_date', '-log_num')
 
         else:
-            queryset = self.model.objects.filter(signatory_employee_id__in=current_user_ids).order_by('-creation_date', '-log_num')
+            queryset = self.model.objects.filter(
+                signatory_employee_id__in=current_user_ids,
+                title__icontains=search
+            ).order_by('-creation_date', '-log_num')
 
         return queryset
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    #     # Modify the 'document_img' field in the context to display only the file name
-    #     documents = context['object_list']
-        
-    #     for document in documents:
-    #         document.document_file = os.path.basename(document.document_file.name)
+        context['search'] = self.request.GET.get('search', '')
+        context['rows_per_page'] = self.request.GET.get('rows_per_page', 10)
 
-    #     return context
+        # documents = context['object_list']
+
+        # for document in documents:
+        #     document.document_file = os.path.basename(document.document_file.name)
+
+        return context
+    
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('rows_per_page', 10)
