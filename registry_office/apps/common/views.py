@@ -1,4 +1,5 @@
 import os
+from django.http import HttpResponse
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
@@ -6,6 +7,7 @@ from ..news_feed.models import NewsFeedModel
 from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
+from openpyxl import Workbook
 
 
 class BaseNewsFeedView(views.ListView):
@@ -90,6 +92,13 @@ class IncomingDashboardView(
             ).order_by('-creation_date', '-log_num')
 
         return queryset
+    
+    def get(self, request, *args, **kwargs):
+        if 'export' in request.GET:
+            # If 'export' parameter is present in the query string, export data
+            return self.export_data()
+        
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -106,6 +115,30 @@ class IncomingDashboardView(
     
     def get_paginate_by(self, queryset):
         return self.request.GET.get('rows_per_page', 10)
+    
+    def export_data(self):
+        # Retrieve the queryset
+        queryset = self.get_queryset()
+
+        # Create a new workbook and add a worksheet
+        workbook = Workbook()
+        worksheet = workbook.active
+
+        # Write headers to the worksheet
+        headers = [str(field.verbose_name) for field in IncomingLogModel._meta.fields]
+        worksheet.append(headers)
+
+        # Write data to the worksheet
+        for obj in queryset:
+            row = [str(getattr(obj, field.name)) for field in IncomingLogModel._meta.fields]
+            worksheet.append(row)
+
+        # Create a response with the Excel file
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=incoming_exported_data.xlsx'
+        workbook.save(response)
+
+        return response
 
 class OutgoingDashboardView(
     auth_mixins.LoginRequiredMixin,
@@ -146,6 +179,13 @@ class OutgoingDashboardView(
             ).order_by('-creation_date', '-log_num')
 
         return queryset
+    
+    def get(self, request, *args, **kwargs):
+        if 'export' in request.GET:
+            # If 'export' parameter is present in the query string, export data
+            return self.export_data()
+        
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -162,3 +202,27 @@ class OutgoingDashboardView(
     
     def get_paginate_by(self, queryset):
         return self.request.GET.get('rows_per_page', 10)
+    
+    def export_data(self):
+        # Retrieve the queryset
+        queryset = self.get_queryset()
+
+        # Create a new workbook and add a worksheet
+        workbook = Workbook()
+        worksheet = workbook.active
+
+        # Write headers to the worksheet
+        headers = [str(field.verbose_name) for field in OutgoingLogModel._meta.fields]
+        worksheet.append(headers)
+
+        # Write data to the worksheet
+        for obj in queryset:
+            row = [str(getattr(obj, field.name)) for field in OutgoingLogModel._meta.fields]
+            worksheet.append(row)
+
+        # Create a response with the Excel file
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=outgoing_exported_data.xlsx'
+        workbook.save(response)
+
+        return response

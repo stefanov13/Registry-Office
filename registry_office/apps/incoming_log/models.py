@@ -61,7 +61,7 @@ class IncomingLogModel(models.Model):
     responsible_employees = models.ManyToManyField(
         EmployeePositionsModel,
         blank=True,
-        verbose_name=_('Responsible Employee'),
+        verbose_name=_('Responsible Employees'),
     )
 
     last_change_date = models.DateTimeField(

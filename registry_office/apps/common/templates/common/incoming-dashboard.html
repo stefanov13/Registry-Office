@@ -9,7 +9,7 @@
         {% if not object_list %}
             <h4>Няма добавени документи в регистъра</h4>
         {% else %}
-            <form action="{% url "incoming-dashboard" %}?page={{ page_obj.number}}">
+            <form action="{% url "incoming-dashboard" %}?page={{ page_obj.number}}" style="display:flex">
                 <input type="text" name="search" value="{{ search }}" placeholder="Търсене в описанието" class="form-control mb-3">
                 <button type="submit" class="btn btn-outline-dark mb-3">Търси</button>
             </form>
@@ -80,12 +80,16 @@
                 </span>
             </div>
 
-            <form method="get" action="">
+            <form method="get" style="display:flex" action="">
                 <label for="rows_per_page" class="form-label">Брой редове на страница:</label>
                 <input type="number" name="rows_per_page" id="rows_per_page" value="{{ paginator.per_page }}" min="1" placeholder="Въведи брой редове" class="form-control mb-3">
             
                 <button type="submit" class="btn btn-outline-dark mb-3">Покажи</button>
             </form>
+
+            {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+                <a href="?export&search={{ search }}" class="btn btn-outline-dark mb-3">Експорт в Excel</a>
+            {% endif %}
         {% endif %}
 
         {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}

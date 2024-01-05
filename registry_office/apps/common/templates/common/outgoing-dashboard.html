@@ -71,6 +71,10 @@
             
                 <button type="submit" class="btn btn-outline-dark mb-3">Покажи</button>
             </form>
+
+            {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+                <a href="?export&search={{ search }}" class="btn btn-outline-dark mb-3">Експорт в Excel</a>
+            {% endif %}
         {% endif %}
         
         {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
