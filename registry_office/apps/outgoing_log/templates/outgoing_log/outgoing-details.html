@@ -2,26 +2,17 @@
 {% load check_group_exists %}
 
 {% block content %}
-    <section class="card text-bg-secondary mb-3" style="max-width: 50rem;">
+    <section class="card text-bg-secondary mb-3" style="max-width: 40rem;">
         <h2 class="card-header">{{ object.title }} с изходящ номер {{ object.log_num }} от {{ object.creation_date|date:"d.m.Yг. - H:i часа" }}</h2>
 
-        <div class="card-body">
+        <article class="card-body">
             <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
             <p class="card-text">Регистриран на: {{ object.creation_date|date:"d.m.Y в H:i" }}</p>
             <p class="card-text">Описание: {{ object.title }}</p>
             <p class="card-text">Получател: {{ object.recipient }}</p>
             <p class="card-text">Име на подателя: {{ object.signatory_employee_id.employee_owner.first.first_name }} {{ object.signatory_employee_id.employee_owner.first.last_name }}</p>
             <p class="card-text">Длъжност на подателя: {{ object.signatory_employee_id.employee_owner.first.position }}</p>  
-        </div>
-
-        <div>
-        {% if object.document_file %}
-        {% comment %}{% if file_type %}{% endcomment %}
-            <embed src="{{ object.document_file.url }}" type="application/pdf" width="100%" height="500px" class="mb-3"/>
-            <p class="vstack gap-2 col-md-5 mx-auto mb-3"><a href="{{ object.document_file.url }}" target="_blank" class="mb-3 btn btn-outline-info">Преглед на документа</a></p>
-            {% comment %} <img src="{{ object.document_file.url }}" class="mb-3" alt="Outgoing Document Image"> {% endcomment %}
-        {% endif %}
-        </div>
+        </article>
 
         <div class="vstack gap-2 col-md-5 mx-auto mb-3">
             {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
@@ -33,4 +24,14 @@
         </div>
 
     </section>
+
+    <section class="card text-bg-secondary mb-3" style="width: 60rem;">
+        {% if object.document_file %}
+        {% comment %}{% if file_type %}{% endcomment %}
+            <embed src="{{ object.document_file.url }}" type="application/pdf" width="100%" height="500px" class="mb-3"/>
+            <p class="vstack gap-2 col-md-5 mx-auto mb-3"><a href="{{ object.document_file.url }}" target="_blank" class="mb-3 btn btn-outline-info">Преглед на документа</a></p>
+            {% comment %} <img src="{{ object.document_file.url }}" class="mb-3" alt="Outgoing Document Image"> {% endcomment %}
+        {% endif %}
+    </section>
+
 {% endblock  %}
