@@ -7,7 +7,7 @@
 
         <form method="post" enctype="multipart/form-data">
 
-            <p>Номер в регистъра: {{ object.log_num }}</p>
+            {% comment %} <p>Номер в регистъра: {{ object.log_num }}</p> {% endcomment %}
             {% for field in form %}
                 <div class="mb-3">
 
@@ -16,7 +16,7 @@
 
                 </div>
             {% endfor %}
-            <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p>
+            {% comment %} <p>Регистриран на: {{ object.creation_date|date:"d.m.Yг. в H:i часа." }}</p> {% endcomment %}
             {% csrf_token %}
 
             <div class="vstack gap-2 col-md-5 mx-auto mb-3">
