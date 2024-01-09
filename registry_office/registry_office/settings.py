@@ -30,8 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
 # Application definition
 
 DJANGO_APPS = (
@@ -54,6 +52,7 @@ PROJECT_APPS = (
     'apps.user_profiles',
     'apps.outgoing_log',
     'apps.incoming_log',
+    'apps.administrative_orders_log'
     'apps.news_feed',
 )
 

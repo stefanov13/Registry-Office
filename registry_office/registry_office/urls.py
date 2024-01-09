@@ -26,6 +26,7 @@ urlpatterns = [
     path('profile/', include('apps.user_profiles.urls')),
     path('incoming/', include('apps.incoming_log.urls')),
     path('outgoing/', include('apps.outgoing_log.urls')),
+    path('orders/', include('apps.administrative_orders_log.urls')),
     path('newsletter/', include('apps.news_feed.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
