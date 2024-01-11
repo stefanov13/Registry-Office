@@ -39,8 +39,8 @@ class AdministrativeOrdersLogModel(models.Model):
 
     publisher = models.CharField(
         max_length=PUBLISHER_MAX_LENGTH,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         validators=[
             validators.MinLengthValidator(
             PUBLISHER_MIN_LENGTH, 
