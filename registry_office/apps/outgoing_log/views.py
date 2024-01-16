@@ -7,7 +7,7 @@ from django.http import Http404
 from .models import OutgoingLogModel
 from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLogForm
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
-from core.custom_views.extra_content_create_view import ExtraContentCreateView
+from core.custom_views.extra_content_views import ExtraContentCreateView
 
 
 class OutgoingLogCreateView(
