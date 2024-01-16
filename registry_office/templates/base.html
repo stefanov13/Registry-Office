@@ -26,11 +26,9 @@
                         {% if not request.user.profile %}
                             <li class="nav-item" style="color: #D8F0FE">За да работите със ситемата, моля <a href="{% url 'user-edit' %}" class="nav-link">добавете профил</a></li>
                         {% else %}
-                            {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser or request.user.profile.employeepositionsmodel_set.exists %}
-                                <li class="nav-item"><a href="{% url 'news-create' %}" class="nav-link">СЪЗДАЙ НОВИНА</a></li>
-                            {% endif %}
                             <li class="nav-item"><a href="{% url 'incoming-dashboard' %}" class="nav-link">ВХОДЯЩ РЕГИСТЪР</a></li>
                             <li class="nav-item"><a href="{% url 'outgoing-dashboard' %}" class="nav-link">ИЗХОДЯЩ РЕГИСТЪР</a></li>
+                            <li class="nav-item"><a href="{% url 'orders-dashboard' %}" class="nav-link">РЕГИСТЪР НА ЗАПОВЕДИТЕ</a></li>
                             {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
                                 <li class="nav-item"><a href="{% url 'positions-id-dashboard' %}" class="nav-link">УПРАВЛЕНИЕ НА СИСТЕМАТА</a></li>
                             {% endif %}
