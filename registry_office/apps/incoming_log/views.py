@@ -1,11 +1,10 @@
-from typing import Any
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
-from core.custom_views.extra_content_create_view import ExtraContentCreateView
+from core.custom_views.extra_content_views import ExtraContentCreateView
 from .models import IncomingLogModel, PersonOpinionModel
 from . import forms
 
@@ -86,7 +85,7 @@ class IncomingLogDetailsView(
 
         return queryset
     
-    def get_context_data(self, *args, **kwargs: Any):
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
         queryset = self.get_queryset()

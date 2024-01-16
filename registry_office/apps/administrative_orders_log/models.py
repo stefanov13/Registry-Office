@@ -52,7 +52,7 @@ class AdministrativeOrdersLogModel(models.Model):
 
     responsible_employees = models.ManyToManyField(
         EmployeePositionsModel,
-        on_delete=models.DO_NOTHING,
+        blank=True,
         verbose_name=_('Responsible Employees'),
     )
 

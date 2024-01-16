@@ -3,7 +3,7 @@
 
 {% block content %}
     <section>
-        <h2>Изтриване на документ в изходящ регистър.</h2>
+        <h2>Изтриване на заповед.</h2>
 
         <form method="post" enctype="multipart/form-data">
 
@@ -21,7 +21,7 @@
 
             <div class="vstack gap-2 col-md-5 mx-auto mb-3">
                 <button type="submit" class="btn btn-danger">Изтрий</button>
-                <a href="{% url 'outgoing-details' pk=object.pk %}" class="btn btn-outline-secondary">Откажи промените</a>
+                <a href="{% url 'orders-details' pk=object.pk %}" class="btn btn-outline-secondary">Откажи промените</a>
             </div>
 
         </form>
