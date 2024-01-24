@@ -7,6 +7,7 @@ from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
 from ..administrative_orders_log.models import AdministrativeOrdersLogModel
+from ..contracts_log.models import GeneralContractsLogModel
 
 
 class BaseNewsFeedView(views.ListView):
@@ -72,4 +73,10 @@ class OrdersDashboardView(
 ):
     template_name = 'common/orders-dashboard.html'
     model = AdministrativeOrdersLogModel
-        
+
+class GeneralContractsDashboardView(
+    auth_mixins.LoginRequiredMixin,
+    ExtraContentListView,
+):
+    template_name = 'common/gen-contracts-dashboard.html'
+    model = GeneralContractsLogModel
