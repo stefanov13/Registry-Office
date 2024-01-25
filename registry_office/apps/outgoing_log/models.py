@@ -2,7 +2,7 @@ from django.db import models
 from django.core import validators
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from ..user_profiles.models import Profile, EmployeePositionsModel
+from ..user_profiles.models import EmployeePositionsModel
 
 
 class OutgoingLogModel(models.Model):
@@ -56,7 +56,7 @@ class OutgoingLogModel(models.Model):
     #     verbose_name=_('Signatory Profile'),
     # )
 
-    signatory_employee_id = models.ForeignKey(
+    concerned_employees = models.ForeignKey(
         EmployeePositionsModel,
         on_delete=models.DO_NOTHING,
         verbose_name=_('Signatory Employee\'s ID'),

@@ -50,7 +50,7 @@ class AdministrativeOrdersLogModel(models.Model):
         verbose_name=_('Publisher'),
     )
 
-    responsible_employees = models.ManyToManyField(
+    concerned_employees = models.ManyToManyField(
         EmployeePositionsModel,
         blank=True,
         verbose_name=_('Responsible Employees'),
