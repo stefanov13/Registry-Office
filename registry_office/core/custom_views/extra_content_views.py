@@ -33,7 +33,7 @@ class ExtraContentListView(views.ListView):
 
         else:
             queryset = self.model.objects.filter(
-                signatory_employee_id__in=current_user_ids,
+                concerned_employees__in=current_user_ids,
                 title__icontains=search
             ).order_by('-creation_date', '-log_num')
 
@@ -71,17 +71,23 @@ class ExtraContentListView(views.ListView):
         worksheet = workbook.active
 
         # Write headers to the worksheet
-        headers = [str(field.verbose_name) for field in self.model._meta.fields]
+        headers = []
+        for field in self.model._meta.fields:
+            headers.append(f'{field.verbose_name}') if field.is_relation else headers.append(str(field.verbose_name))
+
         worksheet.append(headers)
 
         # Write data to the worksheet
         for obj in queryset:
-            row = [str(getattr(obj, field.name)) for field in self.model._meta.fields]
+            row = []
+            for field in self.model._meta.fields:
+                row.append(str(getattr(obj, field.name))) if field.is_relation else row.append(str(getattr(obj, field.name)))
+
             worksheet.append(row)
 
         # Create a response with the Excel file
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename={self.model.__name__}_exported_data.xlsx'
+        response['Content-Disposition'] = f'attachment; filename={self.model._meta.app_label}_exported_data.xlsx'
         workbook.save(response)
 
         return response
