@@ -115,16 +115,68 @@ class GeneralContractsLogDeleteView(ContractsLogDeleteView):
     model = GeneralContractsLogModel
     success_url = reverse_lazy('gen-contracts-dashboard')
 
-    # template_name = 'administrative_orders_log/orders-create.html'
-    # success_url = reverse_lazy('orders-dashboard')
-    # model = AdministrativeOrdersLogModel
+class EducationContractsLogCreateView(ContractsLogCreateView):
+    template_name = 'contracts_log/training-contracts-create.html'
+    model = EducationContractsLogModel
+    success_url = reverse_lazy('training-contracts-dashboard')
 
-    # template_name = 'administrative_orders_log/orders-details.html'
-    # model = AdministrativeOrdersLogModel
+class EducationContractsLogDetailsView(ContractsLogDetailsView):
+    template_name = 'contracts_log/training-contracts-details.html'
+    model = EducationContractsLogModel
 
-    # template_name = 'administrative_orders_log/orders-edit.html'
-    # model = AdministrativeOrdersLogModel
+class EducationContractsLogEditView(ContractsLogEditView):
+    template_name = 'contracts_log/training-contracts-edit.html'
+    model = EducationContractsLogModel
 
-    # template_name = 'administrative_orders_log/orders-delete.html'
-    # model = AdministrativeOrdersLogModel
-    # success_url = reverse_lazy('orders-dashboard')
+    def get_success_url(self):
+        # Redirect to the details page of the edited object after successful update
+        return reverse_lazy('training-contracts-details', kwargs={'pk': self.object.pk})
+    
+class EducationContractsLogDeleteView(ContractsLogDeleteView):
+    template_name = 'contracts_log/training-contracts-delete.html'
+    model = EducationContractsLogModel
+    success_url = reverse_lazy('training-contracts-dashboard')
+
+class FreelanceContractsLogCreateView(ContractsLogCreateView):
+    template_name = 'contracts_log/freelance-contracts-create.html'
+    model = FreelanceContractsLogModel
+    success_url = reverse_lazy('freelance-contracts-dashboard')
+
+class FreelanceContractsLogDetailsView(ContractsLogDetailsView):
+    template_name = 'contracts_log/freelance-contracts-details.html'
+    model = FreelanceContractsLogModel
+
+class FreelanceContractsLogEditView(ContractsLogEditView):
+    template_name = 'contracts_log/freelance-contracts-edit.html'
+    model = FreelanceContractsLogModel
+
+    def get_success_url(self):
+        # Redirect to the details page of the edited object after successful update
+        return reverse_lazy('freelance-contracts-details', kwargs={'pk': self.object.pk})
+    
+class FreelanceContractsLogDeleteView(ContractsLogDeleteView):
+    template_name = 'contracts_log/freelance-contracts-delete.html'
+    model = FreelanceContractsLogModel
+    success_url = reverse_lazy('freelance-contracts-dashboard')
+
+class FreelanceLectureContractsLogCreateView(ContractsLogCreateView):
+    template_name = 'contracts_log/freelance-lecturers-contracts-create.html'
+    model = FreelanceLectureContractsLogModel
+    success_url = reverse_lazy('freelance-lecturers-contracts-dashboard')
+
+class FreelanceLectureContractsLogDetailsView(ContractsLogDetailsView):
+    template_name = 'contracts_log/freelance-lecturers-contracts-details.html'
+    model = FreelanceLectureContractsLogModel
+
+class FreelanceLectureContractsLogEditView(ContractsLogEditView):
+    template_name = 'contracts_log/freelance-lecturers-contracts-edit.html'
+    model = FreelanceLectureContractsLogModel
+
+    def get_success_url(self):
+        # Redirect to the details page of the edited object after successful update
+        return reverse_lazy('freelance-lecturers-contracts-details', kwargs={'pk': self.object.pk})
+    
+class FreelanceLectureContractsLogDeleteView(ContractsLogDeleteView):
+    template_name = 'contracts_log/freelance-lecturers-contracts-delete.html'
+    model = FreelanceLectureContractsLogModel
+    success_url = reverse_lazy('freelance-lecturers-contracts-dashboard')

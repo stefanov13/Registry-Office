@@ -7,7 +7,7 @@ from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
 from ..administrative_orders_log.models import AdministrativeOrdersLogModel
-from ..contracts_log.models import GeneralContractsLogModel
+from ..contracts_log.models import GeneralContractsLogModel, EducationContractsLogModel, FreelanceContractsLogModel, FreelanceLectureContractsLogModel
 
 
 class BaseNewsFeedView(views.ListView):
@@ -41,7 +41,7 @@ class EmployeePositionsIdView(
     GroupRequiredMixin,
     views.ListView,
 ):
-    template_name = 'common/system-management.html'
+    template_name = 'common/employees-id-dashboard.html'
     model = EmployeePositionsModel
     
     allowed_groups = [
@@ -80,3 +80,24 @@ class GeneralContractsDashboardView(
 ):
     template_name = 'common/gen-contracts-dashboard.html'
     model = GeneralContractsLogModel
+
+class EducationContractsDashboardView(
+    auth_mixins.LoginRequiredMixin,
+    ExtraContentListView,
+):
+    template_name = 'common/training-contracts-dashboard.html'
+    model = EducationContractsLogModel
+
+class FreelanceContractsDashboardView(
+    auth_mixins.LoginRequiredMixin,
+    ExtraContentListView,
+):
+    template_name = 'common/freelance-contracts-dashboard.html'
+    model = FreelanceContractsLogModel
+
+class FreelanceLectureContractsDashboardView(
+    auth_mixins.LoginRequiredMixin,
+    ExtraContentListView,
+):
+    template_name = 'common/freelance-lecturers-contracts-dashboard.html'
+    model = FreelanceLectureContractsLogModel

@@ -3,14 +3,13 @@
 
 {% block content %}
     <section>
-        <h2>РЕГИСТЪР НА ВХОДЯЩА КОРЕСПОНДЕНЦИЯ</h2>
-
+        <h2>РЕГИСТЪР НА ДОГОВОРИТЕ ЗА ОБУЧЕНИЕ</h2>
 
         {% if not object_list %}
-            <h4>Няма добавени документи в регистъра</h4>
+            <h4>Няма добавени договори в регистъра</h4>
         {% else %}
-            <form action="{% url "incoming-dashboard" %}?page={{ page_obj.number}}" style="display:flex">
-                <input type="text" name="search" value="{{ search }}" placeholder="Търсене в описанието" class="form-control mb-3">
+            <form action="{% url "training-contracts-dashboard" %}?page={{ page_obj.number}}">
+                <input type="text" name="search" value="{{ search }}" placeholder="Търсене в описанието">
                 <button type="submit" class="btn btn-outline-dark mb-3">Търси</button>
             </form>
 
@@ -19,39 +18,27 @@
                     <tr>
                         <td>Номер и дата на регистрация</td>
                         <td>Описание</td>
-                        <td>Резолюция на ректора</td>
-                        <td>Разпределение</td>
-                        <td>Становище</td>
+                        <td>Тип на договора</td>
+                        <td>Заинтересовани лица</td>
                         <td>Час на регистрация</td>
-                        <td>Последна промяна</td>
                         <td>Прикачен файл</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for document in object_list %}
+                    {% for contract in object_list %}
                         <tr>
-                            <td>В / {{ document.log_num }} / {{ document.creation_date|date:"d.m.Yг." }}</td>
-                            <td><a href="{% url 'incoming-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
-                            {% if document.rectors_resolution %}
+                            <td>ДО / {{ contract.log_num }} / {{ contract.creation_date|date:"d.m.Yг." }}</td>
+                            <td><a href="{% url 'training-contracts-details' pk=contract.pk %}">{{ contract.title|truncatechars:50 }}</a></td>
+                            <td>{{ contract.contract_type|truncatechars:80 }}</td>
+                            {% if contract.concerned_employees.exists %}
                                 <td>Има</td>
                             {% else %}
                                 <td>Няма</td>
                             {% endif %}
-                            {% if document.concerned_employees.exists %}
-                                <td>Има</td>
-                            {% else %}
-                                <td>Няма</td>
-                            {% endif %}
-                            {% if document.personopinionmodel_set.exists %}
-                                <td>Има</td>
-                            {% else %}
-                                <td>Няма</td>
-                            {% endif %}
-                            <td>{{ document.creation_date|date:"H:i часа." }}</td>
-                            <td>{{ document.last_change_date|date:"d.m.Yг. в H:i часа." }}</td>
+                            <td>{{ contract.creation_date|date:"H:i часа" }}</td>
                             <td>
-                                {% if document.document_file %}
-                                    <a href="{{ document.document_file.url }}" target="_blank">Преглед на документа</a>
+                                {% if contract.document_file %}
+                                    <a href="{{ contract.document_file.url }}" target="_blank">Преглед на договора</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -80,9 +67,9 @@
                 </span>
             </div>
 
-            <form method="get" style="display:flex" action="">
-                <label for="rows_per_page" class="form-label">Брой редове на страница:</label>
-                <input type="number" name="rows_per_page" id="rows_per_page" value="{{ paginator.per_page }}" min="1" placeholder="Въведи брой редове" class="form-control mb-3">
+            <form method="get" action="">
+                <label for="rows_per_page">Брой редове на страница:</label>
+                <input type="number" name="rows_per_page" id="rows_per_page" value="{{ paginator.per_page }}" min="1" placeholder="Въведи брой редове">
             
                 <button type="submit" class="btn btn-outline-dark mb-3">Покажи</button>
             </form>
@@ -91,10 +78,9 @@
                 <a href="?export&search={{ search }}" class="btn btn-outline-dark mb-3">Експорт в Excel</a>
             {% endif %}
         {% endif %}
-
+        
         {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
-            <a href="{% url 'incoming-create' %}" class="btn btn-outline-dark mb-3">Регистриране на нов документ</a>
+            <a href="{% url 'training-contracts-create' %}" class="btn btn-outline-dark mb-3">Регистриране на договор за обучение</a>
         {% endif %}
-
     </section>
 {% endblock  %}

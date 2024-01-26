@@ -7,9 +7,9 @@
             <h2 class="card-header">{{ object.title }} с входящ номер {{ object.log_num }} от {{ object.creation_date|date:"d.m.Yг. - H:i часа" }}</h2>
 
             <article class="card-body">
-                {% if object.category %}
+                {% comment %} {% if object.category %}
                     <p class="card-text">Категория: {{ object.category }}</p>
-                {% endif %}
+                {% endif %} {% endcomment %}
                 <p class="card-text">Номер в регистъра: <span>{{ object.log_num }}</span></p>
                 <p class="card-text">Описание: {{ object.title }}</p>
                 {% if object.rectors_resolution %}
@@ -18,10 +18,10 @@
                         <span style="color: #FF7D4C">{{ object.rectors_resolution }}</span>
                     </div>
                 {% endif %}
-                {% if object.responsible_employees.exists %}
+                {% if object.concerned_employees.exists %}
                     <ul class="card-text">Отговорни служители:
-                    {% for r_employees in object.responsible_employees.all %}
-                        {% for employee in r_employees.employee_owner.all %}
+                    {% for c_employees in object.concerned_employees.all %}
+                        {% for employee in c_employees.employee_owner.all %}
                             <li>{{ employee.first_name }} {{ employee.last_name }} - {{ employee.position }}</li>
                         {% endfor %}
                     {% endfor %}

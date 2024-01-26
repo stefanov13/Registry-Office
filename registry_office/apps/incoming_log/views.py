@@ -19,7 +19,7 @@ class IncomingLogCreateView(
     model = IncomingLogModel
     fields = [
         'title',
-        'responsible_employees',
+        'concerned_employees',
         'document_file'
     ]
 
@@ -80,7 +80,7 @@ class IncomingLogDetailsView(
 
         else:
             queryset = self.model.objects.filter(
-                responsible_employees__in=self.current_user_ids
+                concerned_employees__in=self.current_user_ids
                 ).order_by('-pk')
 
         return queryset
@@ -92,7 +92,7 @@ class IncomingLogDetailsView(
         pk = self.kwargs.get(self.pk_url_kwarg)
         current_object = get_object_or_404(queryset, pk=pk)
 
-        responsible_employees = current_object.responsible_employees.all()
+        responsible_employees = current_object.concerned_employees.all()
 
         current_user_auth = True if set(responsible_employees).intersection(self.current_user_ids) else False
         context['is_auth'] = current_user_auth
@@ -134,7 +134,7 @@ class IncomingLogEditView(
             or set(
                 self.request.user.profile.employeepositionsmodel_set.all()
             ).intersection(
-                set(self.get_object().responsible_employees.all())
+                set(self.get_object().concerned_employees.all())
             )
     
     def handle_no_permission(self):

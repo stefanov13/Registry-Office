@@ -143,7 +143,7 @@ class EducationContractsLogModel(models.Model):
     document_file = models.FileField(
         blank=True,
         null=True,
-        upload_to='gen_contracts_doc_files',
+        upload_to='training_contracts_doc_files',
         verbose_name=_('Document File'),
     )
 
@@ -216,7 +216,7 @@ class FreelanceContractsLogModel(models.Model):
     document_file = models.FileField(
         blank=True,
         null=True,
-        upload_to='gen_contracts_doc_files',
+        upload_to='freelance_contracts_doc_files',
         verbose_name=_('Document File'),
     )
 
@@ -289,7 +289,7 @@ class FreelanceLectureContractsLogModel(models.Model):
     document_file = models.FileField(
         blank=True,
         null=True,
-        upload_to='gen_contracts_doc_files',
+        upload_to='freelance_lecture_contracts_doc_files',
         verbose_name=_('Document File'),
     )
 
