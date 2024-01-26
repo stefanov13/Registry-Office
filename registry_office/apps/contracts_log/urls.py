@@ -3,10 +3,13 @@ from . import views
 
 urlpatterns = [
     path('create/', views.GeneralContractsLogCreateView.as_view(), name='gen-contracts-create'),
+    path('type-create/', views.ContractTypesCreateView.as_view(), name='contract-types-create'),
     path('freelance-create/', views.FreelanceContractsLogCreateView.as_view(), name='freelance-contracts-create'),
     path('freelance-lecturers-create/', views.FreelanceLectureContractsLogCreateView.as_view(), name='freelance-lecturers-contracts-create'),
     path('training-create/', views.EducationContractsLogCreateView.as_view(), name='training-contracts-create'),
     path('<int:pk>/', include([
+        path('type-edit/', views.ContractTypesEditView.as_view(), name='contract-types-edit'),
+        path('type-delete/', views.ContractTypesDeleteView.as_view(), name='contract-types-delete'),
         path('details/', views.GeneralContractsLogDetailsView.as_view(), name='gen-contracts-details'),
         path('edit/', views.GeneralContractsLogEditView.as_view(), name='gen-contracts-edit'),
         path('delete/', views.GeneralContractsLogDeleteView.as_view(), name='gen-contracts-delete'),

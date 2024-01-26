@@ -7,7 +7,7 @@ from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
 from ..outgoing_log.models import OutgoingLogModel
 from ..administrative_orders_log.models import AdministrativeOrdersLogModel
-from ..contracts_log.models import GeneralContractsLogModel, EducationContractsLogModel, FreelanceContractsLogModel, FreelanceLectureContractsLogModel
+from ..contracts_log import models
 
 
 class BaseNewsFeedView(views.ListView):
@@ -52,6 +52,23 @@ class EmployeePositionsIdView(
     
     def get_queryset(self):
         return self.model.objects.order_by('-pk')
+    
+class ContractTypesView(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.ListView,
+):
+    template_name = 'common/contract-types-dashboard.html'
+    model = models.ContractTypesModel
+    
+    allowed_groups = [
+        'admin',
+        'administrative_manager',
+        'document_controller',
+    ]
+    
+    def get_queryset(self):
+        return self.model.objects.order_by('-pk')
 
 class IncomingDashboardView(
     auth_mixins.LoginRequiredMixin,
@@ -79,25 +96,25 @@ class GeneralContractsDashboardView(
     ExtraContentListView,
 ):
     template_name = 'common/gen-contracts-dashboard.html'
-    model = GeneralContractsLogModel
+    model = models.GeneralContractsLogModel
 
 class EducationContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
     ExtraContentListView,
 ):
     template_name = 'common/training-contracts-dashboard.html'
-    model = EducationContractsLogModel
+    model = models.EducationContractsLogModel
 
 class FreelanceContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
     ExtraContentListView,
 ):
     template_name = 'common/freelance-contracts-dashboard.html'
-    model = FreelanceContractsLogModel
+    model = models.FreelanceContractsLogModel
 
 class FreelanceLectureContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
     ExtraContentListView,
 ):
     template_name = 'common/freelance-lecturers-contracts-dashboard.html'
-    model = FreelanceLectureContractsLogModel
+    model = models.FreelanceLectureContractsLogModel

@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.BaseNewsFeedView.as_view(), name='index'),
     path('employees-id-dashboard/', views.EmployeePositionsIdView.as_view(), name='positions-id-dashboard'),
+    path('contract-types-dashboard/', views.ContractTypesView.as_view(), name='contract-types-dashboard'),
     path('outgoing-dashboard/', views.OutgoingDashboardView.as_view(), name='outgoing-dashboard'),
     path('incoming-dashboard/', views.IncomingDashboardView.as_view(), name='incoming-dashboard'),
     path('orders-dashboard/', views.OrdersDashboardView.as_view(), name='orders-dashboard'),
