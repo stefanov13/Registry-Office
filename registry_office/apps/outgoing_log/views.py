@@ -48,7 +48,7 @@ class OutgoingLogDetailsView(
         current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         
-        signatory_employee_id = current_object.signatory_employee_id
+        signatory_employee_id = current_object.concerned_employees
         
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
