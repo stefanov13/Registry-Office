@@ -59,7 +59,7 @@ class AdministrativeOrdersLogModel(models.Model):
     document_file = models.FileField(
         blank=True,
         null=True,
-        upload_to='outgoing_doc_files',
+        upload_to='administrative_orders_doc_files',
         verbose_name=_('Document File'),
     )
 

@@ -20,7 +20,7 @@ class AdministrativeOrdersLogCreateView(
     fields = [
         'title',
         'publisher',
-        'responsible_employees',
+        'concerned_employees',
         'document_file',
     ]
 
