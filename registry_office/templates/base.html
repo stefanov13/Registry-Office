@@ -29,16 +29,24 @@
                             <li class="nav-item"><a href="{% url 'incoming-dashboard' %}" class="nav-link">ВХОДЯЩ РЕГИСТЪР</a></li>
                             <li class="nav-item"><a href="{% url 'outgoing-dashboard' %}" class="nav-link">ИЗХОДЯЩ РЕГИСТЪР</a></li>
                             <li class="nav-item"><a href="{% url 'orders-dashboard' %}" class="nav-link">РЕГИСТЪР НА ЗАПОВЕДИТЕ</a></li>
-                            <li class="nav-item dropdown"><a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">РЕГИСТЪР НА ДОГОВОРИТЕ</a>
+                            <li class="nav-item dropdown"><a href="#" class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">РЕГИСТЪР НА ДОГОВОРИТЕ</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{% url 'gen-contracts-dashboard' %}" class="dropdown-item">ДОГОВОРИ</a></li>
-                                    {% comment %} <a href="{% url '-dashboard' %}" class="nav-link">ДОГОВОРИ ЗА ОБУЧЕНИЕ</a>
-                                    <a href="{% url '-dashboard' %}" class="nav-link">ГРАЖДАНСКИ ДОГОВОРИ</a>
-                                    <a href="{% url '-dashboard' %}" class="nav-link">ГРАЖДАНСКИ ДОГОВОРИ С ПРЕПОДАВАТЕЛИ</a> {% endcomment %}
+                                    <li><a href="{% url 'training-contracts-dashboard' %}" class="dropdown-item">ДОГОВОРИ ЗА ОБУЧЕНИЕ</a></li>
+                                    <li><a href="{% url 'freelance-contracts-dashboard' %}" class="dropdown-item">ГРАЖДАНСКИ ДОГОВОРИ</a></li>
+                                    <li><a href="{% url 'freelance-lecturers-contracts-dashboard' %}" class="dropdown-item">ГРАЖДАНСКИ ДОГОВОРИ С ПРЕПОДАВАТЕЛИ</a></li>
                                 </ul>
                             </li>
                             {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
-                                <li class="nav-item"><a href="{% url 'positions-id-dashboard' %}" class="nav-link">УПРАВЛЕНИЕ НА СИСТЕМАТА</a></li>
+                                <li class="nav-item dropdown"><a href="#" class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">УПРАВЛЕНИЕ НА СИСТЕМАТА</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'positions-id-dashboard' %}" class="dropdown-item">ИДЕНТИФИКАТОРИ</a></li>
+                                        <li><a href="#" class="dropdown-item">ТИП ДОГОВОР</a></li>
+                                        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                                            <li><a href="#" class="dropdown-item">УПРАВЛЕНИЕ НА ПРОФИЛИТЕ</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
                             {% endif %}
                             <li class="nav-item"><a href="{% url 'user-details' %}" class="nav-link">Потребител: {{ request.user.profile.first_name }} {{ request.user.profile.last_name }}</a></li>
                         {% endif %}
