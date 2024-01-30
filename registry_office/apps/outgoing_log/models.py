@@ -59,6 +59,8 @@ class OutgoingLogModel(models.Model):
     concerned_employees = models.ForeignKey(
         EmployeePositionsModel,
         on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True,
         verbose_name=_('Signatory Employee\'s ID'),
     )
 
