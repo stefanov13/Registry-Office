@@ -31,8 +31,13 @@
                             <td>И / {{ document.log_num }} / {{ document.creation_date|date:"d.m.Yг." }}</td>
                             <td><a href="{% url 'outgoing-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
                             <td>{{ document.recipient }}</td>
-                            <td>{{ document.concerned_employees.employee_owner.first.first_name }} {{ document.concerned_employees.employee_owner.first.last_name }}</td>
-                            <td>{{ document.concerned_employees.employee_owner.first.position }}</td>
+                            {% if object.concerned_employees.exists %}
+                                <td>{{ document.concerned_employees.employee_owner.first.first_name }} {{ document.concerned_employees.employee_owner.first.last_name }}</td>
+                                <td>{{ document.concerned_employees.employee_owner.first.position }}</td>
+                            {% else %}
+                                <td>Не е въведено</td>
+                                <td>Не е въведено</td>
+                            {% endif %}
                             <td>{{ document.creation_date|date:"H:i часа" }}</td>
                             <td>
                                 {% if document.document_file %}
