@@ -23,12 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0kk3qzln4o49afv0u+y%%@*5f7!krrm@8_!8rfiqjxi!^-5j-m'
+SECRET_KEY = os.getenv('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG', 0)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
+
+CSRF_TRUSTED_ORIGINS = [f'http://{x}' for x in os.environ.get('ALLOWED_HOSTS', '').split(' ')]
 
 # Application definition
 
@@ -97,11 +99,11 @@ WSGI_APPLICATION = 'registry_office.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "natfa",
-        "USER": "penka",
-        "PASSWORD": "dolna",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": os.getenv('DB_NAME', None),
+        "USER": os.getenv('DB_USER', None),
+        "PASSWORD": os.getenv('DB_PASSWORD', None),
+        "HOST": os.getenv('DB_HOST', None),
+        "PORT": os.getenv('DB_PORT', 5432),
     }
 }
 
@@ -155,6 +157,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (
     BASE_DIR / 'static_files',
 )
+
+STATIC_ROOT = os.getenv('STATIC_ROOT', BASE_DIR / 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
