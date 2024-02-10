@@ -16,8 +16,8 @@ RUN pip install -r requirements.txt
 COPY apps /app/apps
 COPY core /app/core
 COPY nginx /app/nginx
+COPY envs /app/envs
 COPY registry_office /app/registry_office
 COPY static_files /app/static_files
-COPY media_files /app/media_files
 COPY templates /app/templates
 COPY manage.py /app/
