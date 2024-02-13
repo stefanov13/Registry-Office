@@ -197,7 +197,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 #         "file": {
 #             "level": "INFO",
 #             "class": "logging.handlers.RotatingFileHandler",
-#             "filename": "/var/log/django.log",
+#             "filename": "/var/log/app/registry_office.log",
 #             'maxBytes' : 1024*1024*10, # 10MB
 #             'backupCount' : 10,
 #             "formatter": "app",
