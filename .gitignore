@@ -1,2 +1,5 @@
 */__pycache__/*
 media_files/*
+env/*
+envs/*
+*/.env
