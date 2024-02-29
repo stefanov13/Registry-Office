@@ -78,7 +78,7 @@ class GeneralContractsLogModel(models.Model):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_instance = GeneralContractsLogModel.objects.order_by(
-                '-creation_date',
+                '-creation_date__date',
                 '-log_num',
                 ).first()
 
@@ -151,7 +151,7 @@ class EducationContractsLogModel(models.Model):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_instance = EducationContractsLogModel.objects.order_by(
-                '-creation_date',
+                '-creation_date__date',
                 '-log_num',
                 ).first()
 
@@ -224,7 +224,7 @@ class FreelanceContractsLogModel(models.Model):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_instance = FreelanceContractsLogModel.objects.order_by(
-                '-creation_date',
+                '-creation_date__date',
                 '-log_num',
                 ).first()
 
@@ -297,7 +297,7 @@ class FreelanceLectureContractsLogModel(models.Model):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_instance = FreelanceLectureContractsLogModel.objects.order_by(
-                '-creation_date',
+                '-creation_date__date',
                 '-log_num',
                 ).first()
 
