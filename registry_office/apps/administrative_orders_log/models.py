@@ -66,7 +66,7 @@ class AdministrativeOrdersLogModel(models.Model):
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = AdministrativeOrdersLogModel.objects.order_by('-creation_date', '-log_num').first()
+            last_instance = AdministrativeOrdersLogModel.objects.order_by('-creation_date__date', '-log_num').first()
 
             current_year = timezone.now().year
 
