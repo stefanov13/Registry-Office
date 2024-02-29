@@ -29,13 +29,13 @@ class ExtraContentListView(views.ListView):
         if any(rights):
             queryset = self.model.objects.filter(
                 title__icontains=search
-            ).order_by('-creation_date', '-log_num')
+            ).order_by('-creation_date__date', '-log_num')
 
         else:
             queryset = self.model.objects.filter(
                 concerned_employees__in=current_user_ids,
                 title__icontains=search
-            ).order_by('-creation_date', '-log_num')
+            ).order_by('-creation_date__date', '-log_num')
 
         return queryset
     
@@ -97,7 +97,7 @@ class ExtraContentCreateView(views.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        last_instance = self.model.objects.order_by('-creation_date', '-log_num').first()
+        last_instance = self.model.objects.order_by('-creation_date__date', '-log_num').first()
 
         current_year = timezone.now().year
 
