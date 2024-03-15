@@ -5,7 +5,7 @@
 
     <form action="{% url 'login' %}" method="post">
         {% if form.non_field_errors %}
-            <div>
+            <div style="color: red">
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
@@ -17,7 +17,7 @@
                 {% if field.errors %}
                     <ul>
                         {% for error in field.errors %}
-                            <li><span>{{ error }}</span></li>
+                            <li><span style="color: red">{{ error }}</span></li>
                         {% endfor %}
                     </ul>
                 {% endif %}

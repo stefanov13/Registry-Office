@@ -23,6 +23,9 @@
                         <td>Разпределение</td>
                         <td>Становище</td>
                         <td>Час на регистрация</td>
+                        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                            <td>Регистратор</td>
+                        {% endif %}
                         <td>Последна промяна</td>
                         <td>Прикачен файл</td>
                     </tr>
@@ -30,7 +33,8 @@
                 <tbody>
                     {% for document in object_list %}
                         <tr>
-                            <td>В / {{ document.log_num }} / {{ document.creation_date|date:"d.m.Yг." }}</td>
+                            <td>В / {{ document.log_num }}{% if document.sub_log_num %}-{{ document.sub_log_num }}{% endif %}
+                                 / {{ document.creation_date|date:"d.m.Yг." }}</td>
                             <td><a href="{% url 'incoming-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
                             {% if document.rectors_resolution %}
                                 <td>Има</td>
@@ -48,10 +52,19 @@
                                 <td>Няма</td>
                             {% endif %}
                             <td>{{ document.creation_date|date:"H:i часа." }}</td>
+                            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                                <td>{{ document.creator_user }}</td>
+                            {% endif %}
                             <td>{{ document.last_change_date|date:"d.m.Yг. в H:i часа." }}</td>
                             <td>
-                                {% if document.document_file %}
-                                    <a href="{{ document.document_file.url }}" target="_blank">Преглед на документа</a>
+                                {% if document.first_document_file %}
+                                    <p><a href="{{ document.first_document_file.url }}" target="_blank">Преглед на първи документ</a></p>
+                                {% endif %}
+                                {% if document.second_document_file %}
+                                    <p><a href="{{ document.second_document_file.url }}" target="_blank">Преглед на втори документ</a></p>
+                                {% endif %}
+                                {% if document.third_document_file %}
+                                    <p><a href="{{ document.third_document_file.url }}" target="_blank">Преглед на трети документ</a></p>
                                 {% endif %}
                             </td>
                         </tr>
