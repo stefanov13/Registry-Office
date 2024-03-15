@@ -5,12 +5,13 @@ from django.utils.translation import gettext_lazy as _
 class CreateOutgoingLogForm(forms.ModelForm):
     class Meta:
         model = OutgoingLogModel
-        fields = ['title', 'recipient', 'concerned_employees', 'document_file']
+        fields = ['title', 'recipient', 'concerned_employees', 'first_document_file', 'second_document_file', 'third_document_file']
 
 class EditOutgoingLogForm(forms.ModelForm):
     class Meta:
         model = OutgoingLogModel
-        fields = '__all__'
+        exclude = ['creator_user']
+        # fields = '__all__'
 
 class DeleteOutgoingLogForm(forms.ModelForm):
     class Meta:

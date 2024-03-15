@@ -10,6 +10,17 @@
         <form method="post" enctype="multipart/form-data">
 
             {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+                
+                {% if form.errors %}
+                    <ul>
+                        {% for error_list in form.errors.values %}
+                            {% for error in error_list %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+          
                 {% for field in form %}
                     <div class="mb-3">
 
