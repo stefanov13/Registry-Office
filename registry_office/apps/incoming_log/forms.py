@@ -30,7 +30,8 @@ class EditIncomingLogForm(forms.ModelForm):
     
     class Meta:
         model = models.IncomingLogModel
-        fields = '__all__'
+        exclude = ['creator_user']
+        # fields = '__all__'
 
 class EditIncomingLogDocControllerForm(EditIncomingLogForm):
     opinion = forms.CharField(
@@ -41,7 +42,7 @@ class EditIncomingLogDocControllerForm(EditIncomingLogForm):
     
     class Meta:
         model = models.IncomingLogModel
-        exclude = ['rectors_resolution']
+        exclude = ['rectors_resolution', 'creator_user',]
 
 class EditIncomingLogOpinionForm(EditIncomingLogForm):
     class Meta:

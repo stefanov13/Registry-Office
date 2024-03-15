@@ -7,6 +7,17 @@
 
         <form method="post" enctype="multipart/form-data">
 
+            {% if form.errors %}
+                <ul>
+                    {% for error_list in form.errors.values %}
+                        {% for error in error_list %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+
             {% for field in form %}
                 <div class="mb-3">
 

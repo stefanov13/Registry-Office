@@ -9,6 +9,15 @@
         <form method="post" enctype="multipart/form-data">
 
             {% comment %}<p>Номер в регистъра: {{ object.log_num }}</p>{% endcomment %}
+            {% if form.errors %}
+                <ul>
+                    {% for error_list in form.errors.values %}
+                        {% for error in error_list %}
+                            <li><span style="color: red">{{ error }}</span></li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
             {% for field in form %}
                 <div class="mb-3">

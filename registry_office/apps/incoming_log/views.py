@@ -20,7 +20,9 @@ class IncomingLogCreateView(
     fields = [
         'title',
         'concerned_employees',
-        'document_file'
+        'first_document_file',
+        'second_document_file',
+        'third_document_file'
     ]
 
     allowed_groups = [
@@ -97,6 +99,25 @@ class IncomingLogDetailsView(
         current_user_auth = True if set(responsible_employees).intersection(self.current_user_ids) else False
         context['is_auth'] = current_user_auth
 
+        doc_files = [
+            current_object.first_document_file,
+            current_object.second_document_file, 
+            current_object.third_document_file
+        ]
+        
+        context['doc_files'] = []
+        names = {
+            'first_document_file': 'Първи Документ',
+            'second_document_file': 'Втори Документ',
+            'third_document_file': 'Трети Документ',
+            }
+
+        for x in doc_files:           
+            try:
+                context['doc_files'].append({'url': x.url, 'name': names[x.field.name]})
+            except ValueError:
+                continue
+
         return context
 
 class IncomingLogEditView(
@@ -111,7 +132,7 @@ class IncomingLogEditView(
     document_controller_group = 'document_controller'
 
     def get_form_class(self):
-        if any(self.rights):
+        if self.rights:
             return forms.EditIncomingLogForm
         
         elif self.document_controller_group in self.current_user_groups:

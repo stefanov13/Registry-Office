@@ -87,7 +87,9 @@ class ContractsLogCreateView(
         'title',
         'contract_type',
         'concerned_employees',
-        'document_file',
+        'first_document_file',
+        'second_document_file',
+        'third_document_file',
     ]
 
     allowed_groups = [
@@ -120,7 +122,7 @@ class ContractsLogEditView(
     GroupRequiredMixin,
     views.UpdateView,
 ):
-    fields = '__all__'
+    exclude = ['creator_user']
 
     allowed_groups = [
         'admin', 

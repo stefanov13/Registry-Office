@@ -6,6 +6,16 @@
         <h2>Регистриране на документи във входящ регистър.</h2>
 
         <form method="post" enctype="multipart/form-data">
+
+            {% if form.errors %}
+                <ul>
+                    {% for error_list in form.errors.values %}
+                        {% for error in error_list %}
+                            <li><span style="color: red">{{ error }}</span></li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
             
             <p>Номер в регистъра:
                 В /  

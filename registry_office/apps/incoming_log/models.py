@@ -1,23 +1,31 @@
 from django.db import models
 from django.core import validators
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ..user_profiles.models import Profile, EmployeePositionsModel
+
+
 # from core.register_category_types_choices import CategoryTypesChoices
 
 # Create your models here.
 
 class IncomingLogModel(models.Model):
-    LOGS_NUM_MAX_LENGTH = 15
     CATEGORY_MAX_LENGTH = 1
     TITLE_MIN_LENGTH = 2
     TITLE_MAX_LENGTH = 150
+    CREATOR_USER_MAX_LENGTH = 150
     
-    log_num = models.CharField(
-        max_length=LOGS_NUM_MAX_LENGTH,
+    log_num = models.IntegerField(
         blank=False,
         null=False,
-        verbose_name=_('Log\'s number')
+        verbose_name=_('Log\'s number'),
+    )
+
+    sub_log_num = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_('Sub Log\'s number'),
     )
 
     # category = models.CharField(
@@ -64,34 +72,66 @@ class IncomingLogModel(models.Model):
         verbose_name=_('Responsible Employees'),
     )
 
+    creator_user = models.CharField(
+        max_length=CREATOR_USER_MAX_LENGTH,
+        blank=False,
+        null=False,
+        verbose_name=_('Creator User')
+    )
+
     last_change_date = models.DateTimeField(
         auto_now=True,
         verbose_name=_('Last Change Date'),
     )
 
-    document_file = models.FileField(
+    first_document_file = models.FileField(
         blank=True,
         null=True,
         upload_to='incoming_doc_files',
-        verbose_name=_('Document File'),
+        verbose_name=_('First Document File'),
     )
+
+    second_document_file = models.FileField(
+        blank=True,
+        null=True,
+        upload_to='incoming_doc_files',
+        verbose_name=_('Second Document File'),
+    )
+
+    third_document_file = models.FileField(
+        blank=True,
+        null=True,
+        upload_to='incoming_doc_files',
+        verbose_name=_('Third Document File'),
+    )
+
+    def clean(self):
+        super().clean()
+
+        self.current_year = timezone.now().year
+
+        same_value_current_year = IncomingLogModel.objects.filter(
+            creation_date__year=self.current_year, log_num=self.log_num, sub_log_num=self.sub_log_num
+        ).exclude(
+            pk=self.pk
+        ).exists()
+
+        if same_value_current_year:
+            raise ValidationError(
+                _('Cannot have duplicate log numbers in the same year.')
+            ) # 'В регистъра не може да има два еднакви номера в една година'
 
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
             last_instance = IncomingLogModel.objects.order_by('-creation_date__date', '-log_num').first()
-            
-            current_year = timezone.now().year
 
-            if last_instance and last_instance.creation_date.year == current_year:
+            if last_instance and last_instance.creation_date.year == self.current_year:
                 last_log_num = last_instance.log_num
             else:
-                last_log_num = '0'
+                last_log_num = 0
 
-            last_log_num = last_log_num.split('-')[0]
-            numeric_part = ''.join(filter(str.isdigit, last_log_num))
-
-            self.log_num = int(numeric_part) + 1
+            self.log_num = last_log_num + 1
 
         super().save(*args, **kwargs)
 
