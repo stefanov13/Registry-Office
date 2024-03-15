@@ -12,7 +12,7 @@ class GroupRequiredMixin(AccessMixin):
                 request.user.is_staff
             ]
 
-        if not any(rights):
+        if not rights:
             raise Http404()
         
         return super().dispatch(request, *args, **kwargs)

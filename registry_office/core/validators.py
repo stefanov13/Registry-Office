@@ -20,3 +20,4 @@ def name_cyrillic_letters_and_hyphens_validator(value):
         raise ValidationError(
             _('The first letter of the name must be capitalized and must contain only Cyrillic letters and dashes!')
         )  # 'Името трябва задължително да започва с главна булва и да съдържа само български букви и тирета!'
+ 

@@ -1,4 +1,4 @@
-import os
+import re
 from django.views import generic as views
 from django.utils import timezone
 from django.http import HttpResponse
@@ -23,19 +23,19 @@ class ExtraContentListView(views.ListView):
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
-            self.request.user.is_staff
+            self.request.user.is_staff,
         ]
 
-        if any(rights):
+        if any(rights):            
             queryset = self.model.objects.filter(
                 title__icontains=search
-            ).order_by('-creation_date__date', '-log_num')
+            ).order_by('-creation_date__date', '-log_num', '-sub_log_num')
 
         else:
             queryset = self.model.objects.filter(
                 concerned_employees__in=current_user_ids,
                 title__icontains=search
-            ).order_by('-creation_date__date', '-log_num')
+            ).order_by('-creation_date__date', '-log_num', '-sub_log_num')
 
         return queryset
     
@@ -94,6 +94,11 @@ class ExtraContentListView(views.ListView):
 
 class ExtraContentCreateView(views.CreateView):
 
+    def form_valid(self, form):
+        form.instance.creator_user = self.request.user.profile
+        return super().form_valid(form)
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -104,12 +109,9 @@ class ExtraContentCreateView(views.CreateView):
         if last_instance and last_instance.creation_date.year == current_year:
             last_log_num = last_instance.log_num
         else:
-            last_log_num = '0'
+            last_log_num = 0
 
-        last_log_num = last_log_num.split('-')[0]
-        numeric_part = ''.join(filter(str.isdigit, last_log_num))
-
-        next_log_num = int(numeric_part) + 1
+        next_log_num = last_log_num + 1
 
         context['next_log_num'] = next_log_num
         context['current_date'] = timezone.now
