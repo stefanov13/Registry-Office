@@ -61,7 +61,9 @@
 
         </section>
 
-        <section class="card text-bg-secondary mb-3" style="width: 60rem;">
+        {% include "components/pdf-viewer.html" %}
+
+        {% comment %} <section class="card text-bg-secondary mb-3" style="width: 60rem;">
             <div class="select-document">
                 {% for file in doc_files %}
                     <button data={{ file.url }} type="button" class="btn btn-outline-info btn-sm">{{ file.name }}</button>
@@ -74,6 +76,6 @@
                 </p>
             {% endfor %}
 
-        </section>
+        </section> {% endcomment %}
     </div>
 {% endblock  %}

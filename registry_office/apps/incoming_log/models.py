@@ -111,7 +111,9 @@ class IncomingLogModel(models.Model):
         self.current_year = timezone.now().year
 
         same_value_current_year = IncomingLogModel.objects.filter(
-            creation_date__year=self.current_year, log_num=self.log_num, sub_log_num=self.sub_log_num
+            creation_date__year=self.current_year,
+            log_num=self.log_num,
+            sub_log_num=self.sub_log_num
         ).exclude(
             pk=self.pk
         ).exists()

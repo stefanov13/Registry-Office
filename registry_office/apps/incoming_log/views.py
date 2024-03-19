@@ -1,10 +1,13 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 from core.custom_views.extra_content_views import ExtraContentCreateView
+from core.doc_files_context import extra_context_details_view
 from .models import IncomingLogModel, PersonOpinionModel
 from . import forms
 
@@ -99,24 +102,7 @@ class IncomingLogDetailsView(
         current_user_auth = True if set(responsible_employees).intersection(self.current_user_ids) else False
         context['is_auth'] = current_user_auth
 
-        doc_files = [
-            current_object.first_document_file,
-            current_object.second_document_file, 
-            current_object.third_document_file
-        ]
-        
-        context['doc_files'] = []
-        names = {
-            'first_document_file': 'Първи Документ',
-            'second_document_file': 'Втори Документ',
-            'third_document_file': 'Трети Документ',
-            }
-
-        for x in doc_files:           
-            try:
-                context['doc_files'].append({'url': x.url, 'name': names[x.field.name]})
-            except ValueError:
-                continue
+        context['doc_files'] = extra_context_details_view(current_object)
 
         return context
 
@@ -185,14 +171,32 @@ class IncomingLogEditView(
         return initial
     
     def form_valid(self, form):
+        response = super().form_valid(form)
+
         opinion = form.cleaned_data.get('opinion', None)
+        # log_num = form.cleaned_data.get('log_num', None)
+        # current_creation_date = form.cleaned_data.get('creation_date')
+
+        # log_num_range_in_date = IncomingLogModel.objects.filter(
+        #     creation_date__date=self.object.creation_date.date()
+        # ).all()
+
+        # range_log_nums = [x.log_num for x in log_num_range_in_date]
+
+        # last_log_num_before_date = IncomingLogModel.objects.filter(
+        #     creation_date__year=self.object.creation_date.year,
+        #     creation_date__lte=self.object.creation_date.date()
+        # ).order_by(
+        #     '-log_num'
+        # ).first()
         
         if self.object.personopinionmodel_set.filter(
             profile_owner_id=self.request.user.profile.pk
             ).exists():
             po = PersonOpinionModel.objects.filter(
                 profile_owner=self.request.user.profile,
-                document=self.object).get()
+                document=self.object
+            ).get()
             
             po.opinion = opinion
             po.save()
@@ -200,12 +204,21 @@ class IncomingLogEditView(
         elif opinion:
             po = PersonOpinionModel.objects.create(
                 profile_owner=self.request.user.profile,
-                opinion=opinion, document=self.object)
+                opinion=opinion, 
+                document=self.object
+            )
             
             po.save()
             form.instance.opinions = po
 
-        return super().form_valid(form)
+        # constraints = (log_num_range_in_date, last_log_num_before_date.log_num == self.object.log_num)
+
+        # if not any(constraints):
+        #     raise ValidationError(
+        #         _('Номерът, който се оптвате да въведете или не е от тази дата или не е последния номер от предходната дата от тази на регистрацията')
+        #     ) # Номерът, който се оптвате да въведете или не е от тази дата или не е последния номер от предходната дата от тази на регистрацията
+
+        return response
     
     def get_success_url(self):
         return reverse('incoming-details', kwargs={'pk': self.object.pk})
