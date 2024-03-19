@@ -1,0 +1,126 @@
+2024-03-08 14:05:19 [INFO    ] (autoreload.run_with_reloader) Watching for file changes with StatReloader
+2024-03-08 14:05:19 [INFO    ] (autoreload.run_with_reloader) Watching for file changes with StatReloader
+2024-03-08 14:05:30 [INFO    ] (basehttp.log_message) "GET / HTTP/1.1" 200 3872
+2024-03-08 14:05:30 [INFO    ] (basehttp.log_message) "GET / HTTP/1.1" 200 3872
+2024-03-08 14:05:30 [INFO    ] (basehttp.log_message) "GET /static/images/natfa_logo_75-2.png HTTP/1.1" 200 74807
+2024-03-08 14:05:30 [INFO    ] (basehttp.log_message) "GET /static/images/natfa_logo_75-2.png HTTP/1.1" 200 74807
+2024-03-08 14:05:30 [INFO    ] (basehttp.log_message) "GET /static/images/favicon.ico HTTP/1.1" 200 1150
+2024-03-08 14:05:30 [INFO    ] (basehttp.log_message) "GET /static/images/favicon.ico HTTP/1.1" 200 1150
+2024-03-08 14:05:36 [INFO    ] (basehttp.log_message) "GET /auth/login/ HTTP/1.1" 200 2835
+2024-03-08 14:05:36 [INFO    ] (basehttp.log_message) "GET /auth/login/ HTTP/1.1" 200 2835
+2024-03-08 14:05:48 [INFO    ] (basehttp.log_message) "POST /auth/login/ HTTP/1.1" 302 0
+2024-03-08 14:05:48 [INFO    ] (basehttp.log_message) "POST /auth/login/ HTTP/1.1" 302 0
+2024-03-08 14:05:48 [INFO    ] (basehttp.log_message) "GET / HTTP/1.1" 200 6350
+2024-03-08 14:05:48 [INFO    ] (basehttp.log_message) "GET / HTTP/1.1" 200 6350
+2024-03-08 14:05:54 [INFO    ] (basehttp.log_message) "GET /incoming-dashboard/ HTTP/1.1" 200 12181
+2024-03-08 14:05:54 [INFO    ] (basehttp.log_message) "GET /incoming-dashboard/ HTTP/1.1" 200 12181
+2024-03-08 14:06:05 [INFO    ] (basehttp.log_message) "GET /incoming/create/ HTTP/1.1" 200 5959
+2024-03-08 14:06:05 [INFO    ] (basehttp.log_message) "GET /incoming/create/ HTTP/1.1" 200 5959
+2024-03-08 14:06:16 [INFO    ] (basehttp.log_message) "POST /incoming/create/ HTTP/1.1" 302 0
+2024-03-08 14:06:16 [INFO    ] (basehttp.log_message) "POST /incoming/create/ HTTP/1.1" 302 0
+2024-03-08 14:06:16 [INFO    ] (basehttp.log_message) "GET /incoming-dashboard/ HTTP/1.1" 200 12955
+2024-03-08 14:06:16 [INFO    ] (basehttp.log_message) "GET /incoming-dashboard/ HTTP/1.1" 200 12955
+2024-03-08 14:06:18 [INFO    ] (basehttp.log_message) "GET /incoming/8/details/ HTTP/1.1" 200 5373
+2024-03-08 14:06:18 [INFO    ] (basehttp.log_message) "GET /incoming/8/details/ HTTP/1.1" 200 5373
+2024-03-08 14:06:20 [INFO    ] (basehttp.log_message) "GET /incoming/8/edit/ HTTP/1.1" 200 7373
+2024-03-08 14:06:20 [INFO    ] (basehttp.log_message) "GET /incoming/8/edit/ HTTP/1.1" 200 7373
+2024-03-08 14:06:24 [ERROR   ] (log.log_response) Internal Server Error: /incoming/8/edit/
+Traceback (most recent call last):
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\edit.py", line 208, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\edit.py", line 152, in post
+    if form.is_valid():
+       ^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\forms.py", line 201, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\forms.py", line 196, in errors
+    self.full_clean()
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\forms.py", line 435, in full_clean
+    self._post_clean()
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\models.py", line 486, in _post_clean
+    self.instance.full_clean(exclude=exclude, validate_unique=False)
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\base.py", line 1470, in full_clean
+    self.clean_fields(exclude=exclude)
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\base.py", line 1522, in clean_fields
+    setattr(self, f.attname, f.clean(raw_value, self))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\fields\__init__.py", line 778, in clean
+    self.run_validators(value)
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\fields\__init__.py", line 730, in run_validators
+    v(value)
+TypeError: different_num_log_value_same_year_validator() missing 1 required positional argument: 'model'
+2024-03-08 14:06:24 [ERROR   ] (log.log_response) Internal Server Error: /incoming/8/edit/
+Traceback (most recent call last):
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\contrib\auth\mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\contrib\auth\mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\edit.py", line 208, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\views\generic\edit.py", line 152, in post
+    if form.is_valid():
+       ^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\forms.py", line 201, in is_valid
+    return self.is_bound and not self.errors
+                                 ^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\forms.py", line 196, in errors
+    self.full_clean()
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\forms.py", line 435, in full_clean
+    self._post_clean()
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\forms\models.py", line 486, in _post_clean
+    self.instance.full_clean(exclude=exclude, validate_unique=False)
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\base.py", line 1470, in full_clean
+    self.clean_fields(exclude=exclude)
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\base.py", line 1522, in clean_fields
+    setattr(self, f.attname, f.clean(raw_value, self))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\fields\__init__.py", line 778, in clean
+    self.run_validators(value)
+  File "D:\SoftUni\natfa_registry_office\registry_office_venv\Lib\site-packages\django\db\models\fields\__init__.py", line 730, in run_validators
+    v(value)
+TypeError: different_num_log_value_same_year_validator() missing 1 required positional argument: 'model'
+2024-03-08 14:06:24 [ERROR   ] (basehttp.log_message) "POST /incoming/8/edit/ HTTP/1.1" 500 124462
+2024-03-08 14:06:24 [ERROR   ] (basehttp.log_message) "POST /incoming/8/edit/ HTTP/1.1" 500 124462
+2024-03-08 14:06:25 [WARNING ] (log.log_response) Not Found: /favicon.ico
+2024-03-08 14:06:25 [WARNING ] (log.log_response) Not Found: /favicon.ico
+2024-03-08 14:06:25 [WARNING ] (basehttp.log_message) "GET /favicon.ico HTTP/1.1" 404 5012
+2024-03-08 14:06:25 [WARNING ] (basehttp.log_message) "GET /favicon.ico HTTP/1.1" 404 5012
+2024-03-08 14:07:19 [INFO    ] (autoreload.trigger_reload) D:\SoftUni\natfa_registry_office\registry_office\core\validators.py changed, reloading.
+2024-03-08 14:07:19 [INFO    ] (autoreload.trigger_reload) D:\SoftUni\natfa_registry_office\registry_office\core\validators.py changed, reloading.
+2024-03-08 14:07:20 [INFO    ] (autoreload.run_with_reloader) Watching for file changes with StatReloader
+2024-03-08 14:07:20 [INFO    ] (autoreload.run_with_reloader) Watching for file changes with StatReloader
