@@ -8,6 +8,7 @@ from .models import OutgoingLogModel
 from .forms import CreateOutgoingLogForm, EditOutgoingLogForm, DeleteOutgoingLogForm
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 from core.custom_views.extra_content_views import ExtraContentCreateView
+from core.doc_files_context import extra_context_details_view
 
 
 class OutgoingLogCreateView(
@@ -43,12 +44,12 @@ class OutgoingLogDetailsView(
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
-        current_object = get_object_or_404(queryset, pk=pk)
+        self.current_object = get_object_or_404(queryset, pk=pk)
 
         current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
         
-        signatory_employee_id = current_object.concerned_employees
+        signatory_employee_id = self.current_object.concerned_employees
         
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
@@ -60,7 +61,14 @@ class OutgoingLogDetailsView(
         if not any(rights):
             raise Http404()
         
-        return current_object
+        return self.current_object
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['doc_files'] = extra_context_details_view(self.current_object)
+
+        return context
 
 class OutgoingLogEditView(
     auth_mixins.LoginRequiredMixin,
