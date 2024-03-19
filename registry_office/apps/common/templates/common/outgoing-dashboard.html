@@ -22,6 +22,9 @@
                         <td>Име на подателя</td>
                         <td>Длъжност на подателя</td>
                         <td>Час на регистрация</td>
+                        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                            <td>Регистратор</td>
+                        {% endif %}
                         <td>Прикачен файл</td>
                     </tr>
                 </thead>
@@ -39,9 +42,18 @@
                                 <td>Не е въведена</td>
                             {% endif %}
                             <td>{{ document.creation_date|date:"H:i часа" }}</td>
+                            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                                <td>{{ document.creator_user }}</td>
+                            {% endif %}
                             <td>
-                                {% if document.document_file %}
-                                    <a href="{{ document.document_file.url }}" target="_blank">Преглед на документа</a>
+                                {% if document.first_document_file %}
+                                    <p><a href="{{ document.first_document_file.url }}" target="_blank">Преглед на първи документ</a></p>
+                                {% endif %}
+                                {% if document.second_document_file %}
+                                    <p><a href="{{ document.second_document_file.url }}" target="_blank">Преглед на втори документ</a></p>
+                                {% endif %}
+                                {% if document.third_document_file %}
+                                    <p><a href="{{ document.third_document_file.url }}" target="_blank">Преглед на трети документ</a></p>
                                 {% endif %}
                             </td>
                         </tr>

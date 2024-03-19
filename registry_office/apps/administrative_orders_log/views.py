@@ -5,6 +5,7 @@ from django.contrib.auth import mixins as auth_mixins
 from django.views import generic as views
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 from core.custom_views.extra_content_views import ExtraContentCreateView
+from core.doc_files_context import extra_context_details_view
 from .models import AdministrativeOrdersLogModel
 from . import forms
 
@@ -50,8 +51,16 @@ class AdministrativeOrdersLogDetailsView(
     def get_object(self, queryset=None):
         queryset = self.get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
+        self.current_object = get_object_or_404(queryset, pk=pk)
 
-        return get_object_or_404(queryset, pk=pk)
+        return self.current_object
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['doc_files'] = extra_context_details_view(self.current_object)
+
+        return context
 
 class AdministrativeOrdersLogEditView(
     auth_mixins.LoginRequiredMixin,

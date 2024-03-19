@@ -21,6 +21,9 @@
                         <td>Тип на договора</td>
                         <td>Заинтересовани лица</td>
                         <td>Час на регистрация</td>
+                        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                            <td>Регистратор</td>
+                        {% endif %}
                         <td>Прикачен файл</td>
                     </tr>
                 </thead>
@@ -36,9 +39,18 @@
                                 <td>Няма</td>
                             {% endif %}
                             <td>{{ contract.creation_date|date:"H:i часа" }}</td>
+                            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                                <td>{{ contract.creator_user }}</td>
+                            {% endif %}
                             <td>
-                                {% if contract.document_file %}
-                                    <a href="{{ contract.document_file.url }}" target="_blank">Преглед на договора</a>
+                                {% if contract.first_document_file %}
+                                    <p><a href="{{ contract.first_document_file.url }}" target="_blank">Преглед на първи документ</a></p>
+                                {% endif %}
+                                {% if contract.second_document_file %}
+                                    <p><a href="{{ contract.second_document_file.url }}" target="_blank">Преглед на втори документ</a></p>
+                                {% endif %}
+                                {% if contract.third_document_file %}
+                                    <p><a href="{{ contract.third_document_file.url }}" target="_blank">Преглед на трети документ</a></p>
                                 {% endif %}
                             </td>
                         </tr>
