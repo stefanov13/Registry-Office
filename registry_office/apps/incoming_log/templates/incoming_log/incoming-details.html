@@ -63,7 +63,7 @@
 
         <section class="card text-bg-secondary mb-3" style="width: 60rem;">
             <div class="select-document">
-                {% for file in doc_files|slice:":1" %}
+                {% for file in doc_files %}
                     <button data={{ file.url }} type="button" class="btn btn-outline-info btn-sm">{{ file.name }}</button>
                 {% endfor %}
             </div>
