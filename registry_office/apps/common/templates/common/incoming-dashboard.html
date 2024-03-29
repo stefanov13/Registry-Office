@@ -34,7 +34,7 @@
                     {% for document in object_list %}
                         <tr>
                             <td>В / {{ document.log_num }}{% if document.sub_log_num %}-{{ document.sub_log_num }}{% endif %}
-                                 / {{ document.creation_date|date:"d.m.Yг." }}</td>
+                                / {{ document.creation_date|date:"d.m.Yг." }}</td>
                             <td><a href="{% url 'incoming-details' pk=document.pk %}">{{ document.title|truncatechars:50 }}</a></td>
                             {% if document.rectors_resolution %}
                                 <td>Има</td>

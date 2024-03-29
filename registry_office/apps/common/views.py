@@ -69,6 +69,13 @@ class ContractTypesView(
     
     def get_queryset(self):
         return self.model.objects.order_by('-pk')
+    
+class SearchAllRegistries(
+    auth_mixins.LoginRequiredMixin,
+    GroupRequiredMixin,
+    views.TemplateView,
+):
+    pass
 
 class IncomingDashboardView(
     auth_mixins.LoginRequiredMixin,

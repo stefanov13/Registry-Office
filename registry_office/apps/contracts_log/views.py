@@ -131,7 +131,17 @@ class ContractsLogEditView(
     GroupRequiredMixin,
     views.UpdateView,
 ):
-    exclude = ['creator_user']
+    fields = (
+        'log_num',
+        'sub_log_num',
+        'creation_date',
+        'title',
+        'contract_type',
+        'concerned_employees',
+        'first_document_file',
+        'second_document_file',
+        'third_document_file',
+    )
 
     allowed_groups = [
         'admin', 

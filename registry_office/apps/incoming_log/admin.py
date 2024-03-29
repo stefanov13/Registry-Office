@@ -5,6 +5,31 @@ from .models import IncomingLogModel
 @admin.register(IncomingLogModel)
 class IncomingLogAdmin(admin.ModelAdmin):
     ordering = ('-pk',)
-    list_display = ('log_num', 'title', 'creation_date', 'last_change_date',)
-    list_filter = ('log_num', 'title', 'creation_date', 'last_change_date',)
-    search_fields = ('log_num', 'title', 'creation_date', 'last_change_date',)
+    list_display = (
+        'log_num',
+        'sub_log_num',
+        'title',
+        'creation_date',
+        'rectors_resolution',
+        'creator_user',
+        'last_change_date',
+    )
+    list_filter = (
+        'log_num',
+        'sub_log_num',
+        'title',
+        'creation_date',
+        'rectors_resolution',
+        'creator_user',
+        'last_change_date',
+    )
+    search_fields = (
+        'log_num',
+        'sub_log_num',
+        'title',
+        'creation_date',
+        'rectors_resolution',
+        'creator_user',
+        'last_change_date',
+    )
+    
