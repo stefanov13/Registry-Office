@@ -29,4 +29,9 @@ urlpatterns = [
         views.FreelanceLectureContractsDashboardView.as_view(),
         name='freelance-lecturers-contracts-dashboard'
     ),
+    path(
+        'overall-search/',
+        views.SearchAllRegistries.as_view(),
+        name='overall-search'
+    ),
 ]
