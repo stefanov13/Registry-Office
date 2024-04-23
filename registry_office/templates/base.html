@@ -28,10 +28,14 @@
                             <li class="nav-item" style="color: #D8F0FE">За да работите със ситемата, моля <a href="{% url 'user-edit' %}" class="nav-link">добавете профил</a></li>
                         {% else %}
 
-                            <li class="nav-item"><a href="{% url 'incoming-dashboard' %}" class="nav-link">ВХОДЯЩ РЕГИСТЪР</a></li>
-                            <li class="nav-item"><a href="{% url 'outgoing-dashboard' %}" class="nav-link">ИЗХОДЯЩ РЕГИСТЪР</a></li>
-                            <li class="nav-item"><a href="{% url 'orders-dashboard' %}" class="nav-link">РЕГИСТЪР НА ЗАПОВЕДИТЕ</a></li>
-                            <li class="nav-item dropdown"><a href="#" class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">РЕГИСТЪР НА ДОГОВОРИТЕ</a>
+                            {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+                                <li class="nav-item"><a href="{% url 'overall-search' %}" class="nav-link">ТЪРСЕНЕ ОБЩО</a></li>
+                            {% endif %}
+                            
+                            <li class="nav-item"><a href="{% url 'incoming-dashboard' %}" class="nav-link">ВХОДЯЩИ</a></li>
+                            <li class="nav-item"><a href="{% url 'outgoing-dashboard' %}" class="nav-link">ИЗХОДЯЩИ</a></li>
+                            <li class="nav-item"><a href="{% url 'orders-dashboard' %}" class="nav-link">ЗАПОВЕДИ</a></li>
+                            <li class="nav-item dropdown"><a href="#" class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">ДОГОВОРИ</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{% url 'gen-contracts-dashboard' %}" class="dropdown-item">ДОГОВОРИ</a></li>
                                     <li><a href="{% url 'training-contracts-dashboard' %}" class="dropdown-item">ДОГОВОРИ ЗА ОБУЧЕНИЕ</a></li>
@@ -45,7 +49,6 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="{% url 'positions-id-dashboard' %}" class="dropdown-item">ИДЕНТИФИКАТОРИ</a></li>
                                         <li><a href="{% url 'contract-types-dashboard' %}" class="dropdown-item">ТИП ДОГОВОР</a></li>
-                                        <li><a href="{% url 'overall-search' %}" class="dropdown-item">ТЪРСЕНЕ ВЪВ ВСИЧКИ РЕГИСТРИ</a></li>
 
                                         {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
                                             <li><a href="#" class="dropdown-item">УПРАВЛЕНИЕ НА ПРОФИЛИТЕ</a></li>

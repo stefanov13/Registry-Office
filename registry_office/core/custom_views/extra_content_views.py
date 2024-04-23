@@ -50,7 +50,7 @@ class ExtraContentListView(views.ListView):
         context = super().get_context_data(**kwargs)
 
         context['search'] = self.request.GET.get('search', '')
-        context['rows_per_page'] = self.request.GET.get('rows_per_page', 10)
+        context['rows_per_page'] = self.request.GET.get('rows_per_page', 8)
 
         # documents = context['object_list']
 
@@ -60,7 +60,7 @@ class ExtraContentListView(views.ListView):
         return context
     
     def get_paginate_by(self, queryset):
-        return self.request.GET.get('rows_per_page', 10)
+        return self.request.GET.get('rows_per_page', 8)
     
     def export_data(self):
         # Retrieve the queryset
