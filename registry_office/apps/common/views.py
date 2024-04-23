@@ -33,12 +33,12 @@ class BaseNewsFeedView(views.ListView):
         context = super().get_context_data(**kwargs)
 
         context['search'] = self.request.GET.get('search', '')
-        context['rows_per_page'] = self.request.GET.get('rows_per_page', 10)
+        context['rows_per_page'] = self.request.GET.get('rows_per_page', 8)
 
         return context
     
     def get_paginate_by(self, queryset):
-        return self.request.GET.get('rows_per_page', 10)
+        return self.request.GET.get('rows_per_page', 8)
     
 class EmployeePositionsIdView(
     auth_mixins.LoginRequiredMixin,
@@ -138,12 +138,12 @@ class SearchAllRegistries(
 
         context['reg_names'] = registries_names
         context['search'] = self.search
-        context['rows_per_page'] = self.request.GET.get('rows_per_page', 10)
+        context['rows_per_page'] = self.request.GET.get('rows_per_page', 8)
 
         return context
     
     def get_paginate_by(self, queryset):
-        return self.request.GET.get('rows_per_page', 10)
+        return self.request.GET.get('rows_per_page', 8)
     
     def export_data(self):
         # Retrieve the queryset

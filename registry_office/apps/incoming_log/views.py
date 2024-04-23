@@ -118,7 +118,7 @@ class IncomingLogEditView(
     document_controller_group = 'document_controller'
 
     def get_form_class(self):
-        if self.rights:
+        if any(self.rights):
             return forms.EditIncomingLogForm
         
         elif self.document_controller_group in self.current_user_groups:
