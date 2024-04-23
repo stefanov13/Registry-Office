@@ -13,15 +13,16 @@
                 {% if object.publisher.exists %}
                     <p class="card-text">Издател: {{ object.publisher }}</p>
                 {% endif %}
-                {% if object.responsible_employees.exists %}
+                {% if object.concerned_employees.exists %}
                     <ul class="card-text">Заинтересовани служители:
-                    {% for r_employees in object.responsible_employees.all %}
-                        {% for employee in r_employees.employee_owner.all %}
+                    {% for c_employees in object.concerned_employees.all %}
+                        <li>{{ c_employees.employee_position_id }}</li>
+                        {% for employee in c_employees.employee_owner.all %}
                             <li>{{ employee.first_name }} {{ employee.last_name }} - {{ employee.position }}</li>
                         {% endfor %}
                     {% endfor %}
                     </ul>
-                {% endif %} 
+                {% endif %}
             </article>
 
             <div class="vstack gap-2 col-md-5 mx-auto mb-3">
