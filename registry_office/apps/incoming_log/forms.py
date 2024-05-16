@@ -33,6 +33,15 @@ class EditIncomingLogForm(forms.ModelForm):
         exclude = ['creator_user']
         # fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields[
+            'concerned_employees'
+        ].queryset = self.fields[
+            'concerned_employees'
+        ].queryset.order_by('pk')
+
 class EditIncomingLogDocControllerForm(EditIncomingLogForm):
     opinion = forms.CharField(
         required=False,
