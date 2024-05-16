@@ -100,27 +100,33 @@ class GeneralContractsLogModel(models.Model):
         verbose_name=_('Third Document File'),
     )
 
-    def clean(self):
-        super().clean()
+    # def clean(self):
+    #     super().clean()
 
-        self.current_year = timezone.now().year
+    #     self.current_year = timezone.now().year
 
-        same_value_current_year = GeneralContractsLogModel.objects.filter(
-            creation_date__year=self.current_year, log_num=self.log_num, sub_log_num=self.sub_log_num
-        ).exclude(
-            pk=self.pk
-        ).exists()
+    #     same_value_current_year = GeneralContractsLogModel.objects.filter(
+    #         creation_date__year=self.current_year,
+    #         log_num=self.log_num,
+    #         sub_log_num=self.sub_log_num
+    #     ).exclude(
+    #         pk=self.pk
+    #     ).exists()
 
-        if same_value_current_year:
-            raise ValidationError(
-                _('Cannot have duplicate log numbers in the same year.')
-            ) # 'В регистъра не може да има два еднакви номера в една година'
+    #     if same_value_current_year:
+    #         raise ValidationError(
+    #             _('Cannot have duplicate log numbers in the same year.')
+    #         ) # 'В регистъра не може да има два еднакви номера в една година'
 
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = GeneralContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
-
+            self.current_year = timezone.now().year
+            # last_instance = GeneralContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            last_instance = GeneralContractsLogModel.objects.filter(
+                creation_date__year=self.current_year
+            ).order_by('-log_num').first()
+            
             if last_instance and last_instance.creation_date.year == self.current_year:
                 last_log_num = last_instance.log_num
             else:
@@ -205,26 +211,32 @@ class EducationContractsLogModel(models.Model):
         verbose_name=_('Third Document File'),
     )
 
-    def clean(self):
-        super().clean()
+    # def clean(self):
+    #     super().clean()
 
-        self.current_year = timezone.now().year
+    #     self.current_year = timezone.now().year
 
-        same_value_current_year = EducationContractsLogModel.objects.filter(
-            creation_date__year=self.current_year, log_num=self.log_num, sub_log_num=self.sub_log_num
-        ).exclude(
-            pk=self.pk
-        ).exists()
+    #     same_value_current_year = EducationContractsLogModel.objects.filter(
+    #         creation_date__year=self.current_year,
+    #         log_num=self.log_num,
+    #         sub_log_num=self.sub_log_num
+    #     ).exclude(
+    #         pk=self.pk
+    #     ).exists()
 
-        if same_value_current_year:
-            raise ValidationError(
-                _('Cannot have duplicate log numbers in the same year.')
-            ) # 'В регистъра не може да има два еднакви номера в една година'
+    #     if same_value_current_year:
+    #         raise ValidationError(
+    #             _('Cannot have duplicate log numbers in the same year.')
+    #         ) # 'В регистъра не може да има два еднакви номера в една година'
 
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = EducationContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            self.current_year = timezone.now().year
+            # last_instance = EducationContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            last_instance = EducationContractsLogModel.objects.filter(
+                creation_date__year=self.current_year
+            ).order_by('-log_num').first()
 
             if last_instance and last_instance.creation_date.year == self.current_year:
                 last_log_num = last_instance.log_num
@@ -310,26 +322,32 @@ class FreelanceContractsLogModel(models.Model):
         verbose_name=_('Third Document File'),
     )
 
-    def clean(self):
-        super().clean()
+    # def clean(self):
+    #     super().clean()
 
-        self.current_year = timezone.now().year
+    #     self.current_year = timezone.now().year
 
-        same_value_current_year = FreelanceContractsLogModel.objects.filter(
-            creation_date__year=self.current_year, log_num=self.log_num, sub_log_num=self.sub_log_num
-        ).exclude(
-            pk=self.pk
-        ).exists()
+    #     same_value_current_year = FreelanceContractsLogModel.objects.filter(
+    #         creation_date__year=self.current_year,
+    #         log_num=self.log_num,
+    #         sub_log_num=self.sub_log_num
+    #     ).exclude(
+    #         pk=self.pk
+    #     ).exists()
 
-        if same_value_current_year:
-            raise ValidationError(
-                _('Cannot have duplicate log numbers in the same year.')
-            ) # 'В регистъра не може да има два еднакви номера в една година'
+    #     if same_value_current_year:
+    #         raise ValidationError(
+    #             _('Cannot have duplicate log numbers in the same year.')
+    #         ) # 'В регистъра не може да има два еднакви номера в една година'
 
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = FreelanceContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            self.current_year = timezone.now().year
+            # last_instance = FreelanceContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            last_instance = FreelanceContractsLogModel.objects.filter(
+                creation_date__year=self.current_year
+            ).order_by('-log_num').first()
 
             if last_instance and last_instance.creation_date.year == self.current_year:
                 last_log_num = last_instance.log_num
@@ -415,26 +433,32 @@ class FreelanceLectureContractsLogModel(models.Model):
         verbose_name=_('Third Document File'),
     )
 
-    def clean(self):
-        super().clean()
+    # def clean(self):
+    #     super().clean()
 
-        self.current_year = timezone.now().year
+    #     self.current_year = timezone.now().year
 
-        same_value_current_year = FreelanceLectureContractsLogModel.objects.filter(
-            creation_date__year=self.current_year, log_num=self.log_num, sub_log_num=self.sub_log_num
-        ).exclude(
-            pk=self.pk
-        ).exists()
+    #     same_value_current_year = FreelanceLectureContractsLogModel.objects.filter(
+    #         creation_date__year=self.current_year,
+    #         log_num=self.log_num,
+    #         sub_log_num=self.sub_log_num
+    #     ).exclude(
+    #         pk=self.pk
+    #     ).exists()
 
-        if same_value_current_year:
-            raise ValidationError(
-                _('Cannot have duplicate log numbers in the same year.')
-            ) # 'В регистъра не може да има два еднакви номера в една година'
+    #     if same_value_current_year:
+    #         raise ValidationError(
+    #             _('Cannot have duplicate log numbers in the same year.')
+    #         ) # 'В регистъра не може да има два еднакви номера в една година'
 
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = FreelanceLectureContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            self.current_year = timezone.now().year
+            # last_instance = FreelanceLectureContractsLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            last_instance = FreelanceLectureContractsLogModel.objects.filter(
+                creation_date__year=self.current_year
+            ).order_by('-log_num').first()
 
             if last_instance and last_instance.creation_date.year == self.current_year:
                 last_log_num = last_instance.log_num

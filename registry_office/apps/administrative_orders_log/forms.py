@@ -3,6 +3,20 @@ from .models import AdministrativeOrdersLogModel
 from django.utils.translation import gettext_lazy as _
 
 
+class EditAdministrativeOrdersLogForm(forms.ModelForm):
+    class Meta:
+        model = AdministrativeOrdersLogModel
+        exclude = ['creator_user']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields[
+            'concerned_employees'
+        ].queryset = self.fields[
+            'concerned_employees'
+        ].queryset.order_by('pk')
+
 class DeleteAdministrativeOrdersLogForm(forms.ModelForm):
     class Meta:
         model = AdministrativeOrdersLogModel

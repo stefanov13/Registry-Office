@@ -131,17 +131,7 @@ class ContractsLogEditView(
     GroupRequiredMixin,
     views.UpdateView,
 ):
-    fields = (
-        'log_num',
-        'sub_log_num',
-        'creation_date',
-        'title',
-        'contract_type',
-        'concerned_employees',
-        'first_document_file',
-        'second_document_file',
-        'third_document_file',
-    )
+    form_class = forms.EditContractsLogForm
 
     allowed_groups = [
         'admin', 

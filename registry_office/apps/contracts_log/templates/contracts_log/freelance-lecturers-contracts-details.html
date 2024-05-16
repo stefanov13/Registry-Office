@@ -14,6 +14,7 @@
                 {% if object.concerned_employees.exists %}
                     <ul class="card-text">Заинтересовани служители:
                     {% for c_employees in object.concerned_employees.all %}
+                        <li>{{ c_employees.employee_position_id }}</li>
                         {% for employee in c_employees.employee_owner.all %}
                             <li>{{ employee.first_name }} {{ employee.last_name }} - {{ employee.position }}</li>
                         {% endfor %}

@@ -69,17 +69,7 @@ class AdministrativeOrdersLogEditView(
 ):
     template_name = 'administrative_orders_log/orders-edit.html'
     model = AdministrativeOrdersLogModel
-    fields = (
-        'log_num',
-        'sub_log_num',
-        'creation_date',
-        'title',
-        'publisher',
-        'concerned_employees',
-        'first_document_file',
-        'second_document_file',
-        'third_document_file',
-    )
+    form_class = forms.EditAdministrativeOrdersLogForm
 
     allowed_groups = [
         'admin', 

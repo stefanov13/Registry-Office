@@ -2,6 +2,20 @@ from django import forms
 from .models import GeneralContractsLogModel, ContractTypesModel
 from django.utils.translation import gettext_lazy as _
 
+class EditContractsLogForm(forms.ModelForm):
+    class Meta:
+        model = GeneralContractsLogModel
+        exclude = ['creator_user']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields[
+            'concerned_employees'
+        ].queryset = self.fields[
+            'concerned_employees'
+        ].queryset.order_by('pk')
+
 class DeleteContractsLogForm(forms.ModelForm):
     class Meta:
         model = GeneralContractsLogModel
@@ -9,6 +23,7 @@ class DeleteContractsLogForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.__set_disabled_fields()
 
     def save(self, commit=True):

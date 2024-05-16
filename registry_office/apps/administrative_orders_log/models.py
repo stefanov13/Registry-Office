@@ -109,7 +109,10 @@ class AdministrativeOrdersLogModel(models.Model):
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
-            last_instance = AdministrativeOrdersLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            # last_instance = AdministrativeOrdersLogModel.objects.order_by('-creation_date__date', '-log_num').first()
+            last_instance = AdministrativeOrdersLogModel.objects.filter(
+                creation_date__year=self.current_year
+            ).order_by('-log_num').first()
 
             if last_instance and last_instance.creation_date.year == self.current_year:
                 last_log_num = last_instance.log_num
