@@ -93,18 +93,36 @@ class ExtraContentListView(views.ListView):
         return response
 
 class ExtraContentCreateView(views.CreateView):
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        form.fields[
+            'concerned_employees'
+        ].queryset = form.fields[
+            'concerned_employees'
+        ].queryset.order_by('pk')
+
+        return form
 
     def form_valid(self, form):
         form.instance.creator_user = self.request.user.profile
+        
         return super().form_valid(form)
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        last_instance = self.model.objects.order_by('-creation_date__date', '-log_num').first()
+        # last_instance = self.model.objects.order_by(
+        #     '-creation_date__date',
+        #     '-log_num'
+        # ).first()
 
         current_year = timezone.now().year
+
+        last_instance = self.model.objects.filter(
+                creation_date__year=current_year
+            ).order_by('-log_num').first()
 
         if last_instance and last_instance.creation_date.year == current_year:
             last_log_num = last_instance.log_num
