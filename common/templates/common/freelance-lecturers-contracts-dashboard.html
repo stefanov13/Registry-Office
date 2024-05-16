@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load check_group_exists %}
+
+{% block content %}
+    <section>
+        <h2>РЕГИСТЪР НА ГРАЖДАНСКИТЕ ДОГОВОРИ С ПРЕПОДАВАТЕЛИ</h2>
+
+        {% if not object_list %}
+            <h4>Няма добавени договори в регистъра</h4>
+        {% else %}
+            <form action="{% url "freelance-lecturers-contracts-dashboard" %}?page={{ page_obj.number}}">
+                <input type="text" name="search" value="{{ search }}" placeholder="Търсене в описанието">
+                <button type="submit" class="btn btn-outline-dark mb-3">Търси</button>
+            </form>
+
+            <table class="table table-dark table-striped-columns">
+                <thead>
+                    <tr>
+                        <td>Номер и дата на регистрация</td>
+                        <td>Описание</td>
+                        <td>Тип на договора</td>
+                        <td>Заинтересовани лица</td>
+                        <td>Час на регистрация</td>
+                        {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                            <td>Регистратор</td>
+                        {% endif %}
+                        <td>Прикачен файл</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contract in object_list %}
+                        <tr>
+                            <td>ГД-П / {{ contract.log_num }}{% if contract.sub_log_num %}-{{ contract.sub_log_num }}{% endif %}
+                                / {{ contract.creation_date|date:"d.m.Yг." }}</td>
+                            <td><a href="{% url 'freelance-lecturers-contracts-details' pk=contract.pk %}">{{ contract.title|truncatechars:50 }}</a></td>
+                            <td>{{ contract.contract_type|truncatechars:80 }}</td>
+                            {% if contract.concerned_employees.exists %}
+                                <td>Има</td>
+                            {% else %}
+                                <td>Няма</td>
+                            {% endif %}
+                            <td>{{ contract.creation_date|date:"H:i часа" }}</td>
+                            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                                <td>{{ contract.creator_user }}</td>
+                            {% endif %}
+                            <td>
+                                {% if contract.first_document_file %}
+                                    <p><a href="{{ contract.first_document_file.url }}" target="_blank">Преглед на първи документ</a></p>
+                                {% endif %}
+                                {% if contract.second_document_file %}
+                                    <p><a href="{{ contract.second_document_file.url }}" target="_blank">Преглед на втори документ</a></p>
+                                {% endif %}
+                                {% if contract.third_document_file %}
+                                    <p><a href="{{ contract.third_document_file.url }}" target="_blank">Преглед на трети документ</a></p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="">
+                <span class="">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}&search={{ search }}&rows_per_page={{ rows_per_page }}">&lt;</a>
+                    {% else %}
+                        <a>&lt;</a>
+                    {% endif %}
+
+            
+                    <span class="">
+                        Страница {{ page_obj.number }} / {{ paginator.num_pages }}
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&search={{ search }}&rows_per_page={{ rows_per_page }}">&gt;</a>
+                    {% else %}
+                        <a>&gt;</a>
+                    {% endif %}
+                </span>
+            </div>
+
+            <form method="get" action="">
+                <label for="rows_per_page">Брой редове на страница:</label>
+                <input type="number" name="rows_per_page" id="rows_per_page" value="{{ paginator.per_page }}" min="1" placeholder="Въведи брой редове">
+            
+                <button type="submit" class="btn btn-outline-dark mb-3">Покажи</button>
+            </form>
+
+            {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+                <a href="?export&search={{ search }}" class="btn btn-outline-dark mb-3">Експорт в Excel</a>
+            {% endif %}
+        {% endif %}
+        
+        {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
+            <a href="{% url 'freelance-lecturers-contracts-create' %}" class="btn btn-outline-dark mb-3">Регистриране на договор</a>
+        {% endif %}
+    </section>
+{% endblock  %}
