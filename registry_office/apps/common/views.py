@@ -3,7 +3,7 @@ from django.contrib.auth import mixins as auth_mixins
 from django.http import HttpResponse
 from itertools import chain
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
-from core.custom_views.extra_content_views import ExtraContentListView
+from core.custom_views import extra_content_views
 from ..news_feed.models import NewsFeedModel
 from ..user_profiles.models import EmployeePositionsModel
 from ..incoming_log.models import IncomingLogModel
@@ -175,49 +175,49 @@ class SearchAllRegistries(
 
 class IncomingDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentListView,
 ):
     template_name = 'common/incoming-dashboard.html'
     model = IncomingLogModel
 
 class OutgoingDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentListView,
 ):
     template_name = 'common/outgoing-dashboard.html'
     model = OutgoingLogModel
     
 class OrdersDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentListView,
 ):
     template_name = 'common/orders-dashboard.html'
     model = AdministrativeOrdersLogModel
 
 class GeneralContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentContractListView,
 ):
     template_name = 'common/gen-contracts-dashboard.html'
     model = contracts_models.GeneralContractsLogModel
 
 class EducationContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentContractListView,
 ):
     template_name = 'common/training-contracts-dashboard.html'
     model = contracts_models.EducationContractsLogModel
 
 class FreelanceContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentContractListView,
 ):
     template_name = 'common/freelance-contracts-dashboard.html'
     model = contracts_models.FreelanceContractsLogModel
 
 class FreelanceLectureContractsDashboardView(
     auth_mixins.LoginRequiredMixin,
-    ExtraContentListView,
+    extra_content_views.ExtraContentContractListView,
 ):
     template_name = 'common/freelance-lecturers-contracts-dashboard.html'
     model = contracts_models.FreelanceLectureContractsLogModel
