@@ -1,11 +1,15 @@
-import re
+from django.http import Http404
 from django.views import generic as views
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.http import HttpResponse
 from openpyxl import Workbook
+from apps.contracts_log.models import ContractTypesModel
 
 
 class ExtraContentListView(views.ListView):
+    DEFAULT_FROM_DATE = '2023-01-01'
+
     allowed_groups = [
         'admin',
         'administrative_manager',
@@ -18,7 +22,21 @@ class ExtraContentListView(views.ListView):
         current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
         current_user_groups = self.request.user.groups.values_list('name', flat=True)
 
-        search = self.request.GET.get('search', '')
+        self.current_date = timezone.now().date().strftime('%Y-%m-%d')
+
+        self.selected_log_num = self.request.GET.get('log-num', '')
+        self.search = self.request.GET.get('search', '')
+        self.from_date = self.request.GET.get('from-date', self.DEFAULT_FROM_DATE)
+        self.to_date = self.request.GET.get('to-date', self.current_date)
+
+        self.from_date = parse_date(self.from_date)
+        self.to_date = parse_date(self.to_date)
+
+        if not self.from_date:
+            self.from_date = self.DEFAULT_FROM_DATE
+
+        if not self.to_date:
+            self.to_date = self.current_date
 
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
@@ -28,14 +46,23 @@ class ExtraContentListView(views.ListView):
 
         if any(rights):            
             queryset = self.model.objects.filter(
-                title__icontains=search
+                title__icontains=self.search,
+                creation_date__date__gte=self.from_date,
+                creation_date__date__lte=self.to_date
             ).order_by('-creation_date__date', '-log_num', '-sub_log_num')
 
         else:
             queryset = self.model.objects.filter(
                 concerned_employees__in=current_user_ids,
-                title__icontains=search
+                title__icontains=self.search,
+                creation_date__date__gte=self.from_date,
+                creation_date__date__lte=self.to_date
             ).order_by('-creation_date__date', '-log_num', '-sub_log_num')
+
+        if int(self.selected_log_num) if self.selected_log_num.isdigit() else 0:
+            queryset = queryset.filter(
+                log_num=self.selected_log_num
+            ).order_by('-creation_date__date')
 
         return queryset
     
@@ -49,7 +76,11 @@ class ExtraContentListView(views.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['search'] = self.request.GET.get('search', '')
+        context['selected_log_num'] = self.selected_log_num
+        context['search'] = self.search
+        context['from_date'] = self.from_date.strftime('%Y-%m-%d') if not isinstance(self.from_date, str) else self.from_date
+        context['to_date'] = self.to_date.strftime('%Y-%m-%d') if not isinstance(self.to_date, str) else self.to_date
+        context['current_date'] = self.current_date
         context['rows_per_page'] = self.request.GET.get('rows_per_page', 8)
 
         # documents = context['object_list']
@@ -91,6 +122,27 @@ class ExtraContentListView(views.ListView):
         workbook.save(response)
 
         return response
+    
+class ExtraContentContractListView(ExtraContentListView):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+
+        self.selected_type = self.request.GET.get('contract-type', 0)
+
+        if bool(int(self.selected_type)):
+            queryset = queryset.filter(
+                contract_type=self.selected_type
+            ).order_by('-log_num', '-sub_log_num')
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['contract_types'] = ContractTypesModel.objects.all()
+        context['selected_type'] = self.selected_type
+
+        return context
 
 class ExtraContentCreateView(views.CreateView):
     def get_form(self, form_class=None):
