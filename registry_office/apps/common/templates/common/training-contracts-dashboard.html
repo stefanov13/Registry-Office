@@ -41,7 +41,7 @@
             </div>
             
             <div class="col-auto">
-                <button type="submit" class="btn btn-outline-dark mb-3">Търси</button>
+                <button type="submit" class="btn btn-success mb-3">Търси</button>
             </div>
         </form>
 
@@ -177,7 +177,7 @@
         {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
             <a
                 href="{% url 'training-contracts-create' %}"
-                class="btn btn-outline-dark mb-3"
+                class="btn btn-success mb-3"
             >
                 Регистриране на договор за обучение
             </a>
