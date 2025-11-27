@@ -136,7 +136,7 @@ if DEBUG:
 
 LANGUAGE_CODE = 'bg'
 
-TIME_ZONE = 'EET'
+TIME_ZONE = 'Europe/Sofia'
 
 USE_I18N = True
 
@@ -220,3 +220,4 @@ LOGGING = {
         },
     },
 }
+
