@@ -101,7 +101,6 @@ class ContractsLogCreateView(
 
 class ContractsLogDetailsView(
     auth_mixins.LoginRequiredMixin,
-    GroupRequiredMixin,
     views.DetailView,
 ):
     pk_url_kwarg = 'pk'
@@ -112,17 +111,34 @@ class ContractsLogDetailsView(
         'document_controller',
     ]
 
-    def get_object(self, queryset=None):
-        queryset = self.get_queryset()
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        self.current_object = get_object_or_404(queryset, pk=pk)
+    def get_queryset(self):
+        self.current_user_ids = self.request.user.profile.employeepositionsmodel_set.all()
+        current_user_groups = self.request.user.groups.values_list('name', flat=True)
 
-        return self.current_object
+        rights = [
+            set(current_user_groups).intersection(set(self.allowed_groups)),
+            self.request.user.is_superuser,
+            self.request.user.is_staff
+        ]
+
+        if any(rights):
+            queryset = self.model.objects.order_by('-pk') 
+
+        else:
+            queryset = self.model.objects.filter(
+                concerned_employees__in=self.current_user_ids
+                ).order_by('-pk')
+
+        return queryset
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
-        context['doc_files'] = extra_context_details_view(self.current_object)
+        queryset = self.get_queryset()
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        current_object = get_object_or_404(queryset, pk=pk)
+
+        context['doc_files'] = extra_context_details_view(current_object)
 
         return context
 

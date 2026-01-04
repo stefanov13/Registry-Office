@@ -103,10 +103,8 @@ class GeneralContractsLogModel(models.Model):
     # def clean(self):
     #     super().clean()
 
-    #     self.current_year = timezone.now().year
-
     #     same_value_current_year = GeneralContractsLogModel.objects.filter(
-    #         creation_date__year=self.current_year,
+    #         creation_date__year=self.creation_date.year,
     #         log_num=self.log_num,
     #         sub_log_num=self.sub_log_num
     #     ).exclude(
@@ -214,10 +212,8 @@ class EducationContractsLogModel(models.Model):
     # def clean(self):
     #     super().clean()
 
-    #     self.current_year = timezone.now().year
-
     #     same_value_current_year = EducationContractsLogModel.objects.filter(
-    #         creation_date__year=self.current_year,
+    #         creation_date__year=self.creation_date.year,
     #         log_num=self.log_num,
     #         sub_log_num=self.sub_log_num
     #     ).exclude(
@@ -325,10 +321,8 @@ class FreelanceContractsLogModel(models.Model):
     # def clean(self):
     #     super().clean()
 
-    #     self.current_year = timezone.now().year
-
     #     same_value_current_year = FreelanceContractsLogModel.objects.filter(
-    #         creation_date__year=self.current_year,
+    #         creation_date__year=self.creation_date.year,
     #         log_num=self.log_num,
     #         sub_log_num=self.sub_log_num
     #     ).exclude(
@@ -436,10 +430,8 @@ class FreelanceLectureContractsLogModel(models.Model):
     # def clean(self):
     #     super().clean()
 
-    #     self.current_year = timezone.now().year
-
     #     same_value_current_year = FreelanceLectureContractsLogModel.objects.filter(
-    #         creation_date__year=self.current_year,
+    #         creation_date__year=self.creation_date.year,
     #         log_num=self.log_num,
     #         sub_log_num=self.sub_log_num
     #     ).exclude(
