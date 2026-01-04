@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.12
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -20,3 +20,4 @@ COPY static_files /app/static_files
 COPY logs /app/logs
 COPY templates /app/templates
 COPY manage.py /app/
+
