@@ -12,7 +12,7 @@
                 <p class="card-text">Описание: {{ object.title }}</p>
                 <p class="card-text">Получател: {{ object.recipient }}</p>
 
-                {% if object.concerned_employees.exists %}
+                {% if object.concerned_employees %}
                     <p class="card-text">Идентификатор: {{ object.concerned_employees.employee_position_id }}</p>
                     <p class="card-text">Име на подателя: {{ object.concerned_employees.employee_owner.first.first_name }} {{ object.concerned_employees.employee_owner.first.last_name }}</p>
                     <p class="card-text">Длъжност на подателя: {{ object.concerned_employees.employee_owner.first.position }}</p>
