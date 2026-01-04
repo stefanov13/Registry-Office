@@ -9,7 +9,7 @@
             <div class="col-auto">
                 <input type="number" name="log-num" placeholder="Търсене по номер" value="{{ selected_log_num }}" class="form-control mb-3">
             </div>
-            <div class="col-auto">
+            <div class="col-5">
                 <input type="text" name="search" value="{{ search }}" placeholder="Търсене в описанието" class="form-control mb-3">
             </div>
             <div class="col-auto">
@@ -71,7 +71,7 @@
                                 </a>
                             </td>
                             <td>{{ document.recipient }}</td>
-                            {% if object.concerned_employees.exists %}
+                            {% if document.concerned_employees %}
                                 <td>
                                     {{ document.concerned_employees.employee_owner.first.first_name }}
                                     {{ document.concerned_employees.employee_owner.first.last_name }}

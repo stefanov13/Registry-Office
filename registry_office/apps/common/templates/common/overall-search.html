@@ -17,6 +17,12 @@
                 >
             </div>
             <div class="col-auto">
+                <input type="date" name="from-date" class="form-control mb-3">
+            </div>
+            <div class="col-auto">
+                <input type="date" name="to-date" value="{{ current_date }}" class="form-control mb-3">
+            </div>
+            <div class="col-auto">
                 <input
                     type="number"
                     name="rows_per_page"
@@ -27,6 +33,7 @@
                     class="form-control mb-3"
                 >
             </div>
+            
             <div class="col-auto">
                 <button type="submit" class="btn btn-success mb-3">Търси</button>
             </div>
@@ -110,7 +117,7 @@
                 <span class="">
                     {% if page_obj.has_previous %}
                         <a
-                            href="?page={{ page_obj.previous_page_number }}&search={{ search }}&rows_per_page={{ rows_per_page }}"
+                            href="?page={{ page_obj.previous_page_number }}&search={{ search }}&from-date={{ from_date }}&to-date={{ to_date }}&rows_per_page={{ rows_per_page }}"
                         >
                             &lt;
                         </a>
@@ -125,7 +132,7 @@
             
                     {% if page_obj.has_next %}
                         <a
-                            href="?page={{ page_obj.next_page_number }}&search={{ search }}&rows_per_page={{ rows_per_page }}"
+                            href="?page={{ page_obj.next_page_number }}&search={{ search }}&from-date={{ from_date }}&to-date={{ to_date }}&rows_per_page={{ rows_per_page }}"
                         >
                             &gt;
                         </a>
@@ -152,7 +159,7 @@
  {% endcomment %}
             {% if request.user|has_group:'admin' or request.user|has_group:'administrative_manager' or request.user|has_group:'document_controller' or request.user.is_staff or request.user.is_superuser %}
                 <a
-                    href="?export&search={{ search }}"
+                    href="?export&search={{ search }}&from-date={{ from_date }}&to-date={{ to_date }}"
                     class="btn btn-outline-dark mb-3"
                 >
                     Експорт в Excel

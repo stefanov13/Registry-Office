@@ -1,6 +1,9 @@
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
+from django.db.models import Q
 from django.http import HttpResponse
+from django.utils import timezone
+from django.utils.dateparse import parse_date
 from itertools import chain
 from core.mixins.moderator_group_mixin import GroupRequiredMixin
 from core.custom_views import extra_content_views
@@ -81,6 +84,8 @@ class SearchAllRegistries(
 ):
     template_name = 'common/overall-search.html'
 
+    DEFAULT_FROM_DATE = '2023-01-01'
+
     allowed_groups = [
         'admin',
         'administrative_manager',
@@ -97,12 +102,44 @@ class SearchAllRegistries(
         contracts_models.FreelanceLectureContractsLogModel,
     )
 
+    registries_names = {
+            'IncomingLogModel': 'В',
+            'OutgoingLogModel': 'И',
+            'AdministrativeOrdersLogModel': 'З',
+            'GeneralContractsLogModel': 'Д',
+            'EducationContractsLogModel': 'ДО',
+            'FreelanceContractsLogModel': 'ГД',
+            'FreelanceLectureContractsLogModel': 'ГД-П'
+        }
+
     def get_queryset(self, *args, **kwargs):
+        self.current_date = timezone.now().date().strftime('%Y-%m-%d')
+
         self.search = self.request.GET.get('search', '')
+        words = self.search.strip().split()
+
+        # Build a Q object for each word
+        query = Q()
+        for word in words:
+            query &= Q(title__icontains=word)
+
+        self.from_date = self.request.GET.get('from-date', self.DEFAULT_FROM_DATE)
+        self.to_date = self.request.GET.get('to-date', self.current_date)
+
+        self.from_date = parse_date(self.from_date)
+        self.to_date = parse_date(self.to_date)
+
+        if not self.from_date:
+            self.from_date = self.DEFAULT_FROM_DATE
+
+        if not self.to_date:
+            self.to_date = self.current_date
 
         if self.search:
             search_result = [list(m.objects.filter(
-                title__icontains=self.search
+                query,
+                creation_date__date__gte=self.from_date,
+                creation_date__date__lte=self.to_date
             )) for m in self.all_models]
             
             union_queryset = list(chain(*search_result))
@@ -124,20 +161,13 @@ class SearchAllRegistries(
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        registries_names = {
-            'IncomingLogModel': 'В',
-            'OutgoingLogModel': 'И',
-            'AdministrativeOrdersLogModel': 'З',
-            'GeneralContractsLogModel': 'Д',
-            'EducationContractsLogModel': 'ДО',
-            'FreelanceContractsLogModel': 'ГД',
-            'FreelanceLectureContractsLogModel': 'ГД-П'
-        }
-
         context = super().get_context_data(**kwargs)
 
-        context['reg_names'] = registries_names
+        context['reg_names'] = self.registries_names
         context['search'] = self.search
+        context['from_date'] = self.from_date.strftime('%Y-%m-%d') if not isinstance(self.from_date, str) else self.from_date
+        context['to_date'] = self.to_date.strftime('%Y-%m-%d') if not isinstance(self.to_date, str) else self.to_date
+        context['current_date'] = self.current_date
         context['rows_per_page'] = self.request.GET.get('rows_per_page', 8)
 
         return context
@@ -155,14 +185,16 @@ class SearchAllRegistries(
 
         # Write headers and data to the worksheet
         for obj in queryset:
-            headers = []
+            # headers = []
             row = []
 
+            row.append(self.registries_names.get(obj.__class__.__name__, ''))
+
             for field in obj._meta.fields:
-                headers.append(f'{field.verbose_name}') if field.is_relation else headers.append(str(field.verbose_name))
+                # headers.append(f'{field.verbose_name}') if field.is_relation else headers.append(str(field.verbose_name))
                 row.append(str(getattr(obj, field.name))) if field.is_relation else row.append(str(getattr(obj, field.name)))
 
-            worksheet.append(headers)
+            # worksheet.append(headers)
             worksheet.append(row)
 
         # Create a response with the Excel file
@@ -172,7 +204,6 @@ class SearchAllRegistries(
 
         return response
     
-
 class IncomingDashboardView(
     auth_mixins.LoginRequiredMixin,
     extra_content_views.ExtraContentListView,
