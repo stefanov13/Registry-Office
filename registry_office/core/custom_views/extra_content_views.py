@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.views import generic as views
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.http import HttpResponse
@@ -38,6 +39,13 @@ class ExtraContentListView(views.ListView):
         if not self.to_date:
             self.to_date = self.current_date
 
+        words = self.search.strip().split()
+
+        # Build a Q object for each word
+        query = Q()
+        for word in words:
+            query &= Q(title__icontains=word)
+
         rights = [
             set(current_user_groups).intersection(set(self.allowed_groups)),
             self.request.user.is_superuser,
@@ -46,15 +54,15 @@ class ExtraContentListView(views.ListView):
 
         if any(rights):            
             queryset = self.model.objects.filter(
-                title__icontains=self.search,
+                query,
                 creation_date__date__gte=self.from_date,
                 creation_date__date__lte=self.to_date
             ).order_by('-creation_date__date', '-log_num', '-sub_log_num')
 
         else:
             queryset = self.model.objects.filter(
+                query,
                 concerned_employees__in=current_user_ids,
-                title__icontains=self.search,
                 creation_date__date__gte=self.from_date,
                 creation_date__date__lte=self.to_date
             ).order_by('-creation_date__date', '-log_num', '-sub_log_num')
@@ -62,7 +70,7 @@ class ExtraContentListView(views.ListView):
         if int(self.selected_log_num) if self.selected_log_num.isdigit() else 0:
             queryset = queryset.filter(
                 log_num=self.selected_log_num
-            ).order_by('-creation_date__date')
+            ).order_by('-creation_date__year', '-sub_log_num')
 
         return queryset
     
@@ -103,6 +111,7 @@ class ExtraContentListView(views.ListView):
 
         # Write headers to the worksheet
         headers = []
+        
         for field in self.model._meta.fields:
             headers.append(f'{field.verbose_name}') if field.is_relation else headers.append(str(field.verbose_name))
 
@@ -111,6 +120,7 @@ class ExtraContentListView(views.ListView):
         # Write data to the worksheet
         for obj in queryset:
             row = []
+
             for field in self.model._meta.fields:
                 row.append(str(getattr(obj, field.name))) if field.is_relation else row.append(str(getattr(obj, field.name)))
 
