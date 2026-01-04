@@ -97,9 +97,9 @@ WSGI_APPLICATION = 'registry_office.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "natfa",
-        "USER": "penka",
-        "PASSWORD": "dolna",
+        "NAME": "natfa_reg_office",
+        "USER": "dividend",
+        "PASSWORD": "mathematics",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
@@ -134,7 +134,7 @@ if DEBUG:
 
 LANGUAGE_CODE = 'bg'
 
-TIME_ZONE = 'Europe/Sofia'
+TIME_ZONE = 'Europe/Sofia' #'EET'
 
 USE_I18N = True
 
@@ -216,4 +216,3 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 #         },
 #     },
 # }
-
