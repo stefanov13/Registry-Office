@@ -36,11 +36,20 @@ class EditIncomingLogForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields[
-            'concerned_employees'
-        ].queryset = self.fields[
-            'concerned_employees'
-        ].queryset.order_by('pk')
+        ### Raise KeyError: 'concerned_employees' ###
+
+        # self.fields[
+        #     'concerned_employees'
+        # ].queryset = self.fields[
+        #     'concerned_employees'
+        # ].queryset.order_by('pk')
+
+        # Order 'concerned_employees' field by 'pk'
+
+        field = self.fields.get('concerned_employees')
+
+        if field:
+            field.queryset = field.queryset.order_by('pk')
 
 class EditIncomingLogDocControllerForm(EditIncomingLogForm):
     opinion = forms.CharField(

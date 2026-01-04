@@ -108,10 +108,8 @@ class IncomingLogModel(models.Model):
     def clean(self):
         super().clean()
 
-        self.current_year = timezone.now().year
-
         same_value_current_year = IncomingLogModel.objects.filter(
-            creation_date__year=self.current_year,
+            creation_date__year=self.creation_date.year,
             log_num=self.log_num,
             sub_log_num=self.sub_log_num
         ).exclude(
@@ -126,6 +124,7 @@ class IncomingLogModel(models.Model):
     def save(self, *args, **kwargs):
         if not self.log_num:
             # Auto-generate the log_num value on first save
+            self.current_year = timezone.now().year
             # last_instance = IncomingLogModel.objects.order_by('-creation_date__date', '-log_num').first()
             last_instance = IncomingLogModel.objects.filter(
                 creation_date__year=self.current_year
