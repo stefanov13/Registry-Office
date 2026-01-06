@@ -10,7 +10,7 @@
                 <p class="card-text">Номер в регистъра: {{ object.log_num }}</p>
                 <p class="card-text">Регистриран на: {{ object.creation_date|date:"d.m.Y в H:i" }}</p>
                 <p class="card-text">Описание: {{ object.title }}</p>
-                {% if object.publisher.exists %}
+                {% if object.publisher %}
                     <p class="card-text">Издател: {{ object.publisher }}</p>
                 {% endif %}
                 {% if object.concerned_employees.exists %}
