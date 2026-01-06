@@ -72,9 +72,9 @@
                             {% if order.publisher %}
                                 <td>{{ order.publisher }}</td>
                             {% else %}
-                                {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
-                                    <td>Не е посочен</td>
-                                {% endif %}
+                                <td>Не е посочен</td>
+                            {% endif %}
+                            {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
                                 {% if order.concerned_employees.exists %}
                                     <td>Има</td>
                                 {% else %}
