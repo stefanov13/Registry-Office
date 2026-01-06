@@ -69,7 +69,7 @@
                                     {{ order.title|truncatechars:50 }}
                                 </a>
                             </td>
-                            {% if order.publisher.exists %}
+                            {% if order.publisher %}
                                 <td>{{ order.publisher }}</td>
                             {% else %}
                                 <td>Не е посочен</td>
