@@ -45,10 +45,10 @@
                         <td>Номер и дата на регистрация</td>
                         <td>Описание</td>
                         <td>Получател на документа</td>
-                        <td>Име на подателя</td>
-                        <td>Длъжност на подателя</td>
-                        <td>Час на регистрация</td>
                         {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                            <td>Име на подателя</td>
+                            <td>Длъжност на подателя</td>
+                            <td>Час на регистрация</td>
                             <td>Регистратор</td>
                         {% endif %}
                         <td>Прикачен файл</td>
@@ -67,22 +67,22 @@
                                     href="{% url 'outgoing-details' pk=document.pk %}"
                                     class="link-dark"
                                 >
-                                    {{ document.title|truncatechars:50 }}
+                                    {{ document.title|truncatechars:150 }}
                                 </a>
                             </td>
                             <td>{{ document.recipient }}</td>
-                            {% if document.concerned_employees %}
-                                <td>
-                                    {{ document.concerned_employees.employee_owner.first.first_name }}
-                                    {{ document.concerned_employees.employee_owner.first.last_name }}
-                                </td>
-                                <td>{{ document.concerned_employees.employee_owner.first.position }}</td>
-                            {% else %}
-                                <td>Не е въведено</td>
-                                <td>Не е въведена</td>
-                            {% endif %}
-                            <td>{{ document.creation_date|date:"H:i часа" }}</td>
                             {% if request.user|has_group:'admin' or request.user.is_staff or request.user.is_superuser %}
+                                {% if document.concerned_employees %}
+                                    <td>
+                                        {{ document.concerned_employees.employee_owner.first.first_name }}
+                                        {{ document.concerned_employees.employee_owner.first.last_name }}
+                                    </td>
+                                    <td>{{ document.concerned_employees.employee_owner.first.position }}</td>
+                                {% else %}
+                                    <td>Не е въведено</td>
+                                    <td>Не е въведена</td>
+                                {% endif %}
+                                <td>{{ document.creation_date|date:"H:i часа" }}</td>
                                 <td>{{ document.creator_user }}</td>
                             {% endif %}
                             <td>
